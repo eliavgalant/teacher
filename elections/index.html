@@ -42,6 +42,13 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 .modalBox{width:min(620px,96vw);border:1px solid var(--line);border-radius:22px;background:#0b1729;padding:24px;box-shadow:var(--shadow)}
 .modalBox h3{font-size:28px;margin-bottom:12px}.modalBox ol{line-height:1.7;color:#dfeafb}.modalClose{float:left}
 .commandBox{font-size:clamp(28px,4vw,54px);font-weight:1000;padding:25px;border:1px solid var(--line);border-radius:20px;background:#071523;margin-top:20px;text-align:center}
+#odedSlide{align-items:center;text-align:center}
+.odedTitle{margin:0;max-width:none;font-size:clamp(64px,9vw,128px);transition:.35s ease}
+.odedQuestion{display:none;margin:0;max-width:1100px;text-align:center}
+#odedSlide.revealed{align-items:stretch;text-align:right}
+#odedSlide.revealed .odedTitle{align-self:flex-end;font-size:clamp(24px,2.4vw,36px);margin:0 0 34px;color:var(--muted);letter-spacing:0}
+#odedSlide.revealed .odedQuestion{display:block;align-self:center;font-size:clamp(34px,4.6vw,64px)}
+
 .choiceBuilder{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;max-width:800px;margin-top:22px}
 .choiceBuilder input{border:2px solid rgba(255,255,255,.14);background:white;color:#07111f;border-radius:15px;padding:16px 17px;font-size:22px;outline:none}
 .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.chip{position:relative;padding:12px 44px 12px 16px;border-radius:999px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
@@ -92,15 +99,9 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 </section>
 
 <section class="slide" id="odedSlide">
-  <button class="helpBtn" data-help="oded" aria-label="הוראות">?</button>
-  <div class="odedIntro" id="odedIntro">
-    <span class="kicker">🎮 פעילות 1</span>
-    <h2>עודד אמר</h2>
-    <p class="lead">אדם אחד נותן הוראות. כולם צריכים לבצע. אין הצבעה ואין ויכוח.</p>
-    <div class="commandBox">עמדו. שבו. ידיים למעלה. הסתובבו.</div>
-  </div>
-  <p class="big odedQuestion" style="margin-top:24px">איך זה מרגיש כש<span class="yellow">מישהו אחד מחליט לכולם</span>?</p>
-  <div class="clickHint">לחצו על אזור ריק בשקף כדי להשאיר רק את שאלת הדיון</div>
+  <button class="helpBtn" data-help="oded" aria-label="הוראות למשחק">?</button>
+  <h2 class="odedTitle">עודד אמר</h2>
+  <p class="big odedQuestion">איך זה מרגיש כש<span class="yellow">מישהו אחד מחליט לכולם</span>?</p>
 </section>
 
 <section class="slide">
@@ -317,11 +318,7 @@ document.querySelectorAll(".progressive").forEach(slide=>{
 const odedSlide=document.querySelector("#odedSlide");
 odedSlide.addEventListener("click",e=>{
   if(e.target.closest("button"))return;
-  const intro=document.querySelector("#odedIntro");
-  if(intro) intro.style.display="none";
-  const hint=odedSlide.querySelector(".clickHint");
-  if(hint) hint.style.display="none";
-  odedSlide.querySelector(".odedQuestion").style.marginTop="0";
+  odedSlide.classList.add("revealed");
 });
 
 const suggestions=["כדורגל","כדורסל","טניס","שחייה","שחמט","ריקוד","התעמלות קרקע"];
