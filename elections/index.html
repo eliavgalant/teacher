@@ -51,9 +51,11 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 
 .choiceBuilder{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;max-width:800px;margin-top:22px}
 .choiceBuilder input{border:2px solid rgba(255,255,255,.14);background:white;color:#07111f;border-radius:15px;padding:16px 17px;font-size:22px;outline:none}
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.chip{position:relative;padding:12px 44px 12px 16px;border-radius:999px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
-.trash{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
-.chip:hover .trash,.trash:focus{background:rgba(255,109,131,.13);color:var(--red)}.hint{margin-top:11px;color:var(--muted);font-size:14px}
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:17px}.chip{position:relative;display:grid;grid-template-columns:1fr 92px;align-items:center;gap:12px;padding:12px 46px 12px 14px;border-radius:16px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
+.sportVote{width:92px;background:white;color:#07111f;border:0;border-radius:11px;padding:9px 8px;text-align:center;font-size:18px;font-weight:1000}
+.trash{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
+.chip:hover .trash,.trash:focus{background:rgba(255,109,131,.13);color:var(--red)}
+@media(max-width:760px){.chips{grid-template-columns:1fr}}
 .foods{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}.food{padding:20px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.04);text-align:center;font-weight:900;font-size:20px}
 .food span{display:block;font-size:40px;margin-bottom:8px}
 .aiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.aiCard{position:relative;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.04);padding:22px;text-align:center;min-height:230px}
@@ -105,16 +107,14 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 </section>
 
 <section class="slide">
-  <button class="helpBtn" data-help="sport" aria-label="הוראות">?</button>
+  <button class="helpBtn" data-help="sport" aria-label="הוראות המשחק">?</button>
   <span class="kicker">🏆 פעילות 2</span>
   <h2>בוחרים את <span class="cyan">הספורט הלאומי של הכיתה</span></h2>
-  <p class="lead">הפעם הכיתה מציעה אפשרויות בעצמה, ואז בוחרת. המדריך יכול להוסיף במהירות תחומים או לכתוב כל רעיון אחר.</p>
   <div class="choiceBuilder">
     <input id="sportInput" autocomplete="off" placeholder="כתבו תחום ספורט...">
     <button class="btn" id="addSport">הוסף +</button>
   </div>
   <div class="chips" id="sportChips"></div>
-  <div class="hint">שדה חדש: המלצה אחרי 5 שניות. אם מחקו תוכן שהיה קיים: המלצה חדשה אחרי 10 שניות.</div>
 </section>
 
 <section class="slide">
@@ -286,7 +286,7 @@ showSlide(0);
 
 const help={
  oded:{title:"הוראות המשחק — עודד אמר",body:"<ol><li>אמרו פקודות קצרות: עמדו, שבו, ידיים למעלה, הסתובבו.</li><li>התלמידים צריכים לבצע מיד.</li><li>מי שטועה יוצא מהסבב.</li><li>ממשיכים עד שנשאר תלמיד אחד.</li><li>בסיום שאלו: איך הרגיש מצב שבו אדם אחד בלבד קובע?</li></ol>"},
- sport:{title:"הוראות המשחק — בחירת ספורט",body:"<ol><li>אספו הצעות מהכיתה והוסיפו אותן לרשימה.</li><li>אפשר לקבל המלצה אוטומטית או לכתוב רעיון אחר.</li><li>לאחר שיש כמה אפשרויות, הצביעו בהרמת ידיים.</li><li>דברו על ההבדל בין הוראה מלמעלה לבין בחירה משותפת.</li></ol>"},
+ sport:{title:"הוראות המשחק — בחירת ספורט",body:"<ol><li>אספו הצעות מהכיתה והוסיפו אותן לרשימה.</li><li>אפשר לקבל המלצה אוטומטית או לכתוב רעיון אחר.</li><li>הצביעו בהרמת ידיים.</li><li>ספרו את הקולות והזינו ליד כל ספורט את מספר המצביעים.</li></ol>"},
  food:{title:"הוראות המשחק — רוב מול בחירה אישית",body:"<ol><li>הציגו רק את חמשת המאכלים שעל המסך.</li><li>ערכו הצבעה מהירה ובחרו מנצח.</li><li>אמרו: מעכשיו כולם חייבים להגיד שהם אוהבים את המאכל שנבחר.</li><li>עצרו על התגובה ושאלו: האם לרוב מותר לקבוע מה אדם חייב לאהוב?</li></ol>"}
 };
 const modal=document.querySelector("#helpModal");
@@ -339,8 +339,11 @@ sportInput.addEventListener("input",()=>{
 sportInput.addEventListener("focus",()=>{if(!sportInput.value.trim())armSuggestion(dirty?10000:5000)});
 function addSport(){
  const v=sportInput.value.trim();if(!v)return;
- const chip=document.createElement("div");chip.className="chip";chip.innerHTML='<span class="chipText"></span><button class="trash" title="מחיקה">🗑</button>';
- chip.querySelector(".chipText").textContent=v;chip.querySelector(".trash").onclick=()=>{chip.remove();if(!sportInput.value.trim())armSuggestion(10000)};
+ const chip=document.createElement("div");chip.className="chip";
+ chip.innerHTML='<span class="chipText"></span><input class="sportVote" type="number" min="0" step="1" value="0" aria-label="מספר קולות"><button class="trash" title="מחיקה">🗑</button>';
+ chip.querySelector(".chipText").textContent=v;
+ chip.querySelector(".sportVote").setAttribute("aria-label","מספר קולות עבור "+v);
+ chip.querySelector(".trash").onclick=()=>{chip.remove();if(!sportInput.value.trim())armSuggestion(10000)};
  chips.appendChild(chip);sportInput.value="";dirty=false;armSuggestion(5000);sportInput.focus();
 }
 document.querySelector("#addSport").onclick=addSport;sportInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addSport()}});
