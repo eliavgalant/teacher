@@ -32,9 +32,9 @@ jobs:
               if not folder.is_dir() or folder.name.startswith(".") or folder.name in ignored:
                   continue
               index_file = folder / "index.html"
-              available = index_file.exists()
               display = folder.name.replace("-", " ").replace("_", " ")
-              if available:
+              status = "editing"
+              if index_file.exists():
                   text = index_file.read_text(encoding="utf-8", errors="ignore")
                   m = re.search(r"<title>(.*?)</title>", text, re.I | re.S)
                   if m:
@@ -42,25 +42,29 @@ jobs:
                       title = re.split(r"\s*[|—–]\s*", title)[0].strip()
                       if title:
                           display = title
-              items.append((folder.name, display, available))
+                  sm = re.search(r'<meta\s+name=["\']activity-status["\']\s+content=["\'](active|editing)["\']', text, re.I)
+                  if not sm:
+                      sm = re.search(r'<meta\s+content=["\'](active|editing)["\']\s+name=["\']activity-status["\']', text, re.I)
+                  if sm:
+                      status = sm.group(1).lower()
+              items.append((folder.name, display, status))
 
           cards = []
-          for folder, display, available in items:
+          for folder, display, status in items:
               safe_folder = html.escape(folder, quote=True)
               safe_display = html.escape(display)
-              if available:
+              if status == "active":
                   cards.append(f"""
           <a class="card" href="./{safe_folder}/">
             <div class="icon">📚</div>
             <strong>{safe_display}</strong>
-            <span class="status available">זמין</span>
           </a>""")
               else:
                   cards.append(f"""
           <div class="card disabled" aria-disabled="true">
             <div class="icon">📁</div>
             <strong>{safe_display}</strong>
-            <span class="status unavailable">לא זמין</span>
+            <span class="editing">בעריכה</span>
           </div>""")
 
           page = """<!doctype html>
@@ -82,9 +86,7 @@ jobs:
               .disabled{opacity:.48;cursor:not-allowed}
               .icon{font-size:48px}
               .card strong{font-size:25px;text-transform:none}
-              .status{font-size:14px;font-weight:900;padding:7px 11px;border-radius:999px}
-              .available{color:#8fffcf;background:rgba(60,230,168,.1);border:1px solid rgba(60,230,168,.3)}
-              .unavailable{color:#ffb5c0;background:rgba(255,109,131,.09);border:1px solid rgba(255,109,131,.28)}
+              .editing{font-size:14px;font-weight:900;padding:7px 11px;border-radius:999px;color:#ffe0a3;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25)}
             </style>
           </head>
           <body>
