@@ -83,6 +83,121 @@ padding:20px;display:flex;flex-direction:column;justify-content:space-between;co
 .questionList{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px}
 .openQ{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:18px;padding:18px;font-size:clamp(18px,2vw,26px);font-weight:900;line-height:1.4}
 .teacherNote{position:absolute;left:24px;bottom:20px;color:rgba(255,255,255,.28);font-size:12px}
+
+/* Full-screen viewport layout: every activity screen fits without page scrolling */
+html,body{height:100%;overflow:hidden}
+.app{
+  width:min(1540px,96vw);
+  height:100dvh;
+  margin:auto;
+  padding:10px 0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden
+}
+.topbar{
+  position:static;
+  top:auto;
+  flex:0 0 auto;
+  padding:8px 12px
+}
+.logo{width:38px;height:38px;border-radius:12px}
+.btn,.ghost{padding:8px 11px}
+.screen{display:none;min-height:0}
+.screen.active{display:flex;flex:1;min-height:0;flex-direction:column}
+.stage{min-height:0;height:auto;padding:10px 0 0;overflow:hidden}
+#slides,#summarySlides{flex:1;min-height:0;display:flex;flex-direction:column}
+.slide{
+  min-height:0;
+  height:100%;
+  flex:1;
+  padding:clamp(16px,2.6vw,42px);
+  border-radius:22px
+}
+.slide h2{
+  font-size:clamp(30px,4.2vw,58px);
+  line-height:1.02;
+  margin:10px 0 9px
+}
+.slide h3{font-size:clamp(22px,2.5vw,34px);margin:10px 0 7px}
+.lead{font-size:clamp(16px,1.7vw,23px);line-height:1.38}
+.cards{gap:10px;margin-top:14px}
+.card{padding:14px;border-radius:16px}
+.card .emoji{font-size:32px}
+.card strong{font-size:20px;margin:5px 0}
+.card p{font-size:15px;line-height:1.35}
+.promptBox{margin-top:14px;padding:13px 16px;font-size:clamp(15px,1.55vw,21px);line-height:1.4}
+.compare{gap:12px;margin-top:14px}
+.steps{gap:9px;margin-top:15px}
+.step{padding:12px;border-radius:15px}
+.step b{font-size:23px;margin-bottom:3px}
+.step strong{font-size:18px}
+.step p{line-height:1.3;margin:6px 0}
+.challenge{padding:14px 16px;margin-top:14px;border-radius:17px}
+.challenge strong{font-size:21px}
+.challenge p{font-size:17px;line-height:1.4;margin-top:7px}
+.nav{flex:0 0 auto;margin-top:7px}
+.teacherNote{left:18px;bottom:12px}
+.topics{grid-template-columns:repeat(5,1fr);gap:9px;margin-top:12px}
+.topicCard{min-height:135px;padding:13px;border-radius:17px}
+.topicIcon{font-size:32px}
+.topicCard h3{font-size:18px;margin:5px 0 3px}
+.topicCard p{font-size:12px}
+.progressLine{height:6px;margin-top:9px}
+.topicMeta{font-size:11px;margin-top:5px}
+#topicsScreen .slide{justify-content:center}
+.gameHead{flex:0 0 auto;margin-bottom:8px}
+.gameTitle .icon{font-size:32px}
+.gameTitle h2{font-size:clamp(21px,2.4vw,31px)}
+.gameTitle p{font-size:14px}
+.counter{padding:8px 11px}
+.counter b{font-size:19px}
+.questionBoard{
+  flex:1;
+  min-height:0;
+  padding:clamp(16px,2.5vw,32px);
+  border-radius:22px
+}
+.qNo{margin-bottom:7px}
+.question{font-size:clamp(26px,3.5vw,46px);line-height:1.1;margin-bottom:16px}
+.hintBox{padding:9px 12px;margin-bottom:10px}
+.answerInput{padding:12px 14px;font-size:clamp(17px,1.7vw,22px)}
+.submit{min-width:135px;font-size:18px}
+.feedback{min-height:44px;margin-top:9px;font-size:17px}
+.bottomRow{margin-top:10px}
+.done .trophy{font-size:58px}
+.done h2{font-size:38px;margin:7px}
+.done p{font-size:18px}
+.questionList{gap:9px;margin-top:13px}
+.openQ{padding:13px;font-size:clamp(16px,1.7vw,22px);line-height:1.3}
+
+@media(max-height:760px){
+  .app{padding:6px 0}
+  .topbar{padding:6px 10px}
+  .logo{width:34px;height:34px}
+  .brand small{display:none}
+  .stage{padding-top:6px}
+  .slide{padding:14px 24px}
+  .slide h2{font-size:clamp(27px,3.7vw,48px);margin:7px 0}
+  .lead{font-size:clamp(15px,1.45vw,19px);line-height:1.3}
+  .cards,.steps,.compare,.topics,.questionList{margin-top:9px}
+  .card{padding:10px}
+  .card .emoji{font-size:27px}
+  .card strong{font-size:17px}
+  .card p{font-size:13px}
+  .promptBox,.challenge{margin-top:9px;padding:10px 13px}
+  .challenge strong{font-size:18px}
+  .challenge p{font-size:15px}
+  .topicCard{min-height:110px;padding:10px}
+  .topicIcon{font-size:27px}
+  .topicCard h3{font-size:16px}
+  .question{font-size:clamp(24px,3vw,38px);margin-bottom:11px}
+  .questionBoard{padding:14px 22px}
+  .hintBox{font-size:14px;padding:7px 10px}
+  .feedback{min-height:38px;font-size:15px}
+  .teacherNote{display:none}
+}
+
 @media(max-width:1100px){.cards,.steps{grid-template-columns:1fr 1fr}.topics{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:720px){.topbar{position:static}.brand small{display:none}.slide{min-height:unset}.cards,.steps,.compare,.questionList,.topics{grid-template-columns:1fr}.answerArea{flex-direction:column}.submit{min-height:56px}.gameHead{align-items:flex-end}.hintBox{align-items:flex-start;flex-direction:column}.slide h2{letter-spacing:-.5px}}
 </style>
