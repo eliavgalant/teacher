@@ -43,8 +43,8 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 .topicRail{grid-area:rail;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:10px 4px;overflow:hidden;pointer-events:none}
 .topicRailGroup{display:grid;gap:5px}
 .topicRailItem{padding:5px 2px;font-size:18px;line-height:1.15;font-weight:1000;color:#d8e5f5;filter:blur(4px);opacity:.24;transform:translateX(0);transition:.28s ease}
-.topicRailGroup.revealed .topicRailItem{filter:none;opacity:.58}
-.topicRailGroup.active .topicRailItem{filter:none;opacity:1;color:var(--topic-color);transform:translateX(-3px);text-shadow:0 0 14px color-mix(in srgb,var(--topic-color) 28%,transparent)}
+.topicRailGroup.revealed .topicRailItem{filter:none;opacity:.68;color:rgb(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86))}
+.topicRailGroup.active .topicRailItem{filter:none;opacity:1;color:rgb(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86));transform:translateX(-3px);text-shadow:0 0 14px rgba(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86),.34)}
 .topicSubList{display:none;margin-right:20px;padding-right:12px;border-right:1px solid color-mix(in srgb,var(--topic-color) 30%,transparent);gap:5px}
 .topicRailGroup.active .topicSubList{display:grid}
 .topicSubItem{position:relative;padding:3px 7px;font-size:15px;line-height:1.2;font-weight:1000;color:rgb(var(--status-r,222),var(--status-g,72),var(--status-b,86));opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .28s ease,opacity .28s ease,text-shadow .28s ease}
@@ -466,6 +466,20 @@ function topicForSlide(slide){
   if(idx===15)return 6;
   return 0;
 }
+function slideProgressRatio(index){
+  const state=slideProgress[index];
+  if(!state)return 0;
+  if(state.total===0)return state.visited?1:0;
+  return Math.max(0,Math.min(1,state.done/state.total));
+}
+function groupStatusRgb(indexes){
+  const red=[222,72,86], orange=[245,145,53], green=[67,230,166];
+  if(!indexes.length)return red;
+  const avg=indexes.reduce((sum,i)=>sum+slideProgressRatio(i),0)/indexes.length;
+  if(avg<=0.5)return mixRgb(red,orange,avg/0.5);
+  return mixRgb(orange,green,(avg-0.5)/0.5);
+}
+
 function updateTopicRail(slide){
   const topic=topicForSlide(slide);
   const slideIndex=slides.indexOf(slide);
@@ -473,6 +487,11 @@ function updateTopicRail(slide){
   if(slideIndex>=0) slideProgress[slideIndex].visited=true;
   document.querySelectorAll(".topicRailGroup").forEach(group=>{
     const n=Number(group.dataset.topic);
+    const indexes=[...group.querySelectorAll(".topicSubItem")].map(item=>Number(item.dataset.slide));
+    const rgb=groupStatusRgb(indexes);
+    group.style.setProperty("--group-status-r",rgb[0]);
+    group.style.setProperty("--group-status-g",rgb[1]);
+    group.style.setProperty("--group-status-b",rgb[2]);
     group.classList.toggle("revealed",revealedTopics.has(n));
     group.classList.toggle("active",n===topic);
   });
