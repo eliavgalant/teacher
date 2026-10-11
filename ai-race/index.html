@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI Smart Race | Tech It Easy</title>
+<style>
+:root{
+  --bg:#07111f; --panel:#0c1b2d; --panel2:#10243a; --line:rgba(255,255,255,.12);
+  --text:#f7fbff; --muted:#9fb2c9; --cyan:#6ee7ff; --violet:#9b7cff; --green:#3ce6a8;
+  --red:#ff6d83; --yellow:#ffd166; --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,"Noto Sans Hebrew",sans-serif;color:var(--text);background:
+radial-gradient(circle at 15% 10%,rgba(110,231,255,.11),transparent 26%),
+radial-gradient(circle at 86% 16%,rgba(155,124,255,.13),transparent 28%),
+linear-gradient(145deg,#050b14,#081726 48%,#07111f)}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{width:min(1540px,96vw);margin:auto;padding:16px 0 30px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 15px;border:1px solid var(--line);
+background:rgba(7,17,31,.82);backdrop-filter:blur(12px);border-radius:18px;box-shadow:var(--shadow);position:sticky;top:10px;z-index:30}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;color:#06101c;font-weight:1000}
+.brand h1{margin:0;font-size:clamp(17px,2vw,25px)}
+.brand small{display:block;color:var(--muted);font-weight:700;margin-top:2px}
+.topActions{display:flex;gap:8px;flex-wrap:wrap}
+.btn,.ghost{border:1px solid var(--line);border-radius:12px;padding:10px 13px;font-weight:900}
+.ghost{color:var(--text);background:rgba(255,255,255,.045)}
+.btn{border:0;color:#06101c;background:linear-gradient(135deg,var(--cyan),var(--violet))}
+.screen{display:none}.screen.active{display:block}
+.stage{min-height:calc(100vh - 110px);padding:22px 0}
+.slide{min-height:calc(100vh - 150px);border:1px solid var(--line);border-radius:28px;background:
+linear-gradient(135deg,rgba(110,231,255,.05),transparent 28%),
+linear-gradient(315deg,rgba(155,124,255,.07),transparent 34%),
+rgba(10,24,40,.9);box-shadow:var(--shadow);padding:clamp(25px,5vw,72px);display:none;position:relative;overflow:hidden}
+.slide.active{display:flex;flex-direction:column;justify-content:center}
+.kicker{display:inline-flex;align-items:center;gap:8px;width:max-content;border:1px solid rgba(110,231,255,.24);background:rgba(110,231,255,.07);color:var(--cyan);padding:7px 12px;border-radius:999px;font-weight:900}
+.slide h2{font-size:clamp(38px,5.5vw,80px);line-height:1.03;letter-spacing:-1.5px;margin:16px 0 14px;max-width:1200px}
+.slide h3{font-size:clamp(24px,3vw,42px);margin:15px 0 10px}
+.lead{font-size:clamp(18px,2.1vw,28px);color:var(--muted);line-height:1.55;max-width:1050px}
+.bigIdea{font-size:clamp(28px,4vw,54px);font-weight:1000;line-height:1.25;max-width:1200px}
+.highlight{color:var(--cyan)} .highlight2{color:#c2b2ff}.good{color:var(--green)}.warn{color:var(--yellow)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+.card{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:20px;padding:20px}
+.card .emoji{font-size:40px}.card strong{display:block;font-size:23px;margin:8px 0}.card p{margin:0;color:var(--muted);font-size:17px;line-height:1.5}
+.promptBox{margin-top:24px;border:1px solid rgba(110,231,255,.3);background:#071523;border-radius:18px;padding:20px 22px;max-width:1150px;font-size:clamp(17px,2vw,26px);line-height:1.6;box-shadow:inset 0 0 35px rgba(110,231,255,.03)}
+.promptBad{border-color:rgba(255,109,131,.3)} .promptGood{border-color:rgba(60,230,168,.35)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.label{font-size:14px;font-weight:1000;letter-spacing:.5px;margin-bottom:8px}
+.badLabel{color:#ff9aad}.goodLabel{color:var(--green)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:25px}
+.step{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}
+.step b{display:block;color:var(--cyan);font-size:28px;margin-bottom:6px}.step strong{font-size:20px}.step p{color:var(--muted);line-height:1.45}
+.challenge{border:1px solid rgba(255,209,102,.28);background:rgba(255,209,102,.055);border-radius:22px;padding:22px;margin-top:24px;max-width:1200px}
+.challenge strong{font-size:25px;color:var(--yellow)}
+.challenge p{font-size:20px;color:#f8e7b8;line-height:1.55;margin-bottom:0}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px}
+.nav .left,.nav .right{display:flex;gap:8px}
+.slideCounter{color:var(--muted);font-weight:900}
+.dots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15)}.dot.active{background:var(--cyan);box-shadow:0 0 14px rgba(110,231,255,.5)}
+.topics{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-top:25px}
+.topicCard{min-height:200px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+padding:20px;display:flex;flex-direction:column;justify-content:space-between;color:var(--text);text-align:right;transition:.2s}
+.topicCard:hover{transform:translateY(-4px);border-color:rgba(110,231,255,.45)}
+.topicIcon{font-size:44px}.topicCard h3{font-size:22px;margin:8px 0 4px}.topicCard p{color:var(--muted);margin:0;font-size:14px}
+.progressLine{height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-top:15px}.progressFill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.topicMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:8px}
+.gameHead{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:14px}
+.gameTitle{display:flex;gap:12px;align-items:center}.gameTitle .icon{font-size:38px}.gameTitle h2{margin:0;font-size:clamp(24px,3vw,38px)}.gameTitle p{margin:4px 0 0;color:var(--muted)}
+.counter{border:1px solid var(--line);background:rgba(255,255,255,.04);padding:11px 14px;border-radius:14px;font-weight:900}.counter b{color:var(--cyan);font-size:22px}
+.questionBoard{min-height:535px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(135deg,rgba(110,231,255,.055),transparent 28%),linear-gradient(315deg,rgba(155,124,255,.07),transparent 32%),rgba(10,24,40,.9);box-shadow:var(--shadow);padding:clamp(22px,4vw,48px);display:flex;flex-direction:column;justify-content:center}
+.qNo{color:var(--cyan);font-weight:1000;margin-bottom:12px}.question{font-size:clamp(30px,4.2vw,58px);line-height:1.16;font-weight:1000;margin-bottom:28px;max-width:1200px}
+.hintBox{border:1px solid rgba(255,209,102,.2);background:rgba(255,209,102,.05);border-radius:14px;padding:11px 14px;color:#f5df9e;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hintBox button{border:0;border-radius:10px;padding:8px 10px;background:rgba(255,209,102,.12);color:#ffe7a6;font-weight:900}
+.hintText{display:none;margin-top:8px;color:#ffe7a6}.hintText.show{display:block}
+.answerArea{display:flex;gap:10px;max-width:1000px}.answerInput{flex:1;min-width:0;border:2px solid rgba(255,255,255,.13);background:#071422;color:var(--text);padding:17px 18px;border-radius:15px;font-size:clamp(18px,2vw,25px);outline:none}.answerInput:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(110,231,255,.08)}
+.submit{border:0;border-radius:15px;padding:0 25px;min-width:155px;background:linear-gradient(135deg,var(--cyan),#a9f4ff);color:#06101b;font-weight:1000;font-size:20px}
+.feedback{min-height:58px;margin-top:15px;border-radius:14px;display:flex;align-items:center;padding:0 16px;font-size:20px;font-weight:900;opacity:0;transform:translateY(6px);transition:.18s}.feedback.show{opacity:1;transform:translateY(0)}.feedback.ok{background:rgba(60,230,168,.1);border:1px solid rgba(60,230,168,.28);color:var(--green)}.feedback.no{background:rgba(255,109,131,.09);border:1px solid rgba(255,109,131,.25);color:#ff9aad}
+.bottomRow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}.timer{color:var(--muted);font-weight:900}.timer b{color:var(--yellow);font-size:20px}.nextQ{display:none;border:1px solid rgba(155,124,255,.35);background:rgba(155,124,255,.13);color:#ddd4ff;padding:12px 17px;border-radius:13px;font-weight:900}.nextQ.show{display:inline-block}
+.done{text-align:center}.done .trophy{font-size:76px}.done h2{font-size:46px;margin:10px}.done p{font-size:20px;color:var(--muted);line-height:1.5}
+.questionList{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px}
+.openQ{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:18px;padding:18px;font-size:clamp(18px,2vw,26px);font-weight:900;line-height:1.4}
+.teacherNote{position:absolute;left:24px;bottom:20px;color:rgba(255,255,255,.28);font-size:12px}
+@media(max-width:1100px){.cards,.steps{grid-template-columns:1fr 1fr}.topics{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.topbar{position:static}.brand small{display:none}.slide{min-height:unset}.cards,.steps,.compare,.questionList,.topics{grid-template-columns:1fr}.answerArea{flex-direction:column}.submit{min-height:56px}.gameHead{align-items:flex-end}.hintBox{align-items:flex-start;flex-direction:column}.slide h2{letter-spacing:-.5px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="logo">AI</div><div><h1>AI Smart Race</h1><small>Tech It Easy · לחשוב, לשאול, להכין, לנצח</small></div></div>
+  <div class="topActions">
+    <button class="ghost" id="deckBtn">🎬 מצגת</button>
+    <button class="ghost" id="topicsBtn">🧠 טריוויה</button>
+    <button class="ghost" id="summaryBtn">💬 סיכום</button>
+    <button class="ghost" id="fullBtn">⛶ מסך מלא</button>
+  </div>
+</header>
+
+<section id="deckScreen" class="screen active stage">
+  <div id="slides"></div>
+  <div class="nav">
+    <div class="right"><button class="ghost" id="prevSlide">→ הקודם</button><button class="btn" id="nextSlide">הבא ←</button></div>
+    <div class="slideCounter"><span id="slideNum">1</span> / <span id="slideTotal"></span></div>
+    <div class="left"><div id="dots" class="dots"></div></div>
+  </div>
+</section>
+
+<section id="topicsScreen" class="screen stage">
+  <div class="slide active" style="min-height:auto;padding-bottom:38px">
+    <span class="kicker">⚡ שלב המשחק</span>
+    <h2 style="font-size:clamp(36px,5vw,66px)">עכשיו בודקים מי <span class="highlight">הכין את ה-AI שלו נכון</span></h2>
+    <p class="lead">מותר להשתמש ב-AI ובחיפוש ברשת. המטרה היא לא “לדעת הכול” — אלא להגיע לתשובה מהר, ולגלות איזה סוג הכנה נתן יתרון.</p>
+    <div class="challenge"><strong>💡 רמז לפני שמתחילים</strong><p>אולי במקום לשאול 10 שאלות שונות, אפשר לשאול את ה-AI <b>שאלה אחת טובה</b> שתכין אתכם לכל הנושא מראש.</p></div>
+    <div id="topicsGrid" class="topics"></div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen stage">
+  <div class="gameHead">
+    <div class="gameTitle"><div id="gameIcon" class="icon">🚀</div><div><h2 id="gameTopic"></h2><p id="gameDesc"></p></div></div>
+    <div class="counter">שאלה <b id="currentNum">1</b> / 10</div>
+  </div>
+  <div class="questionBoard">
+    <div id="qNo" class="qNo"></div>
+    <div id="questionText" class="question"></div>
+    <div class="hintBox">
+      <div>💡 <b>תקועים?</b> אולי הבעיה היא לא שאין לכם תשובה — אלא שלא הכנתם את ה-AI מספיק טוב מראש.</div>
+      <button id="hintBtn" type="button">הצג רמז לפרומפט</button>
+    </div>
+    <div id="hintText" class="hintText"></div>
+    <form id="answerForm" class="answerArea" autocomplete="off">
+      <input id="answerInput" class="answerInput" placeholder="המדריך מקליד כאן את התשובה שקיבל מהקבוצה..." aria-label="תשובה">
+      <button class="submit" type="submit">בדיקה ✓</button>
+    </form>
+    <div id="feedback" class="feedback"></div>
+    <div class="bottomRow">
+      <div class="timer">⏱ זמן: <b id="timer">00:00</b></div>
+      <button id="nextQ" class="nextQ" type="button">לשאלה הבאה ←</button>
+    </div>
+  </div>
+</section>
+
+<section id="doneScreen" class="screen stage">
+  <div class="questionBoard done">
+    <div class="trophy">🏆</div>
+    <h2 id="doneTitle">סיימתם!</h2>
+    <p id="doneText"></p>
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px">
+      <button class="btn" id="anotherTopic">נושא נוסף</button>
+      <button class="ghost" id="toSummary">לעבור לסיכום הכיתתי</button>
+    </div>
+  </div>
+</section>
+
+<section id="summaryScreen" class="screen stage">
+  <div id="summarySlides"></div>
+  <div class="nav">
+    <div class="right"><button class="ghost" id="prevSummary">→ הקודם</button><button class="btn" id="nextSummary">הבא ←</button></div>
+    <div class="slideCounter"><span id="summaryNum">1</span> / <span id="summaryTotal"></span></div>
+    <div></div>
+  </div>
+</section>
+</div>
+
+<script>
+const introSlides = [
+{
+k:"🤖 פתיחה", title:"AI לא נותן יתרון למי שכותב הכי מהר.", 
+lead:"היתרון הוא למי שיודע <b>מה הוא רוצה לקבל</b> ואיך לגרום ל-AI להכין עבורו את המידע מראש.",
+body:`<div class="cards">
+<div class="card"><div class="emoji">🔎</div><strong>חיפוש</strong><p>מחפשים תשובה אחת בכל פעם.</p></div>
+<div class="card"><div class="emoji">💬</div><strong>שיחה עם AI</strong><p>אפשר לבקש הסבר, רשימה, השוואה, תרגול ועוד.</p></div>
+<div class="card"><div class="emoji">🧠</div><strong>הכנה מראש</strong><p>אפשר לבנות “דף ידע” שלם עוד לפני שהשאלה הגיעה.</p></div>
+</div>`
+},
+{
+k:"🧠 אז מה AI באמת יודע לעשות?", title:"אפשר להשתמש ב-AI כדי <span class='highlight'>להבין נושא</span>, לא רק כדי לענות על שאלה.",
+lead:"הוא יכול לארגן מידע, להסביר, לייצר דוגמאות, להכין שאלות, לבנות רשימות של עובדות חשובות ולעזור לנו לשאול שאלות המשך.",
+body:`<div class="cards">
+<div class="card"><div class="emoji">📚</div><strong>לסכם</strong><p>“תן לי את 15 העובדות הכי חשובות על מערכת השמש.”</p></div>
+<div class="card"><div class="emoji">🪄</div><strong>לפשט</strong><p>“הסבר לי את זה כאילו אני בכיתה ז'.”</p></div>
+<div class="card"><div class="emoji">🎯</div><strong>להתכונן</strong><p>“תכין אותי לטריוויה מהירה בנושא הזה.”</p></div>
+</div>`
+},
+{
+k:"🎯 פרומפט", title:"פרומפט טוב אומר ל-AI <span class='highlight'>בדיוק מה אנחנו צריכים</span>.",
+lead:"ככל שהבקשה ברורה יותר, הסיכוי לקבל תשובה שימושית יותר עולה.",
+body:`<div class="steps">
+<div class="step"><b>1</b><strong>מטרה</strong><p>מה אני מנסה להשיג?</p></div>
+<div class="step"><b>2</b><strong>נושא</strong><p>על מה בדיוק?</p></div>
+<div class="step"><b>3</b><strong>פורמט</strong><p>רשימה? טבלה? שאלות ותשובות?</p></div>
+<div class="step"><b>4</b><strong>רמה</strong><p>קצר? מפורט? בשפה פשוטה?</p></div>
+</div>`
+},
+{
+k:"⚔️ השוואה", title:"אותו AI. שתי שאלות. <span class='highlight2'>תוצאה אחרת לגמרי.</span>",
+lead:"איזו מהבקשות תכין אותנו טוב יותר למשחק?",
+body:`<div class="compare">
+<div><div class="label badLabel">פרומפט חלש</div><div class="promptBox promptBad">ספר לי על חלל.</div></div>
+<div><div class="label goodLabel">פרומפט חזק</div><div class="promptBox promptGood">אני עומד להשתתף בטריוויה מהירה על חלל ומערכת השמש. תן לי 20 עובדות קצרות וסופר-חשובות, עם דגש על כוכבי לכת, הירח, השמש, חלליות ואסטרונאוטים. כתוב כל עובדה בשורה אחת כדי שאוכל למצוא אותה מהר.</div></div>
+</div>`
+},
+{
+k:"🧩 שיחה ולא שאלה אחת", title:"אם התשובה לא טובה — <span class='highlight'>ממשיכים לדבר</span>.",
+lead:"AI לא חייב להבין אותנו מושלם בפעם הראשונה. אפשר לדייק אותו.",
+body:`<div class="cards">
+<div class="card"><div class="emoji">➕</div><strong>“תוסיף...”</strong><p>עוד עובדות, דוגמאות או נושאים שחסרים.</p></div>
+<div class="card"><div class="emoji">✂️</div><strong>“תקצר...”</strong><p>להפוך הסבר ארוך לדף מהיר.</p></div>
+<div class="card"><div class="emoji">🎯</div><strong>“תתמקד...”</strong><p>לכוון את השיחה למה שבאמת צריך.</p></div>
+</div>`
+},
+{
+k:"🛡️ חשיבה ביקורתית", title:"AI יכול לעזור מאוד — אבל הוא גם <span class='warn'>יכול לטעות</span>.",
+lead:"כשמשהו נשמע מוזר, חשוב לבדוק. אפשר לשאול את ה-AI שוב, להשוות למקור אחר או להשתמש בחיפוש ברשת.",
+body:`<div class="challenge"><strong>שאלת כיתה</strong><p>אם AI נתן תשובה בביטחון מוחלט — האם זה אומר שהיא בטוח נכונה? איך אפשר לבדוק?</p></div>`
+},
+{
+k:"🏁 רגע לפני המשחק", title:"המשימה שלכם: <span class='highlight'>לבנות יתרון</span> לפני שהשאלות מתחילות.",
+lead:"עוד רגע תקבלו 5 נושאים. בכל נושא יש 10 שאלות. מותר להשתמש ב-AI ובחיפוש.",
+body:`<div class="challenge"><strong>האתגר האמיתי</strong><p>נסו לחשוב: האם אפשר לנסח פרומפט אחד שיכין אתכם מראש ל-10 שאלות? ואם כן — מה הוא חייב לכלול?</p></div>
+<div class="promptBox">דוגמה להתחלה: “אני עומד להשתתף בטריוויה מהירה בנושא ________. תכין לי דף ידע קצר עם העובדות שהכי סביר שאצטרך לדעת...”</div>`
+}
+];
+
+const summarySlides = [
+{
+k:"💬 תחקיר", title:"מה נתן לכם <span class='highlight'>יתרון אמיתי</span>?",
+lead:"לא מחפשים תשובה אחת נכונה. משווים בין השיטות שבהן השתמשתם.",
+body:`<div class="questionList">
+<div class="openQ">מי הכין מידע מראש לפני שהשאלה הופיעה?</div>
+<div class="openQ">מי חיפש כל שאלה בנפרד?</div>
+<div class="openQ">באיזה מצב הייתם מהירים יותר?</div>
+<div class="openQ">מה היה בפרומפט שעזר לכם?</div>
+</div>`
+},
+{
+k:"🧠 מסתכלים על הדרך", title:"מה הייתם משנים בפרומפט שלכם <span class='highlight2'>אם היינו משחקים שוב?</span>",
+lead:"חשבו על מטרה, נושא, פורמט ורמת פירוט.",
+body:`<div class="questionList">
+<div class="openQ">האם ביקשתם מספיק עובדות?</div>
+<div class="openQ">האם ביקשתם תשובות קצרות שקל לסרוק?</div>
+<div class="openQ">האם אמרתם ל-AI למה אתם מתכוננים?</div>
+<div class="openQ">האם שאלתם שאלות המשך?</div>
+</div>`
+},
+{
+k:"🔍 איכות מידע", title:"איך יודעים מתי <span class='warn'>לא לסמוך מיד</span> על התשובה?",
+lead:"AI הוא כלי עבודה. אנחנו עדיין אלה שצריכים לחשוב.",
+body:`<div class="questionList">
+<div class="openQ">איזו תשובה במהלך המשחק הייתם רוצים לבדוק שוב?</div>
+<div class="openQ">מה אפשר לעשות כששני מקורות נותנים תשובות שונות?</div>
+<div class="openQ">מתי כדאי לעבור מחיפוש ב-AI לחיפוש ברשת?</div>
+<div class="openQ">איך אפשר לבקש מה-AI להסביר מאיפה הגיע המידע?</div>
+</div>`
+},
+{
+k:"🚀 מסר מסכם", title:"AI טוב לא מחליף חשיבה. הוא <span class='good'>מגדיל את היכולת שלנו לחשוב ולעבוד.</span>",
+lead:"השאלה היא לא רק “מה AI יודע?”, אלא “איך אני יודע להפעיל אותו כדי להגיע לתוצאה שאני צריך?”",
+body:`<div class="challenge"><strong>משפט לסיום</strong><p>בפעם הבאה שאתם פותחים AI, אל תתחילו מ“תן לי תשובה”. התחילו מ“מה אני באמת רוצה להשיג?”</p></div>`
+}
+];
+
+const DATA=[
+{id:"space",title:"חלל ומערכת השמש",icon:"🚀",desc:"כוכבי לכת, ירח, שמש וחקר החלל",questions:[
+{q:"איזה כוכב לכת הוא הקרוב ביותר לשמש?",a:["כוכב חמה","מרקורי","mercury"]},
+{q:"איזה כוכב לכת מכונה בדרך כלל \"הכוכב האדום\"?",a:["מאדים","mars"]},
+{q:"מהו כוכב הלכת הגדול ביותר במערכת השמש?",a:["צדק","יופיטר","jupiter"]},
+{q:"באיזו גלקסיה נמצאת מערכת השמש שלנו?",a:["שביל החלב","milky way","גלקסיית שביל החלב"]},
+{q:"מי היה האדם הראשון שדרך על הירח?",a:["ניל ארמסטרונג","ארמסטרונג","neil armstrong"]},
+{q:"מה שמו של הלוויין הטבעי של כדור הארץ?",a:["הירח","ירח","moon"]},
+{q:"מהו הכוכב שנמצא במרכז מערכת השמש?",a:["השמש","שמש","sun"]},
+{q:"איזה כוכב לכת מפורסם בזכות מערכת הטבעות הבולטת שלו?",a:["שבתאי","סטורן","saturn"]},
+{q:"איזה כוח מחזיק את כוכבי הלכת במסלול סביב השמש?",a:["כוח הכבידה","כבידה","גרביטציה","gravity"]},
+{q:"כמה כוכבי לכת יש במערכת השמש?",a:["8","שמונה"]}]},
+{id:"nature",title:"טבע ובעלי חיים",icon:"🦁",desc:"עולם החי, צמחים ותופעות טבע",questions:[
+{q:"מהי החיה היבשתית המהירה ביותר?",a:["ברדלס","צ'יטה","ציטה","cheetah"]},
+{q:"מהו בעל החיים הגדול ביותר שחי כיום על פני כדור הארץ?",a:["לווייתן כחול","הלוויתן הכחול","blue whale"]},
+{q:"איזה יונק מסוגל לעוף בתעופה פעילה?",a:["עטלף","עטלפים","bat","bats"]},
+{q:"מה אוגר הגמל בעיקר בתוך הדבשת שלו?",a:["שומן","fat"]},
+{q:"באיזו יבשת חיים פינגווינים קיסריים בטבע?",a:["אנטארקטיקה","אנטרקטיקה","antarctica"]},
+{q:"מהו שמו של התהליך שבו צמחים מייצרים מזון בעזרת אור?",a:["פוטוסינתזה","photosynthesis"]},
+{q:"איזה בעל חיים מפורסם ביכולת לשנות צבע ומשתמש בכך גם לתקשורת ולהסוואה?",a:["זיקית","chameleon"]},
+{q:"כמה רגליים יש לעכביש?",a:["8","שמונה"]},
+{q:"איך נקרא שלב החיים שבו זחל הופך לפרפר בתוך מעטפת?",a:["גולם","שלב הגולם","pupa","chrysalis"]},
+{q:"איזה גז קולטים צמחים מהאוויר במהלך הפוטוסינתזה?",a:["פחמן דו חמצני","פחמן דו-חמצני","co2","carbon dioxide"]}]},
+{id:"science",title:"מדע וטכנולוגיה",icon:"⚙️",desc:"פיזיקה, מחשבים, גוף האדם והמצאות",questions:[
+{q:"מהי הנוסחה הכימית של מים?",a:["h2o"]},
+{q:"באיזו טמפרטורה מים טהורים רותחים בגובה פני הים?",a:["100","100 מעלות","100 מעלות צלזיוס","מאה","מאה מעלות"]},
+{q:"אילו שתי ספרות משמשות בשיטה הבינארית?",a:["0 ו1","0 ו-1","0 1","אפס ואחד","0 ו 1"]},
+{q:"מה פירוש הקיצור CPU במחשב?",a:["central processing unit","יחידת עיבוד מרכזית","יחידת העיבוד המרכזית"]},
+{q:"איך נקראת המולקולה שנושאת את רוב המידע הגנטי בתאים?",a:["dna","די אן איי","דנא"]},
+{q:"מהי בערך מהירות האור בריק בקילומטר לשנייה?",a:["300000","300,000","300 אלף","כ 300 אלף","כ-300 אלף"]},
+{q:"מהו ערך ה-pH של מים טהורים בטמפרטורת חדר בקירוב?",a:["7","שבע"]},
+{q:"איזו מתכת היא נוזלית בטמפרטורת חדר?",a:["כספית","mercury"]},
+{q:"באיזו יחידה מודדים זרם חשמלי?",a:["אמפר","ampere","amp","אמפרים"]},
+{q:"איך נקרא הפיגמנט הירוק בצמחים שקולט אור לצורך פוטוסינתזה?",a:["כלורופיל","chlorophyll"]}]},
+{id:"geo",title:"גאוגרפיה ועולם",icon:"🌍",desc:"מדינות, יבשות, אוקיינוסים ואתרים בעולם",questions:[
+{q:"מהי בירת אוסטרליה?",a:["קנברה","canberra"]},
+{q:"מהו האוקיינוס הגדול ביותר בעולם?",a:["האוקיינוס השקט","פסיפיק","pacific","pacific ocean"]},
+{q:"מהו ההר הגבוה ביותר בעולם מעל פני הים?",a:["אוורסט","הר האוורסט","everest","mount everest"]},
+{q:"באיזו יבשת נמצאת ברזיל?",a:["דרום אמריקה","אמריקה הדרומית","south america"]},
+{q:"איזו מדינה מזוהה במפה עם צורה של מגף?",a:["איטליה","italy"]},
+{q:"מהי בירת קנדה?",a:["אוטווה","ottawa"]},
+{q:"באיזו יבשת נמצא מדבר סהרה?",a:["אפריקה","africa"]},
+{q:"איזו מדינה היא הגדולה בעולם בשטח?",a:["רוסיה","russia"]},
+{q:"מהי בירת יפן?",a:["טוקיו","tokyo"]},
+{q:"איך נקרא קו הרוחב 0° שמחלק את כדור הארץ לצפון ולדרום?",a:["קו המשווה","משווה","equator"]}]},
+{id:"culture",title:"תרבות והיסטוריה",icon:"🏛️",desc:"אירועים, יצירות, תרבויות ודמויות היסטוריות",questions:[
+{q:"באיזו מדינה נמצאות הפירמידות המפורסמות של גיזה?",a:["מצרים","egypt"]},
+{q:"מי צייר את המונה ליזה?",a:["לאונרדו דה וינצ'י","לאונרדו דה וינצי","דה וינצ'י","leonardo da vinci","leonardo"]},
+{q:"באיזו ארץ נולדו המשחקים האולימפיים העתיקים?",a:["יוון","יוון העתיקה","greece","ancient greece"]},
+{q:"באיזו שנה הסתיימה מלחמת העולם השנייה?",a:["1945"]},
+{q:"איזו שפה הייתה מרכזית באימפריה הרומית המערבית?",a:["לטינית","latin"]},
+{q:"איך נקרא הכתב של מצרים העתיקה שמורכב מסמלים מצוירים?",a:["הירוגליפים","כתב הירוגליפי","hieroglyphs","hieroglyphics"]},
+{q:"איזה כלי נגינה כולל בדרך כלל 88 קלידים בגרסה המודרנית המלאה?",a:["פסנתר","piano"]},
+{q:"מי כתב את המחזה \"רומיאו ויוליה\"?",a:["ויליאם שייקספיר","שייקספיר","william shakespeare","shakespeare"]},
+{q:"איך נקרא המבנה ברומא שבו נערכו בין היתר קרבות גלדיאטורים?",a:["קולוסיאום","הקולוסיאום","colosseum","coliseum"]},
+{q:"איזו המצאה מזוהה עם יוהנס גוטנברג באירופה של המאה ה-15?",a:["דפוס","מכונת הדפוס","הדפוס","printing press"]}]}
+];
+
+const state={slide:0,summary:0,topicId:null,index:0,done:{},start:Date.now(),ticker:null};
+DATA.forEach(t=>state.done[t.id]=0);
+const $=s=>document.querySelector(s);
+
+function renderSlideSet(data,hostId,summary=false){
+  const host=$(hostId); host.innerHTML="";
+  data.forEach((s,i)=>{
+    const el=document.createElement("div");
+    el.className="slide"+(i===0?" active":"");
+    el.innerHTML=`<span class="kicker">${s.k}</span><h2>${s.title}</h2><p class="lead">${s.lead}</p>${s.body||""}<div class="teacherNote">חיצים במקלדת ← → למעבר בין שקופיות</div>`;
+    host.appendChild(el);
+  });
+  if(!summary){
+    $("#slideTotal").textContent=data.length;
+    $("#dots").innerHTML=data.map((_,i)=>`<span class="dot ${i===0?"active":""}"></span>`).join("");
+  }else $("#summaryTotal").textContent=data.length;
+}
+renderSlideSet(introSlides,"#slides",false);
+renderSlideSet(summarySlides,"#summarySlides",true);
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function updateSlides(summary=false){
+  const host=summary?$("#summarySlides"):$("#slides");
+  const idx=summary?state.summary:state.slide;
+  [...host.children].forEach((s,i)=>s.classList.toggle("active",i===idx));
+  if(summary) $("#summaryNum").textContent=idx+1;
+  else {
+    $("#slideNum").textContent=idx+1;
+    [...$("#dots").children].forEach((d,i)=>d.classList.toggle("active",i===idx));
+  }
+}
+function nextIntro(){
+  if(state.slide<introSlides.length-1){state.slide++;updateSlides(false)}
+  else showScreen("#topicsScreen");
+}
+function prevIntro(){if(state.slide>0){state.slide--;updateSlides(false)}}
+function nextSummary(){
+  if(state.summary<summarySlides.length-1){state.summary++;updateSlides(true)}
+  else {state.slide=0;updateSlides(false);showScreen("#deckScreen")}
+}
+function prevSummary(){if(state.summary>0){state.summary--;updateSlides(true)}}
+$("#nextSlide").onclick=nextIntro; $("#prevSlide").onclick=prevIntro;
+$("#nextSummary").onclick=nextSummary; $("#prevSummary").onclick=prevSummary;
+
+$("#deckBtn").onclick=()=>showScreen("#deckScreen");
+$("#topicsBtn").onclick=()=>showScreen("#topicsScreen");
+$("#summaryBtn").onclick=()=>showScreen("#summaryScreen");
+$("#toSummary").onclick=()=>showScreen("#summaryScreen");
+$("#anotherTopic").onclick=()=>showScreen("#topicsScreen");
+$("#fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+
+function renderTopics(){
+  const grid=$("#topicsGrid"); grid.innerHTML="";
+  DATA.forEach(t=>{
+    const d=state.done[t.id];
+    const b=document.createElement("button"); b.className="topicCard"; b.type="button";
+    b.innerHTML=`<div><div class="topicIcon">${t.icon}</div><h3>${t.title}</h3><p>${t.desc}</p></div>
+    <div><div class="progressLine"><div class="progressFill" style="width:${d*10}%"></div></div><div class="topicMeta"><span>${d}/10 הושלמו</span><span>${d===10?"הושלם ✓":"התחלה ←"}</span></div></div>`;
+    b.onclick=()=>startTopic(t.id,d===10?0:d); grid.appendChild(b);
+  });
+}
+renderTopics();
+
+function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/["'׳״`´.,!?;:()[\]{}\-–—_/\\]/g," ").replace(/\s+/g," ").trim()}
+function isCorrect(input,accepted){
+  const n=normalize(input); if(!n)return false;
+  return accepted.some(a=>{const x=normalize(a); return n===x||(x.length>=5&&n.includes(x))||(n.length>=5&&x.includes(n))});
+}
+function startTopic(id,index=0){state.topicId=id;state.index=index;showScreen("#gameScreen");loadQ()}
+function loadQ(){
+  const t=DATA.find(x=>x.id===state.topicId), q=t.questions[state.index];
+  $("#gameIcon").textContent=t.icon; $("#gameTopic").textContent=t.title; $("#gameDesc").textContent=t.desc;
+  $("#currentNum").textContent=state.index+1; $("#qNo").textContent=`שאלה ${state.index+1} מתוך 10`; $("#questionText").textContent=q.q;
+  $("#answerInput").value="";$("#answerInput").disabled=false; $(".submit").disabled=false;
+  $("#feedback").className="feedback";$("#feedback").textContent="";$("#nextQ").classList.remove("show");
+  $("#hintText").classList.remove("show");
+  $("#hintText").textContent=`נסו לשאול: "תכין אותי לטריוויה מהירה בנושא ${t.title}. תן לי רשימת עובדות קצרות ומדויקות, כולל מושגים בסיסיים, שיאים, שמות חשובים ומספרים שכדאי לזכור."`;
+  $("#hintBtn").textContent="הצג רמז לפרומפט";
+  state.start=Date.now();clearInterval(state.ticker);updateTimer();state.ticker=setInterval(updateTimer,1000);setTimeout(()=>$("#answerInput").focus(),80);
+}
+function updateTimer(){const s=Math.floor((Date.now()-state.start)/1000);$("#timer").textContent=`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
+$("#hintBtn").onclick=()=>{const h=$("#hintText");h.classList.toggle("show");$("#hintBtn").textContent=h.classList.contains("show")?"הסתר רמז":"הצג רמז לפרומפט"};
+$("#answerForm").onsubmit=e=>{
+  e.preventDefault();const t=DATA.find(x=>x.id===state.topicId),q=t.questions[state.index],f=$("#feedback");
+  if(isCorrect($("#answerInput").value,q.a)){
+    clearInterval(state.ticker);f.className="feedback show ok";f.textContent="✓ נכון! שימו לב: האם ידעתם את זה מראש, או שהייתם צריכים לחפש עכשיו?";
+    $("#answerInput").disabled=true;$(".submit").disabled=true;$("#nextQ").classList.add("show");state.done[state.topicId]=Math.max(state.done[state.topicId],state.index+1);renderTopics();
+  }else{f.className="feedback show no";f.textContent="✗ עדיין לא. נסו לדייק את החיפוש או לשאול את ה-AI בצורה אחרת.";$("#answerInput").select()}
+};
+$("#nextQ").onclick=()=>{if(state.index<9){state.index++;loadQ()}else finishTopic()};
+function finishTopic(){
+  clearInterval(state.ticker);state.done[state.topicId]=10;renderTopics();const t=DATA.find(x=>x.id===state.topicId);
+  $("#doneTitle").textContent=`סיימתם: ${t.title}`;$("#doneText").innerHTML=`10 מתוך 10. עכשיו השאלה המעניינת באמת: <b>כמה מהתשובות כבר היו לכם מוכנות מראש?</b>`;showScreen("#doneScreen");
+}
+document.addEventListener("keydown",e=>{
+  if($("#deckScreen").classList.contains("active")){if(e.key==="ArrowLeft")nextIntro();if(e.key==="ArrowRight")prevIntro()}
+  if($("#summaryScreen").classList.contains("active")){if(e.key==="ArrowLeft")nextSummary();if(e.key==="ArrowRight")prevSummary()}
+});
+</script>
+</body>
+</html>
