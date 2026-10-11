@@ -91,13 +91,16 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
   </div>
 </section>
 
-<section class="slide">
+<section class="slide" id="odedSlide">
   <button class="helpBtn" data-help="oded" aria-label="הוראות">?</button>
-  <span class="kicker">🎮 פעילות 1</span>
-  <h2>עודד אמר</h2>
-  <p class="lead">אדם אחד נותן הוראות. כולם צריכים לבצע. אין הצבעה ואין ויכוח.</p>
-  <div class="commandBox">עמדו. שבו. ידיים למעלה. הסתובבו.</div>
-  <p class="big" style="margin-top:24px">איך זה מרגיש כש<span class="yellow">מישהו אחד מחליט לכולם</span>?</p>
+  <div class="odedIntro" id="odedIntro">
+    <span class="kicker">🎮 פעילות 1</span>
+    <h2>עודד אמר</h2>
+    <p class="lead">אדם אחד נותן הוראות. כולם צריכים לבצע. אין הצבעה ואין ויכוח.</p>
+    <div class="commandBox">עמדו. שבו. ידיים למעלה. הסתובבו.</div>
+  </div>
+  <p class="big odedQuestion" style="margin-top:24px">איך זה מרגיש כש<span class="yellow">מישהו אחד מחליט לכולם</span>?</p>
+  <div class="clickHint">לחצו על אזור ריק בשקף כדי להשאיר רק את שאלת הדיון</div>
 </section>
 
 <section class="slide">
@@ -309,6 +312,16 @@ document.querySelectorAll(".progressive").forEach(slide=>{
       const nextHidden=slide.querySelector(".reveal:not(.show)");if(nextHidden)nextHidden.classList.add("show");
     }
   });
+});
+
+const odedSlide=document.querySelector("#odedSlide");
+odedSlide.addEventListener("click",e=>{
+  if(e.target.closest("button"))return;
+  const intro=document.querySelector("#odedIntro");
+  if(intro) intro.style.display="none";
+  const hint=odedSlide.querySelector(".clickHint");
+  if(hint) hint.style.display="none";
+  odedSlide.querySelector(".odedQuestion").style.marginTop="0";
 });
 
 const suggestions=["כדורגל","כדורסל","טניס","שחייה","שחמט","ריקוד","התעמלות קרקע"];
