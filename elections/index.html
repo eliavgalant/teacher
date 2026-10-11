@@ -346,8 +346,17 @@ function updateClickTone(slide){
   applyStageTone(mixRgb(red,orange,t));
 }
 
+function resetClickReveals(slide){
+  if(!slide)return;
+  if(slide.id==="odedSlide") slide.classList.remove("revealed");
+  slide.querySelectorAll(".aiName.show,.reveal.show").forEach(el=>el.classList.remove("show"));
+}
 function showSlide(i){
-  current=Math.max(0,Math.min(slides.length-1,i));
+  const nextIndex=Math.max(0,Math.min(slides.length-1,i));
+  const previous=slides[current];
+  const nextSlide=slides[nextIndex];
+  if(previous && previous!==nextSlide) resetClickReveals(previous);
+  current=nextIndex;
   slides.forEach((s,n)=>s.classList.toggle("active",n===current));
   document.querySelector("#slideNo").textContent=current+1;
   document.querySelector("#slideCount").textContent=slides.length;
