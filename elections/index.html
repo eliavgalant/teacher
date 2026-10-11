@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="activity-status" content="active">
+<title>Elections | Tech It Easy</title>
+<style>
+:root{
+  --bg:#07111f;--panel:#0d1930;--panel2:#112442;--line:#29466f;--text:#f6fbff;--muted:#a9bdd8;
+  --cyan:#31e8ff;--violet:#9b7cff;--green:#43e6a6;--yellow:#ffd166;--red:#ff6d83;--shadow:0 22px 70px rgba(0,0,0,.4)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,"Segoe UI",sans-serif;background:
+ radial-gradient(circle at 15% 5%,rgba(49,232,255,.1),transparent 28%),
+ radial-gradient(circle at 85% 10%,rgba(155,124,255,.12),transparent 28%),
+ linear-gradient(145deg,#040a13,#081829 52%,#07111f);color:var(--text)}
+button,input{font:inherit}button{cursor:pointer}
+.app{width:min(1500px,96vw);margin:auto;padding:14px 0 28px}
+.topbar{position:sticky;top:10px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;
+  border:1px solid var(--line);border-radius:18px;background:rgba(7,17,31,.88);backdrop-filter:blur(12px);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:10px}.mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));color:#06111e;font-weight:1000}
+.brand b{font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn,.ghost,.tiny{border:1px solid var(--line);border-radius:12px;padding:10px 13px;font-weight:900}
+.btn{border:0;background:linear-gradient(135deg,var(--cyan),#b0f6ff);color:#06111e}
+.ghost,.tiny{background:rgba(255,255,255,.045);color:var(--text)}.tiny{padding:8px 10px}
+.deck{padding-top:18px}.slide{display:none;min-height:calc(100vh - 125px);padding:clamp(24px,5vw,68px);border:1px solid var(--line);
+ border-radius:28px;background:linear-gradient(135deg,rgba(49,232,255,.05),transparent 28%),linear-gradient(315deg,rgba(155,124,255,.08),transparent 32%),rgba(10,24,40,.93);
+ box-shadow:var(--shadow);position:relative;overflow:hidden}.slide.active{display:flex;flex-direction:column;justify-content:center}
+.kicker{display:inline-flex;width:max-content;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(49,232,255,.28);
+ background:rgba(49,232,255,.07);color:var(--cyan);font-weight:900}
+h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;letter-spacing:-1.2px;margin:15px 0 14px}
+.lead{font-size:clamp(18px,2vw,27px);line-height:1.55;color:var(--muted);max-width:1100px}
+.big{font-size:clamp(27px,3.6vw,50px);font-weight:1000;line-height:1.3}.cyan{color:var(--cyan)}.yellow{color:var(--yellow)}.green{color:var(--green)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.card{border:1px solid var(--line);border-radius:20px;padding:20px;background:rgba(255,255,255,.035)}
+.card strong{display:block;font-size:22px;margin:7px 0}.card p{color:var(--muted);line-height:1.45;margin-bottom:0}.emoji{font-size:38px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:13px}.navSide{display:flex;gap:8px}.counter{color:var(--muted);font-weight:900}
+.helpBtn{position:absolute;left:22px;top:22px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,209,102,.35);background:rgba(255,209,102,.1);color:var(--yellow);font-weight:1000;font-size:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:100;padding:20px}.modal.show{display:grid}
+.modalBox{width:min(620px,96vw);border:1px solid var(--line);border-radius:22px;background:#0b1729;padding:24px;box-shadow:var(--shadow)}
+.modalBox h3{font-size:28px;margin-bottom:12px}.modalBox ol{line-height:1.7;color:#dfeafb}.modalClose{float:left}
+.commandBox{font-size:clamp(28px,4vw,54px);font-weight:1000;padding:25px;border:1px solid var(--line);border-radius:20px;background:#071523;margin-top:20px;text-align:center}
+.choiceBuilder{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;max-width:800px;margin-top:22px}
+.choiceBuilder input{border:2px solid rgba(255,255,255,.14);background:white;color:#07111f;border-radius:15px;padding:16px 17px;font-size:22px;outline:none}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.chip{position:relative;padding:12px 44px 12px 16px;border-radius:999px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
+.trash{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
+.chip:hover .trash,.trash:focus{background:rgba(255,109,131,.13);color:var(--red)}.hint{margin-top:11px;color:var(--muted);font-size:14px}
+.foods{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}.food{padding:20px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.04);text-align:center;font-weight:900;font-size:20px}
+.food span{display:block;font-size:40px;margin-bottom:8px}
+.aiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.aiCard{position:relative;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.04);padding:22px;text-align:center;min-height:230px}
+.aiLogo{width:76px;height:76px;object-fit:contain;margin:0 auto 14px;display:block;filter:drop-shadow(0 8px 20px rgba(0,0,0,.3))}
+.aiFallback{display:none;width:76px;height:76px;border-radius:22px;margin:0 auto 14px;place-items:center;background:white;color:#07111f;font-size:27px;font-weight:1000}
+.aiName{opacity:0;transform:translateY(7px);transition:.22s}.aiName.show{opacity:1;transform:none}.aiName strong{display:block;font-size:24px}.company{color:var(--muted);font-weight:900;margin:6px 0 13px}
+.openTool{display:inline-block;color:#07111f;background:var(--cyan);border-radius:12px;padding:9px 12px;text-decoration:none;font-weight:1000}
+.reveal{opacity:0;transform:translateY(10px);max-height:0;overflow:hidden;transition:.28s}.reveal.show{opacity:1;transform:none;max-height:400px}
+.revealList{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px}.revealCard{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035);padding:18px;font-size:20px;line-height:1.45;font-weight:900}
+.clickHint{position:absolute;left:24px;bottom:24px;color:rgba(255,255,255,.38);font-size:13px}
+.voteGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:20px}.voteRow{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:18px;padding:14px 16px;background:rgba(255,255,255,.035)}
+.voteRow strong{font-size:19px}.voteRow input{width:95px;background:white;color:#07111f;border:0;border-radius:12px;padding:11px;text-align:center;font-size:21px;font-weight:1000}
+.pieWrap{display:grid;grid-template-columns:minmax(300px,520px) 1fr;gap:32px;align-items:center;margin-top:20px}.pie{width:min(70vw,430px);aspect-ratio:1;border-radius:50%;margin:auto;box-shadow:0 20px 70px rgba(0,0,0,.35);border:8px solid rgba(255,255,255,.06)}
+.legend{display:grid;gap:10px}.legendRow{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+.dotColor{width:16px;height:16px;border-radius:50%}.winner{margin-top:18px;padding:17px;border:1px solid rgba(67,230,166,.3);border-radius:16px;background:rgba(67,230,166,.07);font-size:23px;font-weight:1000}
+.routeBtns{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}.bonus{background:linear-gradient(135deg,var(--violet),#d7ccff);color:#100d21;border:0;border-radius:16px;padding:14px 18px;font-weight:1000;font-size:19px}
+.summaryBtn{background:linear-gradient(135deg,var(--cyan),#b0f6ff);color:#07111f;border:0;border-radius:16px;padding:14px 18px;font-weight:1000;font-size:19px}
+.prompt{border:1px solid rgba(49,232,255,.3);background:#071523;border-radius:18px;padding:19px 21px;font-size:clamp(22px,2.5vw,34px);font-weight:1000;margin-top:20px}
+.comparePies{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}.miniPanel{border:1px solid var(--line);border-radius:22px;padding:20px;background:rgba(255,255,255,.03);text-align:center}.miniPie{width:min(34vw,300px);aspect-ratio:1;border-radius:50%;margin:16px auto;border:6px solid rgba(255,255,255,.06)}
+.finalPoints{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.finalPoint{border:1px solid var(--line);border-radius:18px;padding:20px;background:rgba(255,255,255,.035);font-size:20px;line-height:1.5;font-weight:900}
+@media(max-width:980px){.cards,.aiGrid,.voteGrid{grid-template-columns:1fr 1fr}.foods{grid-template-columns:repeat(3,1fr)}.pieWrap{grid-template-columns:1fr}.comparePies{grid-template-columns:1fr}}
+@media(max-width:650px){.topbar{position:static}.brand small{display:none}.slide{min-height:unset}.cards,.aiGrid,.voteGrid,.foods,.revealList,.finalPoints{grid-template-columns:1fr}.choiceBuilder{grid-template-columns:1fr}.comparePies{grid-template-columns:1fr}.nav{align-items:flex-end}.helpBtn{left:14px;top:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="mark">AI</div><div><b>Elections</b><small>בחירה, הוגנות ובדיקת כלי AI</small></div></div>
+  <div class="actions"><button class="ghost" id="homeBtn">↺ התחלה</button><button class="ghost" id="fullBtn">⛶ מסך מלא</button></div>
+</header>
+
+<main class="deck" id="deck">
+
+<section class="slide active">
+  <span class="kicker">⚖️ פתיחה</span>
+  <h2>מהו <span class="yellow">חוסר צדק</span>?</h2>
+  <p class="lead">לפני שמדברים על בחירות, מתחילים בתחושה: מתי משהו מרגיש לנו לא הוגן, ומתי אנחנו מרגישים שלא הקשיבו לקול שלנו?</p>
+  <div class="cards">
+    <div class="card"><div class="emoji">🙋</div><strong>מי מחליט?</strong><p>האם אדם אחד מחליט בשביל כולם?</p></div>
+    <div class="card"><div class="emoji">🗣️</div><strong>מי נשמע?</strong><p>האם לכל אחד הייתה אפשרות להביע דעה?</p></div>
+    <div class="card"><div class="emoji">🤝</div><strong>מה הוגן?</strong><p>איך אפשר לכבד דעות שונות גם כשלא מסכימים?</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <button class="helpBtn" data-help="oded" aria-label="הוראות">?</button>
+  <span class="kicker">🎮 פעילות 1</span>
+  <h2>עודד אמר</h2>
+  <p class="lead">אדם אחד נותן הוראות. כולם צריכים לבצע. אין הצבעה ואין ויכוח.</p>
+  <div class="commandBox">עמדו. שבו. ידיים למעלה. הסתובבו.</div>
+  <p class="big" style="margin-top:24px">איך זה מרגיש כש<span class="yellow">מישהו אחד מחליט לכולם</span>?</p>
+</section>
+
+<section class="slide">
+  <button class="helpBtn" data-help="sport" aria-label="הוראות">?</button>
+  <span class="kicker">🏆 פעילות 2</span>
+  <h2>בוחרים את <span class="cyan">הספורט הלאומי של הכיתה</span></h2>
+  <p class="lead">הפעם הכיתה מציעה אפשרויות בעצמה, ואז בוחרת. המדריך יכול להוסיף במהירות תחומים או לכתוב כל רעיון אחר.</p>
+  <div class="choiceBuilder">
+    <input id="sportInput" autocomplete="off" placeholder="כתבו תחום ספורט...">
+    <button class="btn" id="addSport">הוסף +</button>
+  </div>
+  <div class="chips" id="sportChips"></div>
+  <div class="hint">שדה חדש: המלצה אחרי 5 שניות. אם מחקו תוכן שהיה קיים: המלצה חדשה אחרי 10 שניות.</div>
+</section>
+
+<section class="slide">
+  <button class="helpBtn" data-help="food" aria-label="הוראות">?</button>
+  <span class="kicker">🍕 פעילות 3</span>
+  <h2>הרוב בחר — האם הוא יכול <span class="yellow">לקבוע לכולם?</span></h2>
+  <p class="lead">בחרו מאכל אחד. עכשיו דמיינו שהמאכל שזוכה הוא המאכל שכל תלמיד בכיתה חייב להגיד שהוא אוהב.</p>
+  <div class="foods">
+    <div class="food"><span>🍕</span>פיצה</div><div class="food"><span>🍔</span>המבורגר</div><div class="food"><span>🍣</span>סושי</div><div class="food"><span>🍝</span>פסטה</div><div class="food"><span>🥙</span>פלאפל</div>
+  </div>
+  <p class="big" style="margin-top:24px">אם הרוב החליט — האם הוא יכול להחליט גם <span class="cyan">מה אני אוהב</span>?</p>
+</section>
+
+<section class="slide progressive" id="aiToolsSlide">
+  <span class="kicker">🤖 פעילות AI · 1/5</span>
+  <h2>מי הם מנועי ה־AI?</h2>
+  <p class="lead">בהתחלה רואים רק את הלוגואים. בכל קליק נחשף שם נוסף והחברה שמפעילה אותו. לחיצה על "פתח את הכלי" פותחת לשונית חדשה ומשאירה את המצגת פתוחה.</p>
+  <div class="aiGrid" id="aiGrid"></div>
+  <div class="clickHint">לחצו על אזור ריק בשקף כדי לחשוף שם נוסף</div>
+</section>
+
+<section class="slide progressive">
+  <span class="kicker">❓ פעילות AI · 2/5</span>
+  <h2>מה שואלים כדי <span class="cyan">לבדוק את הכלי</span>?</h2>
+  <p class="lead">לפני שחושפים את ההמלצות, שאלו את הכיתה: אילו שאלות יעזרו לנו להבין אם ה־AI באמת טוב עבורנו?</p>
+  <div class="revealList">
+    <div class="reveal revealCard">🧠 <b>שאלת ידע:</b> מהי בירת אוסטרליה? ענה במשפט אחד והסבר איך אתה יודע.</div>
+    <div class="reveal revealCard">🎯 <b>שאלת הוראות:</b> הסבר לילד בכיתה ה׳ למה השמיים כחולים, בדיוק ב־3 משפטים.</div>
+    <div class="reveal revealCard">🪤 <b>שאלת מלכודת:</b> מי המציא את האינטרנט בשנת 1875?</div>
+  </div>
+  <div class="clickHint">כל קליק חושף שאלה נוספת</div>
+</section>
+
+<section class="slide progressive">
+  <span class="kicker">🔎 פעילות AI · 3/5</span>
+  <h2>איך נדע אם הוא <span class="green">טוב לנו</span>?</h2>
+  <p class="lead">רק אחרי שהתלמידים בדקו בפועל, חושפים בהדרגה את הקריטריונים להשוואה.</p>
+  <div class="revealList">
+    <div class="reveal revealCard">🔐 האם הייתי צריך להתחבר או לפתוח חשבון?</div>
+    <div class="reveal revealCard">🧭 האם הממשק היה נעים וברור?</div>
+    <div class="reveal revealCard">✅ האם התשובות היו נכונות ורלוונטיות?</div>
+    <div class="reveal revealCard">🙂 האם הוא דיבר אליי בצורה מכבדת וברורה?</div>
+    <div class="reveal revealCard">🌀 האם הוא המציא דברים שלא קשורים?</div>
+    <div class="reveal revealCard">✍️ האם הייתי צריך לפרט הרבה כדי לקבל תשובה טובה?</div>
+    <div class="reveal revealCard">🎯 האם הוא הבין את ההוראות שלי?</div>
+    <div class="reveal revealCard">⭐ האם הייתי בוחר להשתמש בו שוב?</div>
+  </div>
+  <div class="clickHint">כל קליק חושף קריטריון נוסף</div>
+</section>
+
+<section class="slide" id="textVoteSlide">
+  <span class="kicker">🗳️ פעילות AI · 4/5</span>
+  <h2>מצביעים: איזה AI היה <span class="cyan">הכי טוב עבורנו</span>?</h2>
+  <p class="lead">המדריך סופר ידיים ומקליד ידנית את מספר הקולות ליד כל כלי.</p>
+  <div class="voteGrid" id="textVoteGrid"></div>
+  <div class="routeBtns"><button class="ghost" id="resetTextVotes">איפוס הצבעה</button></div>
+</section>
+
+<section class="slide" id="textResultSlide">
+  <span class="kicker">📊 פעילות AI · 5/5</span>
+  <h2>בחירת הכיתה</h2>
+  <div class="pieWrap">
+    <div class="pie" id="textPie"></div>
+    <div><div class="legend" id="textLegend"></div><div class="winner" id="textWinner"></div></div>
+  </div>
+  <div class="routeBtns">
+    <button class="summaryBtn" id="goSummary">לעבור לסיכום</button>
+    <button class="bonus" id="goBonus">✨ פעילות בונוס: יצירת תמונות</button>
+  </div>
+</section>
+
+<section class="slide" id="bonusStart">
+  <span class="kicker">✨ מסלול בונוס · תמונות</span>
+  <h2>אותו ניסוי — <span class="cyan">משימה אחרת</span></h2>
+  <p class="lead">הפעם נותנים לכל כלי בדיוק את אותה בקשת תמונה. אם כלי מסוים לא מאפשר יצירת תמונות — גם זו תוצאה חשובה.</p>
+  <div class="prompt">צור לי תמונה של לוויתן שוחה בג׳ונגל.</div>
+  <div class="aiGrid" id="bonusTools"></div>
+</section>
+
+<section class="slide progressive">
+  <span class="kicker">🖼️ מסלול בונוס</span>
+  <h2>מה חווינו <span class="cyan">ביצירת תמונה</span>?</h2>
+  <p class="lead">חושפים את הקריטריונים אחרי שהתלמידים ניסו בפועל.</p>
+  <div class="revealList">
+    <div class="reveal revealCard">🎨 האם הכלי בכלל הצליח ליצור תמונה?</div>
+    <div class="reveal revealCard">🐋 האם הוא הבין שצריך לוויתן וג׳ונגל?</div>
+    <div class="reveal revealCard">✨ האם התוצאה נראתה טובה ומעניינת?</div>
+    <div class="reveal revealCard">⏱️ כמה זמן או ניסיונות נדרשו?</div>
+    <div class="reveal revealCard">✍️ האם הייתי צריך לשנות או לפרט את הפרומפט?</div>
+  </div>
+  <div class="clickHint">כל קליק חושף קריטריון נוסף</div>
+</section>
+
+<section class="slide" id="imageVoteSlide">
+  <span class="kicker">🗳️ מסלול בונוס</span>
+  <h2>מצביעים שוב: מי היה <span class="cyan">הכי טוב בתמונה</span>?</h2>
+  <p class="lead">המדריך סופר ידיים ומזין את מספר הקולות לכל כלי.</p>
+  <div class="voteGrid" id="imageVoteGrid"></div>
+  <div class="routeBtns"><button class="ghost" id="resetImageVotes">איפוס הצבעה</button></div>
+</section>
+
+<section class="slide" id="compareSlide">
+  <span class="kicker">⚖️ השוואה</span>
+  <h2>האם אותו AI ניצח <span class="yellow">בשתי המשימות</span>?</h2>
+  <div class="comparePies">
+    <div class="miniPanel"><h3>💬 טקסט ושיחה</h3><div class="miniPie" id="compareTextPie"></div><div id="compareTextWinner"></div></div>
+    <div class="miniPanel"><h3>🖼️ יצירת תמונה</h3><div class="miniPie" id="compareImagePie"></div><div id="compareImageWinner"></div></div>
+  </div>
+  <p class="big" style="margin-top:22px">אולי אין כלי אחד שהוא “הכי טוב” — אולי צריך לבחור <span class="cyan">כלי שמתאים למשימה</span>.</p>
+</section>
+
+<section class="slide" id="summarySlide">
+  <span class="kicker">🏁 סיכום</span>
+  <h2>מה למדנו היום?</h2>
+  <div class="finalPoints">
+    <div class="finalPoint">⚖️ כשאדם אחד מחליט לכולם — אין לאחרים באמת קול.</div>
+    <div class="finalPoint">🗳️ הצבעה נותנת דרך לבחור, אבל רוב לא יכול לקבוע כל דבר אישי עבור כולם.</div>
+    <div class="finalPoint">🤖 גם כלי AI צריך לבדוק — לא רק לפי השם שלו, אלא לפי החוויה והתוצאה.</div>
+    <div class="finalPoint">🎯 כלי שיותר טוב במשימה אחת לא בהכרח יהיה הכי טוב במשימה אחרת.</div>
+  </div>
+  <p class="big" style="margin-top:26px">בחירה טובה מתחילה בזה שאנחנו <span class="cyan">בודקים, משווים וחושבים</span>.</p>
+</section>
+
+</main>
+
+<div class="nav">
+  <div class="navSide"><button class="ghost" id="prevBtn">→ הקודם</button><button class="btn" id="nextBtn">הבא ←</button></div>
+  <div class="counter"><span id="slideNo">1</span> / <span id="slideCount"></span></div>
+  <div></div>
+</div>
+</div>
+
+<div class="modal" id="helpModal" aria-hidden="true">
+  <div class="modalBox">
+    <button class="tiny modalClose" id="closeHelp">✕</button>
+    <h3 id="helpTitle"></h3>
+    <div id="helpBody"></div>
+  </div>
+</div>
+
+<script>
+const toolsData=[
+ {id:"chatgpt",name:"ChatGPT",company:"OpenAI",url:"https://chatgpt.com/",logo:"https://cdn.simpleicons.org/openai/FFFFFF",fallback:"GPT"},
+ {id:"gemini",name:"Gemini",company:"Google",url:"https://gemini.google.com/",logo:"https://cdn.simpleicons.org/googlegemini/8E75B2",fallback:"G"},
+ {id:"claude",name:"Claude",company:"Anthropic",url:"https://claude.ai/",logo:"https://cdn.simpleicons.org/claude/D97757",fallback:"C"},
+ {id:"perplexity",name:"Perplexity",company:"Perplexity AI",url:"https://www.perplexity.ai/",logo:"https://cdn.simpleicons.org/perplexity/20B8CD",fallback:"P"},
+ {id:"meta",name:"Meta AI",company:"Meta",url:"https://www.meta.ai/",logo:"https://cdn.simpleicons.org/meta/0866FF",fallback:"M"},
+ {id:"copilot",name:"Copilot",company:"Microsoft",url:"https://copilot.microsoft.com/",logo:"https://cdn.simpleicons.org/microsoftcopilot/00A4EF",fallback:"Co"}
+];
+const pieColors=["#31e8ff","#9b7cff","#43e6a6","#ffd166","#ff6d83","#6fa8ff"];
+const slides=[...document.querySelectorAll(".slide")];
+let current=0;
+
+function showSlide(i){
+  current=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,n)=>s.classList.toggle("active",n===current));
+  document.querySelector("#slideNo").textContent=current+1;
+  document.querySelector("#slideCount").textContent=slides.length;
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(slides[current].id==="textResultSlide") renderResult("text");
+  if(slides[current].id==="compareSlide") renderComparison();
+}
+function next(){showSlide(current+1)} function prev(){showSlide(current-1)}
+document.querySelector("#nextBtn").onclick=next;document.querySelector("#prevBtn").onclick=prev;
+document.querySelector("#homeBtn").onclick=()=>showSlide(0);
+document.querySelector("#fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")next();if(e.key==="ArrowRight")prev()});
+showSlide(0);
+
+const help={
+ oded:{title:"הוראות למדריך — עודד אמר",body:"<ol><li>אמרו פקודות קצרות: עמדו, שבו, ידיים למעלה, הסתובבו.</li><li>התלמידים צריכים לבצע מיד.</li><li>מי שטועה יוצא מהסבב.</li><li>ממשיכים עד שנשאר תלמיד אחד.</li><li>בסיום שאלו: איך הרגיש מצב שבו אדם אחד בלבד קובע?</li></ol>"},
+ sport:{title:"הוראות למדריך — בחירת ספורט",body:"<ol><li>אספו הצעות מהכיתה והוסיפו אותן לרשימה.</li><li>אפשר לקבל המלצה אוטומטית או לכתוב רעיון אחר.</li><li>לאחר שיש כמה אפשרויות, הצביעו בהרמת ידיים.</li><li>דברו על ההבדל בין הוראה מלמעלה לבין בחירה משותפת.</li></ol>"},
+ food:{title:"הוראות למדריך — רוב מול בחירה אישית",body:"<ol><li>הציגו רק את חמשת המאכלים שעל המסך.</li><li>ערכו הצבעה מהירה ובחרו מנצח.</li><li>אמרו: מעכשיו כולם חייבים להגיד שהם אוהבים את המאכל שנבחר.</li><li>עצרו על התגובה ושאלו: האם לרוב מותר לקבוע מה אדם חייב לאהוב?</li></ol>"}
+};
+const modal=document.querySelector("#helpModal");
+document.querySelectorAll("[data-help]").forEach(b=>b.onclick=()=>{const x=help[b.dataset.help];document.querySelector("#helpTitle").textContent=x.title;document.querySelector("#helpBody").innerHTML=x.body;modal.classList.add("show")});
+document.querySelector("#closeHelp").onclick=()=>modal.classList.remove("show");
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove("show")};
+
+function toolCard(t,showName=false){
+ return '<div class="aiCard">'+
+ '<img class="aiLogo" src="'+t.logo+'" alt="לוגו '+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'">'+
+ '<div class="aiFallback">'+t.fallback+'</div>'+
+ '<div class="aiName'+(showName?" show":"")+'"><strong>'+t.name+'</strong><div class="company">'+t.company+'</div>'+
+ '<a class="openTool" href="'+t.url+'" target="_blank" rel="noopener noreferrer">פתח את הכלי ↗</a></div></div>';
+}
+document.querySelector("#aiGrid").innerHTML=toolsData.map(t=>toolCard(t,false)).join("");
+document.querySelector("#bonusTools").innerHTML=toolsData.map(t=>toolCard(t,true)).join("");
+
+document.querySelectorAll(".progressive").forEach(slide=>{
+  slide.addEventListener("click",e=>{
+    if(e.target.closest("a,button,input"))return;
+    if(slide.id==="aiToolsSlide"){
+      const nextHidden=slide.querySelector(".aiName:not(.show)");if(nextHidden)nextHidden.classList.add("show");
+    } else {
+      const nextHidden=slide.querySelector(".reveal:not(.show)");if(nextHidden)nextHidden.classList.add("show");
+    }
+  });
+});
+
+const suggestions=["כדורגל","כדורסל","טניס","שחייה","שחמט","ריקוד","התעמלות קרקע"];
+const sportInput=document.querySelector("#sportInput"),chips=document.querySelector("#sportChips");
+let suggestTimer=null,dirty=false;
+function usedSports(){return [...chips.querySelectorAll(".chipText")].map(x=>x.textContent.trim())}
+function nextSuggestion(){return suggestions.find(x=>!usedSports().includes(x))||""}
+function armSuggestion(ms){
+ clearTimeout(suggestTimer);
+ if(sportInput.value.trim())return;
+ suggestTimer=setTimeout(()=>{if(!sportInput.value.trim()){const s=nextSuggestion();if(s)sportInput.value=s}},ms);
+}
+sportInput.addEventListener("input",()=>{
+ clearTimeout(suggestTimer);
+ if(sportInput.value.trim()){dirty=true;return}
+ armSuggestion(dirty?10000:5000);
+});
+sportInput.addEventListener("focus",()=>{if(!sportInput.value.trim())armSuggestion(dirty?10000:5000)});
+function addSport(){
+ const v=sportInput.value.trim();if(!v)return;
+ const chip=document.createElement("div");chip.className="chip";chip.innerHTML='<span class="chipText"></span><button class="trash" title="מחיקה">🗑</button>';
+ chip.querySelector(".chipText").textContent=v;chip.querySelector(".trash").onclick=()=>{chip.remove();if(!sportInput.value.trim())armSuggestion(10000)};
+ chips.appendChild(chip);sportInput.value="";dirty=false;armSuggestion(5000);sportInput.focus();
+}
+document.querySelector("#addSport").onclick=addSport;sportInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addSport()}});
+armSuggestion(5000);
+
+const textVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
+const imageVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
+function renderVoteGrid(hostId,state){
+ const host=document.querySelector(hostId);host.innerHTML="";
+ toolsData.forEach(t=>{
+  const row=document.createElement("div");row.className="voteRow";
+  row.innerHTML="<strong>"+t.name+"</strong><input type='number' min='0' step='1' value='"+(state[t.id]||0)+"' aria-label='קולות "+t.name+"'>";
+  const inp=row.querySelector("input");inp.oninput=()=>state[t.id]=Math.max(0,Number(inp.value)||0);
+  host.appendChild(row);
+ });
+}
+renderVoteGrid("#textVoteGrid",textVotes);renderVoteGrid("#imageVoteGrid",imageVotes);
+function resetVotes(state,host){toolsData.forEach(t=>state[t.id]=0);renderVoteGrid(host,state)}
+document.querySelector("#resetTextVotes").onclick=()=>resetVotes(textVotes,"#textVoteGrid");
+document.querySelector("#resetImageVotes").onclick=()=>resetVotes(imageVotes,"#imageVoteGrid");
+
+function pieGradient(state){
+ const vals=toolsData.map(t=>Number(state[t.id])||0),total=vals.reduce((a,b)=>a+b,0);
+ if(!total)return "conic-gradient(#22344d 0 100%)";
+ let acc=0,parts=[];
+ vals.forEach((v,i)=>{if(v<=0)return;const a=acc/total*100;acc+=v;const b=acc/total*100;parts.push(pieColors[i]+" "+a+"% "+b+"%")});
+ return "conic-gradient("+parts.join(",")+")";
+}
+function winner(state){
+ const vals=toolsData.map(t=>Number(state[t.id])||0),max=Math.max(...vals);if(max<=0)return null;
+ const winners=toolsData.filter((t,i)=>vals[i]===max);return {names:winners.map(x=>x.name).join(" + "),votes:max};
+}
+function renderResult(kind){
+ const state=kind==="text"?textVotes:imageVotes;
+ const pie=document.querySelector(kind==="text"?"#textPie":"#imagePie");if(pie)pie.style.background=pieGradient(state);
+ const legend=document.querySelector(kind==="text"?"#textLegend":"#imageLegend");
+ if(legend)legend.innerHTML=toolsData.map((t,i)=>'<div class="legendRow"><span class="dotColor" style="background:'+pieColors[i]+'"></span><span>'+t.name+'</span><b>'+(state[t.id]||0)+'</b></div>').join("");
+ const win=document.querySelector(kind==="text"?"#textWinner":"#imageWinner");
+ if(win){const w=winner(state);win.textContent=w?"🏆 "+w.names+" — "+w.votes+" קולות":"עדיין לא הוזנו קולות";}
+}
+document.querySelector("#goBonus").onclick=()=>showSlide(slides.indexOf(document.querySelector("#bonusStart")));
+document.querySelector("#goSummary").onclick=()=>showSlide(slides.indexOf(document.querySelector("#summarySlide")));
+
+function renderComparison(){
+ document.querySelector("#compareTextPie").style.background=pieGradient(textVotes);
+ document.querySelector("#compareImagePie").style.background=pieGradient(imageVotes);
+ const a=winner(textVotes),b=winner(imageVotes);
+ document.querySelector("#compareTextWinner").textContent=a?"🏆 "+a.names+" · "+a.votes+" קולות":"אין נתונים";
+ document.querySelector("#compareImageWinner").textContent=b?"🏆 "+b.names+" · "+b.votes+" קולות":"אין נתונים";
+}
+</script>
+</body>
+</html>
