@@ -51,11 +51,9 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 
 .choiceBuilder{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;max-width:800px;margin-top:22px}
 .choiceBuilder input{border:2px solid rgba(255,255,255,.14);background:white;color:#07111f;border-radius:15px;padding:16px 17px;font-size:22px;outline:none}
-.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:17px}.chip{position:relative;display:grid;grid-template-columns:1fr 92px;align-items:center;gap:12px;padding:12px 46px 12px 14px;border-radius:16px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
-.sportVote{width:92px;background:white;color:#07111f;border:0;border-radius:11px;padding:9px 8px;text-align:center;font-size:18px;font-weight:1000}
-.trash{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.chip{position:relative;padding:12px 44px 12px 16px;border-radius:999px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
+.trash{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
 .chip:hover .trash,.trash:focus{background:rgba(255,109,131,.13);color:var(--red)}
-@media(max-width:760px){.chips{grid-template-columns:1fr}}
 .foods{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}.food{padding:20px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.04);text-align:center;font-weight:900;font-size:20px}
 .food span{display:block;font-size:40px;margin-bottom:8px}
 .aiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.aiCard{position:relative;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.04);padding:22px;text-align:center;min-height:230px}
@@ -115,6 +113,24 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
     <button class="btn" id="addSport">הוסף +</button>
   </div>
   <div class="chips" id="sportChips"></div>
+</section>
+
+<section class="slide" id="sportVoteSlide">
+  <span class="kicker">📊 פעילות 2 · תוצאה</span>
+  <h2>הספורט הלאומי של הכיתה</h2>
+  <div id="sportVoteView">
+    <div class="voteGrid" id="sportVoteGrid"></div>
+    <div class="routeBtns"><button class="btn" id="calcSportVotes">חשב</button></div>
+  </div>
+  <div id="sportResultView" style="display:none">
+    <div class="pieWrap">
+      <div class="pie" id="sportPie"></div>
+      <div>
+        <div class="legend" id="sportLegend"></div>
+        <div class="winner" id="sportWinner"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="slide">
@@ -274,6 +290,7 @@ function showSlide(i){
   document.querySelector("#slideNo").textContent=current+1;
   document.querySelector("#slideCount").textContent=slides.length;
   window.scrollTo({top:0,behavior:"smooth"});
+  if(slides[current].id==="sportVoteSlide") renderSportVote();
   if(slides[current].id==="textResultSlide") renderResult("text");
   if(slides[current].id==="compareSlide") renderComparison();
 }
@@ -286,7 +303,7 @@ showSlide(0);
 
 const help={
  oded:{title:"הוראות המשחק — עודד אמר",body:"<ol><li>אמרו פקודות קצרות: עמדו, שבו, ידיים למעלה, הסתובבו.</li><li>התלמידים צריכים לבצע מיד.</li><li>מי שטועה יוצא מהסבב.</li><li>ממשיכים עד שנשאר תלמיד אחד.</li><li>בסיום שאלו: איך הרגיש מצב שבו אדם אחד בלבד קובע?</li></ol>"},
- sport:{title:"הוראות המשחק — בחירת ספורט",body:"<ol><li>אספו הצעות מהכיתה והוסיפו אותן לרשימה.</li><li>אפשר לקבל המלצה אוטומטית או לכתוב רעיון אחר.</li><li>הצביעו בהרמת ידיים.</li><li>ספרו את הקולות והזינו ליד כל ספורט את מספר המצביעים.</li></ol>"},
+ sport:{title:"הוראות המשחק — בחירת ספורט",body:"<ol><li>אספו הצעות מהכיתה והוסיפו אותן לרשימה.</li><li>אפשר לקבל המלצה אוטומטית או לכתוב רעיון אחר.</li><li>עברו לשקף הבא להצבעה.</li><li>ספרו ידיים, הזינו את מספר הקולות לכל אפשרות ולחצו על חשב.</li></ol>"},
  food:{title:"הוראות המשחק — רוב מול בחירה אישית",body:"<ol><li>הציגו רק את חמשת המאכלים שעל המסך.</li><li>ערכו הצבעה מהירה ובחרו מנצח.</li><li>אמרו: מעכשיו כולם חייבים להגיד שהם אוהבים את המאכל שנבחר.</li><li>עצרו על התגובה ושאלו: האם לרוב מותר לקבוע מה אדם חייב לאהוב?</li></ol>"}
 };
 const modal=document.querySelector("#helpModal");
@@ -340,14 +357,55 @@ sportInput.addEventListener("focus",()=>{if(!sportInput.value.trim())armSuggesti
 function addSport(){
  const v=sportInput.value.trim();if(!v)return;
  const chip=document.createElement("div");chip.className="chip";
- chip.innerHTML='<span class="chipText"></span><input class="sportVote" type="number" min="0" step="1" value="0" aria-label="מספר קולות"><button class="trash" title="מחיקה">🗑</button>';
+ chip.innerHTML='<span class="chipText"></span><button class="trash" title="מחיקה">🗑</button>';
  chip.querySelector(".chipText").textContent=v;
- chip.querySelector(".sportVote").setAttribute("aria-label","מספר קולות עבור "+v);
- chip.querySelector(".trash").onclick=()=>{chip.remove();if(!sportInput.value.trim())armSuggestion(10000)};
+ chip.querySelector(".trash").onclick=()=>{chip.remove();delete sportVotes[v];if(!sportInput.value.trim())armSuggestion(10000)};
  chips.appendChild(chip);sportInput.value="";dirty=false;armSuggestion(5000);sportInput.focus();
 }
 document.querySelector("#addSport").onclick=addSport;sportInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addSport()}});
 armSuggestion(5000);
+
+const sportVotes={};
+function renderSportVote(){
+ const names=usedSports();
+ const grid=document.querySelector("#sportVoteGrid");
+ const voteView=document.querySelector("#sportVoteView");
+ const resultView=document.querySelector("#sportResultView");
+ if(!grid)return;
+ voteView.style.display="block";
+ resultView.style.display="none";
+ grid.innerHTML="";
+ names.forEach(name=>{
+   if(!(name in sportVotes)) sportVotes[name]=0;
+   const row=document.createElement("div");row.className="voteRow";
+   row.innerHTML="<strong>"+name+"</strong><input type='number' min='0' step='1' value='"+(sportVotes[name]||0)+"' aria-label='קולות עבור "+name+"'>";
+   row.querySelector("input").oninput=e=>sportVotes[name]=Math.max(0,Number(e.target.value)||0);
+   grid.appendChild(row);
+ });
+ if(!names.length){
+   grid.innerHTML='<div class="card"><strong>עדיין לא נוספו אפשרויות ספורט</strong></div>';
+ }
+}
+function renderSportResult(){
+ const names=usedSports();
+ const values=names.map(n=>Number(sportVotes[n])||0);
+ const total=values.reduce((a,b)=>a+b,0);
+ const palette=["#31e8ff","#9b7cff","#43e6a6","#ffd166","#ff6d83","#6fa8ff","#ff9f6e","#8ee38e","#e58cff","#76d7c4"];
+ let bg="conic-gradient(#22344d 0 100%)";
+ if(total>0){
+   let acc=0,parts=[];
+   values.forEach((v,i)=>{if(v<=0)return;const a=acc/total*100;acc+=v;const b=acc/total*100;parts.push(palette[i%palette.length]+" "+a+"% "+b+"%")});
+   bg="conic-gradient("+parts.join(",")+")";
+ }
+ document.querySelector("#sportPie").style.background=bg;
+ document.querySelector("#sportLegend").innerHTML=names.map((n,i)=>'<div class="legendRow"><span class="dotColor" style="background:'+palette[i%palette.length]+'"></span><span>'+n+'</span><b>'+(sportVotes[n]||0)+'</b></div>').join("");
+ const max=values.length?Math.max(...values):0;
+ const winners=max>0?names.filter((n,i)=>values[i]===max):[];
+ document.querySelector("#sportWinner").textContent=winners.length?"🏆 "+winners.join(" + ")+" — "+max+" קולות":"עדיין לא הוזנו קולות";
+ document.querySelector("#sportVoteView").style.display="none";
+ document.querySelector("#sportResultView").style.display="block";
+}
+document.querySelector("#calcSportVotes").onclick=renderSportResult;
 
 const textVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
 const imageVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
