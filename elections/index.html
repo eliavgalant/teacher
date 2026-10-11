@@ -39,11 +39,18 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 .big{font-size:clamp(27px,3.6vw,50px);font-weight:1000;line-height:1.3}.cyan{color:var(--cyan)}.yellow{color:var(--yellow)}.green{color:var(--green)}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.card{border:1px solid var(--line);border-radius:20px;padding:20px;background:rgba(255,255,255,.035)}
 .card strong{display:block;font-size:22px;margin:7px 0}.card p{color:var(--muted);line-height:1.45;margin-bottom:0}.emoji{font-size:38px}
-.topicRail{position:absolute;right:10px;top:82px;bottom:70px;width:180px;z-index:55;display:flex;flex-direction:column;justify-content:center;gap:8px;pointer-events:none}
-.topicRailItem{padding:9px 11px;border-radius:13px;border:1px solid rgba(255,255,255,.07);background:rgba(7,17,31,.62);font-size:13px;font-weight:900;color:#d8e5f5;filter:blur(4px);opacity:.26;transform:scale(.98);transition:.28s ease}
-.topicRailItem.revealed{filter:none;opacity:.68}
-.topicRailItem.active{filter:none;opacity:1;border-color:rgba(var(--stage-r),var(--stage-g),var(--stage-b),.48);background:rgba(var(--stage-r),var(--stage-g),var(--stage-b),.12);box-shadow:0 0 18px rgba(var(--stage-r),var(--stage-g),var(--stage-b),.12);transform:scale(1)}
-.slide{padding-right:clamp(190px,14vw,220px)}
+.topicRail{position:absolute;right:10px;top:82px;bottom:70px;width:215px;z-index:55;display:flex;flex-direction:column;justify-content:center;gap:5px;pointer-events:none}
+.topicRailGroup{display:grid;gap:4px}
+.topicRailItem{padding:8px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.07);background:rgba(7,17,31,.62);font-size:13px;font-weight:900;color:#d8e5f5;filter:blur(4px);opacity:.26;transform:scale(.98);transition:.28s ease}
+.topicRailGroup.revealed .topicRailItem{filter:none;opacity:.66}
+.topicRailGroup.active .topicRailItem{filter:none;opacity:1;color:var(--topic-color);border-color:color-mix(in srgb,var(--topic-color) 50%,transparent);background:color-mix(in srgb,var(--topic-color) 12%,rgba(7,17,31,.72));box-shadow:0 0 18px color-mix(in srgb,var(--topic-color) 14%,transparent);transform:scale(1)}
+.topicSubList{display:none;margin-right:18px;padding-right:10px;border-right:1px solid color-mix(in srgb,var(--topic-color) 32%,transparent);gap:3px}
+.topicRailGroup.active .topicSubList{display:grid}
+.topicSubItem{position:relative;padding:3px 8px;font-size:11px;font-weight:900;color:var(--topic-color);opacity:.52;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topicSubItem::before{content:"•";margin-left:6px;opacity:.75}
+.topicSubItem.active{opacity:1;text-shadow:0 0 12px color-mix(in srgb,var(--topic-color) 36%,transparent)}
+.topicSubItem.active::before{content:"●"}
+.slide{padding-right:clamp(225px,16vw,250px)}
 .nav{position:absolute;left:0;right:0;bottom:8px;height:46px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0;z-index:60;background:rgba(7,17,31,.9);border:1px solid var(--line);border-radius:16px;padding:6px 10px;backdrop-filter:blur(12px);box-shadow:0 12px 35px rgba(0,0,0,.28)}.navSide{display:flex;gap:8px}.counter{color:var(--muted);font-weight:900}
 .helpBtn{position:absolute;left:22px;top:22px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,209,102,.35);background:rgba(255,209,102,.1);color:var(--yellow);font-weight:1000;font-size:20px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:100;padding:20px}.modal.show{display:grid}
@@ -106,13 +113,57 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 </header>
 
 <aside class="topicRail" id="topicRail" aria-label="תוכן עניינים">
-  <div class="topicRailItem" data-topic="0">פתיחה · חוסר צדק</div>
-  <div class="topicRailItem" data-topic="1">עודד אמר</div>
-  <div class="topicRailItem" data-topic="2">הספורט הלאומי</div>
-  <div class="topicRailItem" data-topic="3">הרוב בוחר</div>
-  <div class="topicRailItem" data-topic="4">בדיקת כלי AI</div>
-  <div class="topicRailItem" data-topic="5">בונוס · תמונות</div>
-  <div class="topicRailItem" data-topic="6">סיכום</div>
+  <div class="topicRailGroup" data-topic="0" style="--topic-color:#ffd166">
+    <div class="topicRailItem">פתיחה · חוסר צדק</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="0">חוסר צדק</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="1" style="--topic-color:#ff6d83">
+    <div class="topicRailItem">עודד אמר</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="1">עודד אמר</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="2" style="--topic-color:#31e8ff">
+    <div class="topicRailItem">הספורט הלאומי</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="2">בחירת הספורט</div>
+      <div class="topicSubItem" data-slide="3">הצבעה ותוצאה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="3" style="--topic-color:#ff9f6e">
+    <div class="topicRailItem">הרוב בוחר</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="4">בחירת מאכל</div>
+      <div class="topicSubItem" data-slide="5">תוצאות ההצבעה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="4" style="--topic-color:#9b7cff">
+    <div class="topicRailItem">בדיקת כלי AI</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="6">כלי ה־AI</div>
+      <div class="topicSubItem" data-slide="7">שאלות הבדיקה</div>
+      <div class="topicSubItem" data-slide="8">קריטריונים</div>
+      <div class="topicSubItem" data-slide="9">הצבעה</div>
+      <div class="topicSubItem" data-slide="10">בחירת הכיתה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="5" style="--topic-color:#e58cff">
+    <div class="topicRailItem">בונוס · תמונות</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="11">משימת התמונה</div>
+      <div class="topicSubItem" data-slide="12">קריטריונים לתמונה</div>
+      <div class="topicSubItem" data-slide="13">הצבעה</div>
+      <div class="topicSubItem" data-slide="14">השוואה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="6" style="--topic-color:#43e6a6">
+    <div class="topicRailItem">סיכום</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="15">מה למדנו היום?</div>
+    </div>
+  </div>
 </aside>
 
 <main class="deck" id="deck">
@@ -381,11 +432,15 @@ function topicForSlide(slide){
 }
 function updateTopicRail(slide){
   const topic=topicForSlide(slide);
+  const slideIndex=slides.indexOf(slide);
   revealedTopics.add(topic);
-  document.querySelectorAll(".topicRailItem").forEach(item=>{
-    const n=Number(item.dataset.topic);
-    item.classList.toggle("revealed",revealedTopics.has(n));
-    item.classList.toggle("active",n===topic);
+  document.querySelectorAll(".topicRailGroup").forEach(group=>{
+    const n=Number(group.dataset.topic);
+    group.classList.toggle("revealed",revealedTopics.has(n));
+    group.classList.toggle("active",n===topic);
+  });
+  document.querySelectorAll(".topicSubItem").forEach(item=>{
+    item.classList.toggle("active",Number(item.dataset.slide)===slideIndex);
   });
 }
 
