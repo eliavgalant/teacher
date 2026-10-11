@@ -1,0 +1,107 @@
+name: Update teacher library
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - index.html
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-library:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build library index
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import html
+
+          root = Path(".")
+          ignored = {".git", ".github"}
+          items = []
+
+          for folder in sorted(root.iterdir(), key=lambda p: p.name.lower()):
+              if not folder.is_dir() or folder.name.startswith(".") or folder.name in ignored:
+                  continue
+              available = (folder / "index.html").exists()
+              display = folder.name.replace("-", " ").replace("_", " ")
+              items.append((folder.name, display, available))
+
+          cards = []
+          for folder, display, available in items:
+              safe_folder = html.escape(folder, quote=True)
+              safe_display = html.escape(display)
+              if available:
+                  cards.append(f"""
+          <a class="card" href="./{safe_folder}/">
+            <div class="icon">📚</div>
+            <strong>{safe_display}</strong>
+            <span class="status available">זמין</span>
+          </a>""")
+              else:
+                  cards.append(f"""
+          <div class="card disabled" aria-disabled="true">
+            <div class="icon">📁</div>
+            <strong>{safe_display}</strong>
+            <span class="status unavailable">לא זמין</span>
+          </div>""")
+
+          page = """<!doctype html>
+          <html lang="he" dir="rtl">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>Tech It Easy — ספריית פעילויות למדריך</title>
+            <style>
+              *{box-sizing:border-box}
+              body{margin:0;min-height:100vh;font-family:Arial,"Segoe UI",sans-serif;background:#07101f;color:#fff;padding:32px 20px}
+              .wrap{width:min(1100px,100%);margin:auto;text-align:center}
+              .badge{display:inline-block;margin-bottom:14px;padding:7px 13px;border-radius:999px;border:1px solid #2e4d78;background:#0d1930;color:#31e8ff;font-weight:700}
+              h1{margin:0 0 10px;font-size:clamp(34px,5vw,58px)}
+              p{margin:0 0 34px;color:#b9c8df;font-size:18px}
+              .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+              .card{min-height:210px;border:1px solid #2e4d78;border-radius:22px;background:#0d1930;color:#fff;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:28px;transition:.2s ease}
+              a.card:hover{transform:translateY(-6px) scale(1.02);border-color:#31e8ff;box-shadow:0 16px 40px rgba(49,232,255,.18);background:#10213f}
+              .disabled{opacity:.48;cursor:not-allowed}
+              .icon{font-size:48px}
+              .card strong{font-size:25px;text-transform:none}
+              .status{font-size:14px;font-weight:900;padding:7px 11px;border-radius:999px}
+              .available{color:#8fffcf;background:rgba(60,230,168,.1);border:1px solid rgba(60,230,168,.3)}
+              .unavailable{color:#ffb5c0;background:rgba(255,109,131,.09);border:1px solid rgba(255,109,131,.28)}
+            </style>
+          </head>
+          <body>
+            <main class="wrap">
+              <div class="badge">Tech It Easy</div>
+              <h1>ספריית פעילויות למדריך</h1>
+              <p>הספרייה מתעדכנת אוטומטית לפי תיקיות הפעילויות</p>
+              <div class="grid">
+          """ + "\n".join(cards) + """
+              </div>
+            </main>
+          </body>
+          </html>
+          """
+          Path("index.html").write_text(page, encoding="utf-8")
+          PY
+
+      - name: Commit updated index
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No library changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Auto-update teacher library [skip ci]"
+          git push
