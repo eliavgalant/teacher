@@ -55,7 +55,7 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
 .trash{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
 .chip:hover .trash,.trash:focus{background:rgba(255,109,131,.13);color:var(--red)}
 .foods{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}.food{padding:20px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.04);text-align:center;font-weight:900;font-size:20px}
-.food span{display:block;font-size:40px;margin-bottom:8px}
+.food span{display:block;font-size:40px;margin-bottom:8px}.food strong{display:block;margin-bottom:12px}.foodVote{width:100%;max-width:105px;background:white;color:#07111f;border:0;border-radius:12px;padding:10px;text-align:center;font-size:20px;font-weight:1000}
 .aiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:24px}.aiCard{position:relative;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.04);padding:22px;text-align:center;min-height:230px}
 .aiLogo{width:76px;height:76px;object-fit:contain;margin:0 auto 14px;display:block;filter:drop-shadow(0 8px 20px rgba(0,0,0,.3))}
 .aiFallback{display:none;width:76px;height:76px;border-radius:22px;margin:0 auto 14px;place-items:center;background:white;color:#07111f;font-size:27px;font-weight:1000}
@@ -133,15 +133,30 @@ h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;let
   </div>
 </section>
 
-<section class="slide">
-  <button class="helpBtn" data-help="food" aria-label="הוראות">?</button>
+<section class="slide" id="foodVoteSlide">
+  <button class="helpBtn" data-help="food" aria-label="הוראות המשחק">?</button>
   <span class="kicker">🍕 פעילות 3</span>
   <h2>הרוב בחר — האם הוא יכול <span class="yellow">לקבוע לכולם?</span></h2>
-  <p class="lead">בחרו מאכל אחד. עכשיו דמיינו שהמאכל שזוכה הוא המאכל שכל תלמיד בכיתה חייב להגיד שהוא אוהב.</p>
+  <p class="lead">בחרו מאכל אחד</p>
   <div class="foods">
-    <div class="food"><span>🍕</span>פיצה</div><div class="food"><span>🍔</span>המבורגר</div><div class="food"><span>🍣</span>סושי</div><div class="food"><span>🍝</span>פסטה</div><div class="food"><span>🥙</span>פלאפל</div>
+    <div class="food"><span>🍕</span><strong>פיצה</strong><input class="foodVote" data-food="פיצה" type="number" min="0" step="1" value="0" aria-label="קולות לפיצה"></div>
+    <div class="food"><span>🍔</span><strong>המבורגר</strong><input class="foodVote" data-food="המבורגר" type="number" min="0" step="1" value="0" aria-label="קולות להמבורגר"></div>
+    <div class="food"><span>🍣</span><strong>סושי</strong><input class="foodVote" data-food="סושי" type="number" min="0" step="1" value="0" aria-label="קולות לסושי"></div>
+    <div class="food"><span>🍝</span><strong>פסטה</strong><input class="foodVote" data-food="פסטה" type="number" min="0" step="1" value="0" aria-label="קולות לפסטה"></div>
+    <div class="food"><span>🥙</span><strong>פלאפל</strong><input class="foodVote" data-food="פלאפל" type="number" min="0" step="1" value="0" aria-label="קולות לפלאפל"></div>
   </div>
-  <p class="big" style="margin-top:24px">אם הרוב החליט — האם הוא יכול להחליט גם <span class="cyan">מה אני אוהב</span>?</p>
+</section>
+
+<section class="slide" id="foodResultSlide">
+  <span class="kicker">📊 פעילות 3 · סיכום</span>
+  <h2>תוצאות ההצבעה</h2>
+  <div class="pieWrap">
+    <div class="pie" id="foodPie"></div>
+    <div>
+      <div class="legend" id="foodLegend"></div>
+      <div class="winner" id="foodWinner"></div>
+    </div>
+  </div>
 </section>
 
 <section class="slide progressive" id="aiToolsSlide">
@@ -291,6 +306,7 @@ function showSlide(i){
   document.querySelector("#slideCount").textContent=slides.length;
   window.scrollTo({top:0,behavior:"smooth"});
   if(slides[current].id==="sportVoteSlide") renderSportVote();
+  if(slides[current].id==="foodResultSlide") renderFoodResult();
   if(slides[current].id==="textResultSlide") renderResult("text");
   if(slides[current].id==="compareSlide") renderComparison();
 }
@@ -304,7 +320,7 @@ showSlide(0);
 const help={
  oded:{title:"הוראות המשחק — עודד אמר",body:"<ol><li>אמרו פקודות קצרות: עמדו, שבו, ידיים למעלה, הסתובבו.</li><li>התלמידים צריכים לבצע מיד.</li><li>מי שטועה יוצא מהסבב.</li><li>ממשיכים עד שנשאר תלמיד אחד.</li><li>בסיום שאלו: איך הרגיש מצב שבו אדם אחד בלבד קובע?</li></ol>"},
  sport:{title:"הוראות המשחק — בחירת ספורט",body:"<ol><li>אספו הצעות מהכיתה והוסיפו אותן לרשימה.</li><li>אפשר לקבל המלצה אוטומטית או לכתוב רעיון אחר.</li><li>עברו לשקף הבא להצבעה.</li><li>ספרו ידיים, הזינו את מספר הקולות לכל אפשרות ולחצו על חשב.</li></ol>"},
- food:{title:"הוראות המשחק — רוב מול בחירה אישית",body:"<ol><li>הציגו רק את חמשת המאכלים שעל המסך.</li><li>ערכו הצבעה מהירה ובחרו מנצח.</li><li>אמרו: מעכשיו כולם חייבים להגיד שהם אוהבים את המאכל שנבחר.</li><li>עצרו על התגובה ושאלו: האם לרוב מותר לקבוע מה אדם חייב לאהוב?</li></ol>"}
+ food:{title:"הוראות המשחק — רוב מול בחירה אישית",body:"<ol><li>הציגו את חמשת המאכלים שעל המסך.</li><li>הצביעו בהרמת ידיים והזינו את מספר הקולות לכל מאכל.</li><li>עברו לשקף הבא כדי לראות את תוצאות ההצבעה.</li><li>אחרי התוצאה, שאלו האם לרוב מותר לקבוע לכולם מה הם חייבים לאהוב.</li></ol>"}
 };
 const modal=document.querySelector("#helpModal");
 document.querySelectorAll("[data-help]").forEach(b=>b.onclick=()=>{const x=help[b.dataset.help];document.querySelector("#helpTitle").textContent=x.title;document.querySelector("#helpBody").innerHTML=x.body;modal.classList.add("show")});
@@ -406,6 +422,28 @@ function renderSportResult(){
  document.querySelector("#sportResultView").style.display="block";
 }
 document.querySelector("#calcSportVotes").onclick=renderSportResult;
+
+const foodNames=["פיצה","המבורגר","סושי","פסטה","פלאפל"];
+const foodVotes=Object.fromEntries(foodNames.map(n=>[n,0]));
+document.querySelectorAll(".foodVote").forEach(inp=>{
+  inp.addEventListener("input",()=>{foodVotes[inp.dataset.food]=Math.max(0,Number(inp.value)||0)});
+});
+function renderFoodResult(){
+  const values=foodNames.map(n=>Number(foodVotes[n])||0);
+  const total=values.reduce((a,b)=>a+b,0);
+  const palette=["#31e8ff","#9b7cff","#43e6a6","#ffd166","#ff6d83"];
+  let bg="conic-gradient(#22344d 0 100%)";
+  if(total>0){
+    let acc=0,parts=[];
+    values.forEach((v,i)=>{if(v<=0)return;const a=acc/total*100;acc+=v;const b=acc/total*100;parts.push(palette[i]+" "+a+"% "+b+"%")});
+    bg="conic-gradient("+parts.join(",")+")";
+  }
+  document.querySelector("#foodPie").style.background=bg;
+  document.querySelector("#foodLegend").innerHTML=foodNames.map((n,i)=>'<div class="legendRow"><span class="dotColor" style="background:'+palette[i]+'"></span><span>'+n+'</span><b>'+(foodVotes[n]||0)+'</b></div>').join("");
+  const max=values.length?Math.max(...values):0;
+  const winners=max>0?foodNames.filter((n,i)=>values[i]===max):[];
+  document.querySelector("#foodWinner").textContent=winners.length?"🏆 "+winners.join(" + ")+" — "+max+" קולות":"עדיין לא הוזנו קולות";
+}
 
 const textVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
 const imageVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
