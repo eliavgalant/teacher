@@ -22,7 +22,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import html
+          import html, re
 
           root = Path(".")
           ignored = {".git", ".github"}
@@ -31,8 +31,17 @@ jobs:
           for folder in sorted(root.iterdir(), key=lambda p: p.name.lower()):
               if not folder.is_dir() or folder.name.startswith(".") or folder.name in ignored:
                   continue
-              available = (folder / "index.html").exists()
+              index_file = folder / "index.html"
+              available = index_file.exists()
               display = folder.name.replace("-", " ").replace("_", " ")
+              if available:
+                  text = index_file.read_text(encoding="utf-8", errors="ignore")
+                  m = re.search(r"<title>(.*?)</title>", text, re.I | re.S)
+                  if m:
+                      title = re.sub(r"\s+", " ", m.group(1)).strip()
+                      title = re.split(r"\s*[|—–]\s*", title)[0].strip()
+                      if title:
+                          display = title
               items.append((folder.name, display, available))
 
           cards = []
