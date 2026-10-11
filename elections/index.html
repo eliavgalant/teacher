@@ -358,9 +358,30 @@ function showSlide(i){
   if(slides[current].id==="compareSlide") renderComparison();
   updateClickTone(slides[current]);
 }
-function next(){showSlide(current+1)} function prev(){showSlide(current-1)}
+let routeMode="main";
+function next(){
+  const active=slides[current];
+  if(active && active.id==="textResultSlide"){
+    routeMode="main";
+    showSlide(slides.indexOf(document.querySelector("#summarySlide")));
+    return;
+  }
+  showSlide(current+1);
+}
+function prev(){
+  const active=slides[current];
+  if(active && active.id==="summarySlide"){
+    if(routeMode==="bonus"){
+      showSlide(slides.indexOf(document.querySelector("#compareSlide")));
+    }else{
+      showSlide(slides.indexOf(document.querySelector("#textResultSlide")));
+    }
+    return;
+  }
+  showSlide(current-1);
+}
 document.querySelector("#nextBtn").onclick=next;document.querySelector("#prevBtn").onclick=prev;
-document.querySelector("#homeBtn").onclick=()=>showSlide(0);
+document.querySelector("#homeBtn").onclick=()=>{routeMode="main";showSlide(0)};
 document.querySelector("#fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")next();if(e.key==="ArrowRight")prev()});
 showSlide(0);
@@ -530,8 +551,14 @@ function renderResult(kind){
  const win=document.querySelector(kind==="text"?"#textWinner":"#imageWinner");
  if(win){const w=winner(state);win.textContent=w?"🏆 "+w.names+" — "+w.votes+" קולות":"עדיין לא הוזנו קולות";}
 }
-document.querySelector("#goBonus").onclick=()=>showSlide(slides.indexOf(document.querySelector("#bonusStart")));
-document.querySelector("#goSummary").onclick=()=>showSlide(slides.indexOf(document.querySelector("#summarySlide")));
+document.querySelector("#goBonus").onclick=()=>{
+  routeMode="bonus";
+  showSlide(slides.indexOf(document.querySelector("#bonusStart")));
+};
+document.querySelector("#goSummary").onclick=()=>{
+  routeMode="main";
+  showSlide(slides.indexOf(document.querySelector("#summarySlide")));
+};
 
 function renderComparison(){
  document.querySelector("#compareTextPie").style.background=pieGradient(textVotes);
