@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מערך למדריך · בטיחות ופרטיות ב-AI | Tech It Easy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Heebo:wght@400;500;700&display=swap">
+<style>
+/* ===== TIE instructor guide kit v1 — light, readable, prints well. Internal: for the instructor only. ===== */
+:root{--paper:#f6f8fb;--sheet:#ffffff;--ink:#14213a;--muted:#55657f;--line:#dbe3ee;--brand:#0b2545;--cyan:#0fb5d6;--cyan-soft:#e3f7fb;
+ --violet:#6e56cf;--yellow-soft:#fff6dc;--yellow:#a46a00;--green:#0f8a5f;--green-soft:#e2f5ec;--red:#b42318;--red-soft:#fdecea;
+ --display:"Rubik",Arial,sans-serif;--body:"Heebo",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:900px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-left)) 60px}
+a{color:#0a7ea4}
+header.top{background:linear-gradient(135deg,#07101f,#0f2547);color:#fff;border-radius:22px;padding:26px 28px;display:grid;gap:12px}
+.badge{display:inline-flex;width:max-content;gap:8px;align-items:center;padding:5px 12px;border-radius:999px;background:rgba(49,232,255,.14);color:#7cefff;font-weight:700;font-size:14px}
+header.top h1{font-family:var(--display);font-size:clamp(28px,4vw,40px);margin:0;line-height:1.15}
+header.top p{margin:0;color:#b9c8df}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.fact{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px}
+.fact span{display:block;font-size:13px;color:#9fb3cf}.fact b{font-size:16px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.links a{color:#06111e;background:#31e8ff;text-decoration:none;font-weight:700;padding:8px 14px;border-radius:11px;font-size:15px}
+.links a.alt{background:rgba(255,255,255,.12);color:#fff}
+nav.toc{margin:22px 0 4px;display:flex;flex-wrap:wrap;gap:8px}
+nav.toc a{font-size:14px;font-weight:700;text-decoration:none;padding:6px 12px;border-radius:999px;background:var(--sheet);border:1px solid var(--line);color:var(--brand)}
+section{background:var(--sheet);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:16px}
+h2{font-family:var(--display);font-size:24px;margin:0 0 12px;color:var(--brand)}
+h3{font-family:var(--display);font-size:19px;margin:18px 0 6px;color:var(--brand)}
+p{margin:0 0 10px}
+ul,ol{margin:0 0 10px;padding-inline-start:22px}
+li{margin-bottom:4px}
+.goals li::marker{color:var(--cyan)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{font-family:var(--display);font-size:14px;color:var(--muted);background:#f1f5fa}
+td.min{white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+.phase{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}
+.phase:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:6px}
+.phase-head h3{margin:0}
+.time{font-weight:700;font-size:14px;color:#0a7ea4;background:var(--cyan-soft);padding:2px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+.slides{font-size:14px;color:var(--muted)}
+.say{background:var(--cyan-soft);border-inline-start:4px solid var(--cyan);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.say::before{content:"🗣️ מה אומרים: ";font-weight:700;color:#0a7ea4}
+.tip{background:var(--yellow-soft);border-inline-start:4px solid #e0a800;border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.tip::before{content:"💡 דגש: ";font-weight:700;color:var(--yellow)}
+.warn{background:var(--red-soft);border-inline-start:4px solid var(--red);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.warn::before{content:"⚠️ שימו לב: ";font-weight:700;color:var(--red)}
+.answer{background:var(--green-soft);border-inline-start:4px solid var(--green);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.answer::before{content:"✅ תשובה: ";font-weight:700;color:var(--green)}
+.checklist{list-style:none;padding:0}
+.checklist li::before{content:"☐ ";color:var(--muted)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.tool{border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.tool b{display:block;font-family:var(--display)}
+.tool small{color:var(--muted);display:block}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 9px;margin-inline-start:4px}
+.pill.ok{background:var(--green-soft);color:var(--green)}.pill.mid{background:var(--yellow-soft);color:var(--yellow)}.pill.no{background:var(--red-soft);color:var(--red)}
+footer{color:var(--muted);font-size:14px;text-align:center;margin-top:24px}
+@media print{body{background:#fff;font-size:13pt}.wrap{max-width:none;padding:0}nav.toc,.links{display:none}
+ header.top{background:#0b2545!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}section{break-inside:avoid-page;border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="badge">🧑‍🏫 מערך / הנחיות למדריך · פנימי</span>
+  <h1>בטיחות ופרטיות ב-AI</h1>
+  <p>מה לא משתפים, איך בודקים מידע, איך מזהים זיוף, איך משתמשים באחריות, ומתי פונים למבוגר במקום למכונה. השיעור ממשיך את הרעיון מהשיעור הקודם: AI יכול להישמע משכנע גם כשהוא טועה.</p>
+  <div class="facts">
+    <div class="fact"><span>משך</span><b>45 דקות</b></div>
+    <div class="fact"><span>גילאים</span><b>ה׳–ט׳</b></div>
+    <div class="fact"><span>מיקום ברצף</span><b>שיעור 2 (אחרי "היכרות עם AI")</b></div>
+    <div class="fact"><span>כלים</span><b>לא חובה. הדגמה אופציונלית</b></div>
+  </div>
+  <div class="links"><a href="presentation.html">⟵ מצגת מורה</a><a class="alt" href="./">תפריט הפעילות</a></div>
+</header>
+
+<nav class="toc"><a href="#goals">מטרות</a><a href="#prep">הכנה</a><a href="#flow">מהלך בקצרה</a><a href="#steps">מהלך מפורט</a><a href="#answers">תשובות לכל התרחישים</a><a href="#disclosure">תלמיד משתף משהו מדאיג</a><a href="#facts">עובדות לרקע</a><a href="#tools">כלים ומדיניות</a><a href="#trouble">אם משהו לא עובד</a><a href="#success">מדדי הצלחה</a></nav>
+
+<section id="goals"><h2>מטרות השיעור</h2><ul class="goals">
+  <li>התלמידים יוכלו לזהות מהו מידע אישי ולהסביר למה לא מקלידים אותו לצ׳אט AI ולא מעלים תמונות של עצמם או של אחרים.</li>
+  <li>התלמידים יוכלו לשכתב בקשה ל-AI כך שתהיה בלי פרטים אישיים ועדיין שימושית.</li>
+  <li>התלמידים יידעו שלכלי AI יש גיל מינימום, ולמה.</li>
+  <li>התלמידים יבינו ש"נשמע משכנע" לא אומר "נכון", ויבדקו מידע בשני מקורות.</li>
+  <li>התלמידים יכירו את המושג דיפפייק, את הסימנים לחשוד, ואת הכלל "לא בטוחים? לא מעבירים".</li>
+  <li>התלמידים יבינו שאסור להשתמש ב-AI כדי ללעוג, להתחזות או ליצור תוכן על חברים בלי רשות.</li>
+  <li>התלמידים יידעו שבבריאות, במצוקה ובמצב מסוכן פונים למבוגר אמיתי, ויכירו את 105 ואת ער״ן 1201.</li>
+  <li>הכיתה תנסח יחד כללי AI משלה ותסיים בהתחייבות אישית.</li>
+</ul></section>
+
+<section id="prep"><h2>הכנה לפני השיעור</h2><ul class="checklist">
+  <li>לפתוח את המצגת ולבדוק מסך מלא (מקש F). חצים או רווח מתקדמים; כל לחיצה על "הבא" חושפת פריט אחד לפני שעוברים שקף.</li>
+  <li>לעבור פעם אחת על כל השקפים, כולל לחיצה על התשובות. אם המצגת נפתחת באמצע, לוחצים "↺ התחלה".</li>
+  <li>לברר מראש עם המחנך/ת: מי היועצת, מה נוהל בית הספר לדיווח על מקרה מדאיג, והאם יש בכיתה אירוע רגיש עכשיו (למשל תמונה שהופצה). אם כן, לתאם איתם לפני השיעור.</li>
+  <li>לבקש מהתלמידים דף ועט לזוגות (לאתגר בשקף 8).</li>
+  <li>אופציונלי: להכין בחשבון האישי שלך (של מבוגר) כלי AI חינמי פתוח, להדגמה בשקף 4 (ראו "כלים ומדיניות").</li>
+  <li>לא צריך מכשירים לתלמידים. אין בשיעור שימוש של תלמידים בכלי AI.</li>
+</ul></section>
+
+<section id="flow"><h2>מהלך בקצרה</h2><div class="tw"><table><thead><tr><th>זמן</th><th>שלב</th><th>שקפים</th><th>מה קורה</th></tr></thead><tbody>
+<tr><td class="min">3 דק׳</td><td>פתיחה</td><td>1–2</td><td>חיבור לשיעור הקודם, שלוש השאלות של היום.</td></tr>
+<tr><td class="min">5 דק׳</td><td>מה זה מידע אישי</td><td>3–4</td><td>רשימת הפרטים, לאן הולך מה שמקלידים, כלל לוח המודעות. הדגמה אופציונלית.</td></tr>
+<tr><td class="min">4 דק׳</td><td>משחק "משתפים או לא?"</td><td>5–6</td><td>שני סבבים, הצבעת אגודלים, לחיצה על תשובת הרוב.</td></tr>
+<tr><td class="min">6 דק׳</td><td>מנקים פרומפט</td><td>7–8</td><td>דוגמה משותפת, ואז אתגר בזוגות (3 דק׳ בטיימר).</td></tr>
+<tr><td class="min">4 דק׳</td><td>כללי גיל</td><td>9–10</td><td>גיל מינימום לכל כלי ולמה, תרחיש רמזור.</td></tr>
+<tr><td class="min">4 דק׳</td><td>בדיקת מידע</td><td>11–12</td><td>משכנע ≠ נכון, שלושה צעדים, תרחיש הלוויתן.</td></tr>
+<tr><td class="min">7 דק׳</td><td>אמיתי או מזויף</td><td>13–16</td><td>דיפפייק, הצבעה על "כריש ברחוב", סימנים לחשוד, תרחיש ההודעה הקולית.</td></tr>
+<tr><td class="min">4 דק׳</td><td>אחריות וכבוד</td><td>17–18</td><td>לא עושים / כן עושים, תרחיש קבוצת הכיתה.</td></tr>
+<tr><td class="min">4 דק׳</td><td>מבוגר אמיתי</td><td>19–21</td><td>מתי לא שואלים מכונה, תרחיש כאב בטן, למי פונים (105, ער״ן 1201).</td></tr>
+<tr><td class="min">4 דק׳</td><td>כללי הכיתה, התחייבות וסיכום</td><td>22–24</td><td>טבלת כללים משותפת, התחייבות בהרמת יד, חמישה משפטים לקחת הביתה.</td></tr>
+</tbody></table></div></section>
+
+<section id="steps"><h2>מהלך מפורט</h2>
+
+  <div class="phase">
+    <div class="phase-head"><h3>1. פתיחה</h3><span class="time">3 דק׳</span><span class="slides">שקפים 1–2</span></div>
+    <p>שקף 1: שאלת חימום בהרמת יד: "מי כבר דיבר פעם עם צ׳אט AI? מי ראה פעם תמונה שלא היה בטוח אם היא אמיתית?" לא צריך לספור, רק לפתוח את הנושא.</p>
+    <div class="say">"בשיעור הקודם ראינו ש-AI יכול לכתוב תשובה יפה ובטוחה, וגם לטעות. היום נדבר על שלושה דברים: מה אנחנו נותנים ל-AI, מה הוא נותן לנו, ומה אנחנו עושים עם זה."</div>
+    <p>שקף 2: שלוש לחיצות חושפות את שלוש השאלות.</p>
+    <div class="tip">הטון של השיעור: חכם ורגוע, לא מפחיד. המסר הוא "AI הוא כלי מצוין, ואנחנו יודעים להשתמש בו נכון", לא "האינטרנט מסוכן".</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>2. מה זה מידע אישי ולאן הוא הולך</h3><span class="time">5 דק׳</span><span class="slides">שקפים 3–4</span></div>
+    <p>שקף 3: לפני שמראים, לשאול "מה נחשב מידע אישי?" ולאסוף 3–4 תשובות. אחר כך להראות את הרשימה. לחיצה חושפת את התובנה על "כמה פרטים קטנים ביחד".</p>
+    <div class="say">"שם פרטי לבד לא מגלה מי אני. אבל שם פרטי + כיתה ו׳2 + העיר + חוג כדורגל ביום שלישי? כבר אפשר למצוא אותי."</div>
+    <p>שקף 4: ארבע לחיצות, כל אחת שלב במסלול של מה שמקלידים, ולחיצה חמישית לכלל לוח המודעות.</p>
+    <div class="say">"מה שאתם מקלידים לא נשאר בטלפון. הוא נשלח למחשבים של החברה, יכול להישמר שם, החברה יכולה להשתמש בו כדי לשפר את ה-AI, ולפעמים עובדים בחברה קוראים חלק מהשיחות. זה לא אומר שמישהו מרגל אחריכם. זה אומר שצ׳אט הוא לא יומן סודי."</div>
+    <div class="tip">הדגמה אופציונלית (דקה): בחשבון שלך, לשאול כלי AI חינמי "מה אתה עושה עם מה שאני מקליד לך?" ולקרוא את התשובה בקול. לשאול את הכיתה: "האם אפשר לסמוך על התשובה הזאת? איפה כדאי לבדוק?" (חיבור לבדיקת מידע בהמשך: המקור האמין הוא מדיניות הפרטיות של החברה).</div>
+    <div class="warn">לא להגזים ולא להמציא: לא לומר "כולם קוראים לכם את ההודעות" או "זה נשמר לנצח". הניסוח בשקף כללי ונכון לכל שלושת הכלים הגדולים (ראו "עובדות לרקע").</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>3. משחק "משתפים או לא?"</h3><span class="time">4 דק׳</span><span class="slides">שקפים 5–6</span></div>
+    <p>מקריאים שורה. כל הכיתה מצביעה באגודל: 👍 אפשר לשתף, 👎 לא משתפים. שואלים תלמיד אחד מכל צד למה. לוחצים על הכפתור שבחר רוב הכיתה; השורה נצבעת ירוק (צדקנו) או אדום (לא בדיוק), ומופיע הסבר. ההוראות לכיתה בכפתור "?".</p>
+    <div class="tip">סבב 2 מסובך יותר בכוונה: "כיתה ז׳" וגיל בערך הם בסדר, כי הם כלליים. המטרה היא לא "לא לכתוב כלום על עצמי", אלא להבחין בין מידע כללי שעוזר לבין מידע שמזהה אותי.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>4. מנקים פרומפט</h3><span class="time">6 דק׳</span><span class="slides">שקפים 7–8</span></div>
+    <p>שקף 7: הפרטים האישיים כבר מסומנים באדום. שואלים: "מה ה-AI באמת צריך כדי לעזור לדנה?" ואז לחיצה חושפת את הגרסה הנקייה, ולחיצה נוספת את הסיכום.</p>
+    <div class="say">"שימו לב: הפרומפט הנקי לא רק בטוח יותר, הוא גם טוב יותר. הורדנו את מה שלא עוזר, והוספנו את מה שכן: כמה תרגילים, באיזה סדר, עם פתרונות."</div>
+    <p>שקף 8: זוגות, על דף. מפעילים טיימר של 3 דקות. אחר כך 2–3 זוגות מקריאים, ורק אז לוחצים "הבא" כדי לחשוף אפשרות אחת.</p>
+    <div class="answer">לשמור: אחות, בת 9, אוהבת חתולים וריקוד, יום הולדת, ברכה. להוריד: שם מלא, גיל של הכותב, כתובת ועיר, שם האחות, התמונה. דוגמה: "תכתוב ברכת יום הולדת שמחה ומצחיקה לאחות בת 9 שאוהבת חתולים וריקוד. 4 שורות עם חרוזים." את השם מוסיפים לבד אחרי שה-AI כותב. גם "שם האחות" לבד זה לא אסון; העיקר הוא בלי כתובת, בלי שם מלא ובלי תמונה.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>5. כללי גיל</h3><span class="time">4 דק׳</span><span class="slides">שקפים 9–10</span></div>
+    <p>שקף 9: הגילים מוצגים מראש; שתי לחיצות חושפות "למה יש גיל" ומה עושים כשהכלי לא מתאים.</p>
+    <div class="say">"כללי גיל הם לא עונש. הם כמו חגורת בטיחות: הכלים האלה נבנו קודם כול למבוגרים, ולפי החוק במדינות רבות יש הגנה מיוחדת על מידע של ילדים."</div>
+    <p>שקף 10: תרחיש רמזור ראשון. מסבירים את השיטה: מצביעים על אפשרות, לוחצים; תשובה לא נכונה רועדת, ותשובה נכונה מציגה רמזור ליד כל האפשרויות: 🔴 מסוכן, 🟡 לא מספיק טוב, 🟢 הכי נכון. אפשר גם להקיש 1–4.</p>
+    <div class="warn">לא לשאול את הכיתה "מי מכם רשום ל-ChatGPT / Claude?" ולא להוקיע תלמידים שכבר משתמשים. מספיק להסביר את הכלל ולהמשיך.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>6. בדיקת מידע</h3><span class="time">4 דק׳</span><span class="slides">שקפים 11–12</span></div>
+    <p>שקף 11: שלוש לחיצות חושפות שלושה צעדים לפי הסדר.</p>
+    <div class="say">"זוכרים מהשיעור הקודם? ה-AI מנחש את המילה הבאה. הוא נשמע בטוח גם כשהוא ממציא. לכן כשזה חשוב, למשל לעבודה, בודקים בשני מקורות אמינים."</div>
+    <p>שקף 12: תרחיש הלוויתן. אחרי התשובה, להדגיש את אפשרות ג׳: לשאול את אותו AI "אתה בטוח?" זו לא בדיקה.</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>7. אמיתי או מזויף</h3><span class="time">7 דק׳</span><span class="slides">שקפים 13–16</span></div>
+    <p>שקף 13: שלוש לחיצות. להסביר דיפפייק במשפט: "AI שיודע לייצר תמונה, קול או סרטון של משהו שלא קרה".</p>
+    <p>שקף 14: הכיתה מצביעה בהרמת יד על כל אפשרות, ומעדכנים את המונים ב-+. אחר כך לחיצה על "הבא" חושפת את ההסבר.</p>
+    <div class="answer">התשובה הכי טובה היא "צריך לבדוק", והתמונה מזויפת. תמונות "כריש ברחוב / בכביש אחרי סערה" מופצות ברשת שוב ושוב אחרי סופות, ובכל פעם מתברר שהן ערוכות. סימנים: מפתיע מאוד + "תעבירו לכולם" + אין מקור.</div>
+    <p>שקף 15: ארבעה סימנים לחשוד, ואז ארבעה דברים לעשות (8 לחיצות). אפשר לבקש מתלמידים להקריא.</p>
+    <p>שקף 16: תרחיש ההודעה הקולית.</p>
+    <div class="tip">לא צריך להראות דיפפייק אמיתי, ובמיוחד לא של אדם מוכר. מסך הטלפון בשקפים הוא ציור.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>8. אחריות וכבוד</h3><span class="time">4 דק׳</span><span class="slides">שקפים 17–18</span></div>
+    <p>שקף 17: לעבור על שתי העמודות, ולחיצה חושפת את הכלל.</p>
+    <div class="say">"תמונה מזויפת של מישהו מהכיתה יכולה להיראות מצחיקה לרגע, אבל היא נשארת ברשת, וקשה מאוד להוריד אותה. זו בריונות, גם אם 'רק צחקנו'."</div>
+    <p>שקף 18: תרחיש קבוצת הכיתה. להדגיש שגם "רק לשלוח 😂" זו השתתפות.</p>
+    <div class="warn">אם בכיתה יש או היה אירוע כזה, לא לזהות אותו ולא לשאול "מי עשה את זה אצלנו?". מדברים רק על נועה הדמיונית.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>9. מבוגר אמיתי</h3><span class="time">4 דק׳</span><span class="slides">שקפים 19–21</span></div>
+    <p>שקף 19: שלושה כרטיסים ונימוק (4 לחיצות). שקף 20: תרחיש כאב הבטן.</p>
+    <p>שקף 21: לשאול "מי המבוגר שלכם?" ולבקש מכל אחד לחשוב בשקט על מבוגר אחד שהוא סומך עליו (לא לומר בקול). להציג את 105 ואת ער״ן בקצרה, בלי להאריך ובלי סיפורים מפחידים.</p>
+    <div class="say">"רוב הזמן AI עוזר לנו מצוין. אבל כשכואב, כשעצוב, כשמישהו פוגע בנו או כשמשהו מפחיד, מכונה לא יכולה לבוא ולעזור. אדם כן. ואם קשה לדבר עם מישהו שאתם מכירים, יש גם קווים שאפשר להתקשר אליהם."</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>10. כללי הכיתה, התחייבות וסיכום</h3><span class="time">4 דק׳</span><span class="slides">שקפים 22–24</span></div>
+    <p>שקף 22: לוחצים בתוך תא בטבלה ומקלידים. כל קבוצה מציעה כלל אחד במילים שלה, הכיתה מסכימה, וכותבים כלל ואת הסיבה. אם אין זמן, כותבים 2–3 כללים בלבד. הטבלה לא נשמרת אחרי רענון; אם רוצים לשמור, לצלם מסך ולשלוח למחנך/ת.</p>
+    <div class="tip">כללים טובים כתובים בשפה של התלמידים וחיוביים: "בודקים בשני מקורות" עדיף על "אסור להאמין ל-AI".</div>
+    <p>שקף 23: חושפים שש התחייבויות, ובסוף כל מי שמסכים מרים יד. שקף 24: חמישה משפטים לסיום. אפשר לבקש מכל תלמיד לבחור משפט אחד ולספר עליו בבית.</p>
+  </div>
+</section>
+
+<section id="answers"><h2>תשובות לכל התרחישים</h2>
+  <h3>משחק "משתפים או לא?": סבב 1 (שקף 5)</h3>
+  <ul>
+    <li><b>"תסביר לי איך מחשבים שטח של משולש":</b> ✓ אפשר. אין פרט אישי.</li>
+    <li><b>"קוראים לי נועה לוי ואני גרה ברחוב הגפן 5. תכתוב לי שיר":</b> ✗ לא משתפים. שם מלא וכתובת מיותרים לשיר.</li>
+    <li><b>תמונה של חבר מהכיתה, "תהפוך אותו לדמות מצחיקה":</b> ✗ לא משתפים. תמונה של אדם אחר בלי רשות, ועלולה לשמש ללעג.</li>
+    <li><b>"אני אוהבת כדורגל וציור. תציע לי רעיון לעבודה":</b> ✓ אפשר. תחביבים כלליים לא מזהים.</li>
+  </ul>
+  <h3>סבב 2 (שקף 6)</h3>
+  <ul>
+    <li><b>"הסיסמה שלי היא dani2014. היא חזקה?":</b> ✗ לא משתפים. סיסמה מקלידים רק באתר שהיא שייכת אליו. אפשר לשאול איך בונים סיסמה חזקה.</li>
+    <li><b>"אני בכיתה ז׳ ורוצה לתרגל אנגלית":</b> ✓ אפשר. שכבת גיל בלי בית ספר היא מידע כללי.</li>
+    <li><b>צילום תעודת זהות של אבא:</b> ✗ לא משתפים, אף פעם. מספר זהות ומסמכים רשמיים.</li>
+    <li><b>"תמליץ לי על ספר הרפתקאות לגיל 12":</b> ✓ אפשר. גיל בערך, בלי פרטים מזהים.</li>
+  </ul>
+  <h3>תרחישי רמזור</h3>
+  <ul>
+    <li><b>שקף 10, נועה בת 11 ו-Claude:</b> 🟢 ג (לא משקרת על הגיל, משתמשת בכלי שמתאים לגילה יחד עם הורה). 🔴 א: שקר על הגיל מבטל את ההגנות. 🟡 ב: חשבון של מישהו אחר, גם לא בסדר, והשיחות שלה ייכנסו לחשבון שלו. 🟡 ד: לא צריך לוותר, צריך להשתמש נכון.</li>
+    <li><b>שקף 12, הלוויתן:</b> 🟢 ב (בודקת בשני מקורות). הלוויתן הכחול הוא יונק, לא דג (הוא אכן בעל החיים הגדול ביותר). 🔴 א: מעתיקה טעות. 🟡 ג: לשאול את אותו AI שוב זו לא בדיקה. 🟡 ד: לא צריך למחוק הכול, רק לבדוק.</li>
+    <li><b>שקף 14, כריש ברחוב:</b> "צריך לבדוק", והתמונה מזויפת (ראו למעלה).</li>
+    <li><b>שקף 16, ההודעה הקולית:</b> 🟢 ד (לא שולחת, מתקשרת לדני במספר המוכר, מספרת להורה). 🔴 א ו-ב: קוד SMS הוא כמו מפתח לחשבון, גם חצי ממנו לא שולחים. 🟡 ג: עדיף מלשלוח, אבל כדאי לספר למבוגר, אולי מישהו מנסה לפרוץ גם לאחרים.</li>
+    <li><b>שקף 18, קבוצת הכיתה:</b> 🟢 ג (לא צוחקת, אומרת "זה לא בסדר", מספרת למבוגר; אפשר גם הודעה פרטית לילדה). 🔴 א ו-ב: כל תגובה והעברה מגדילות את הפגיעה. 🟡 ד: שתיקה לא מוסיפה פגיעה, אבל גם לא עוצרת אותה.</li>
+    <li><b>שקף 20, כאב בטן:</b> 🟢 א (מספרת להורים). 🔴 ב: תרופה לפי צ׳אטבוט, מסוכן. 🟡 ג: גם שלושה צ׳אטבוטים הם לא רופא. 🟡 ד: יומיים של כאב זו סיבה לספר.</li>
+  </ul>
+</section>
+
+<section id="disclosure"><h2>אם תלמיד משתף משהו מדאיג</h2>
+  <p>בשיעור הזה תלמידים עלולים לספר על פגיעה ברשת, תמונה שהופצה, הטרדה, או מצוקה. זה טוב שהם מספרים. התפקיד שלך הוא להגיב נכון, לא לחקור.</p>
+  <ul>
+    <li><b>להישאר רגועים.</b> תגובה שקטה ולא מבוהלת: "תודה ששיתפת. זה חשוב, ונדבר על זה אחרי השיעור."</li>
+    <li><b>לא לחקור מול הכיתה.</b> לא לשאול "מי עשה?", "מה בדיוק היה בתמונה?", ולא לבקש לראות את התמונה או ההודעה. לעצור בעדינות פירוט נוסף מול כולם ולהמשיך בשיעור.</li>
+    <li><b>אחרי השיעור,</b> לדבר עם התלמיד בקצרה ובמקום שקט אבל לא סגור: להקשיב, לא להבטיח סודיות ("אני צריך לספר למי שיכול לעזור"), לא לשפוט.</li>
+    <li><b>לדווח באותו יום</b> למחנך/ת ולמנהל/ת, או ליועצת, לפי נוהל בית הספר. הם מחליטים על המשך הטיפול, כולל פנייה להורים או ל-105. מדריך חיצוני לא מטפל במקרה לבד.</li>
+    <li><b>סכנה מיידית</b> (פגיעה עצמית, איום על חיים): לא משאירים את התלמיד לבד, ומיד מעדכנים את הצוות; בחירום 100 / 101.</li>
+    <li>לכתוב לעצמך מה נאמר, במילים של התלמיד, עם תאריך ושעה, ולמסור לצוות בית הספר. לא לשתף בקבוצות ווטסאפ ולא עם אחרים.</li>
+  </ul>
+  <div class="warn">אם בכיתה כרגע אירוע ידוע (תמונה מזויפת של תלמיד, חרם ברשת), לתאם עם המחנך/ת לפני השיעור. ייתכן שעדיף לדלג על שקף 18 או לשנות אותו.</div>
+</section>
+
+<section id="facts"><h2>עובדות לרקע (נבדקו באוקטובר 2026)</h2>
+  <p>לא צריך לומר את כל זה לתלמידים. זה כדי שתוכלו לענות על שאלות בביטחון. בשקפים הניסוח כללי בכוונה, כי ההגדרות משתנות.</p>
+  <ul>
+    <li><b>ChatGPT (חינמי):</b> כברירת מחדל, השיחות יכולות לשמש לאימון המודלים. אפשר לכבות זאת בהגדרות (Data Controls), ו"שיחה זמנית" לא נשמרת בהיסטוריה ולא משמשת לאימון (נמחקת אחרי 30 יום). גיל מינימום 13; מתחת ל-18 באישור הורה.</li>
+    <li><b>Gemini:</b> גוגל עצמה ממליצה לא להקליד מידע סודי או מידע שלא הייתם רוצים שבודק אנושי יראה. חלק מהשיחות נקראות על ידי בודקים אנושיים (אחרי ניתוק מהחשבון), ושיחות שנבחרו לבדיקה יכולות להישמר עד 3 שנים. גיל: בישראל מגיל 13 בחשבון גוגל רגיל; מתחת ל-13 רק בחשבון בפיקוח הורים (Family Link) אם ההורה אישר. בחשבון בית ספרי רק אם מנהל המערכת הפעיל.</li>
+    <li><b>Claude:</b> מגיל 18 בלבד. מספטמבר 2025 המשתמש בוחר אם לאפשר שימוש בשיחות לאימון; אם אישר, השמירה יכולה להגיע עד 5 שנים, ואם לא, בדרך כלל 30 יום.</li>
+    <li><b>105:</b> המוקד הלאומי להגנה על ילדים ונוער ברשת (משטרה ומשרדי ממשלה, כולל משרד החינוך). מטפל בבריונות ברשת, הטרדות, פריצה לחשבון, הפצת תמונות, ועוזר גם בהסרת תכנים. חיוג 105, אתר 105.gov.il, וגם ווטסאפ.</li>
+    <li><b>ער״ן, 1201:</b> עזרה ראשונה נפשית בטלפון, 24 שעות ביממה, אנונימי. יש גם צ׳אט וווטסאפ באתר ער״ן.</li>
+  </ul>
+</section>
+
+<section id="tools"><h2>כלים ומדיניות שימוש</h2>
+  <div class="tools">
+    <div class="tool"><b>בלי כלים <span class="pill ok">ברירת מחדל</span></b><small>כל השיעור עובד עם מצגת בלבד: הצבעות, דיון ודף ועט. אין שימוש של תלמידים בכלי AI.</small></div>
+    <div class="tool"><b>הדגמת מדריך (אופציונלי) <span class="pill ok">חינמי</span></b><small>בשקף 4, בחשבון האישי של המדריך: Gemini או ChatGPT. לשאול "מה אתה עושה עם מה שאני מקליד?". לא להקליד שום פרט של תלמיד.</small></div>
+    <div class="tool"><b>Claude <span class="pill mid">18+</span></b><small>אפשר להדגים על המסך בחשבון של המדריך בלבד. תלמידים לא נכנסים.</small></div>
+    <div class="tool"><b>DeepSeek / Qwen <span class="pill no">לא בשימוש</span></b><small>לא משתמשים עם תלמידים (פרטיות קטינים).</small></div>
+  </div>
+  <p style="margin-top:12px">לפי מדיניות החברה: אף פעם לא מבקשים מתלמידים להזין פרטים אישיים (שם, ת״ז, תמונה, בית ספר) לכלי AI, וזה בדיוק המסר של השיעור.</p>
+</section>
+
+<section id="trouble"><h2>אם משהו לא עובד</h2><ul>
+  <li><b>אין אינטרנט:</b> המצגת עובדת מקומית (רק הגופן ייראה מעט שונה). מדלגים על ההדגמה בשקף 4 ומספרים במילים.</li>
+  <li><b>כלי ה-AI חסום ברשת בית הספר:</b> מדלגים על ההדגמה. היא לא חיונית.</li>
+  <li><b>הכיתה מהירה:</b> בשקף 8 לבקש מכל זוג לכתוב גם פרומפט "מלוכלך" משלו ולהחליף עם זוג אחר לניקוי. בשקף 22 לכתוב 5 כללים.</li>
+  <li><b>הכיתה איטית / אין זמן:</b> לוותר על סבב 2 (שקף 6), לעשות את שקף 8 יחד ולא בזוגות, ולהציג את שקף 20 בעל פה. לא לדלג על שקפים 19–21 ועל הסיכום.</li>
+  <li><b>הדיון "בורח" לסיפורים אישיים:</b> "תודה, נשמע חשוב, נדבר אחרי השיעור", וממשיכים (ראו "אם תלמיד משתף משהו מדאיג").</li>
+  <li><b>כיתות ה׳–ו׳:</b> אפשר לקצר את שקף 13 ולהסביר דיפפייק כ"תמונה או קול מזויפים". בכיתות ח׳–ט׳ אפשר להעמיק בשקף 9 (למה יש חוקים על מידע של ילדים).</li>
+</ul></section>
+
+<section id="success"><h2>מדדי הצלחה</h2><ul>
+  <li>רוב הכיתה עונה נכון ברוב שורות המשחק, ויודעת להסביר למה "כיתה ז׳" בסדר ו"שם מלא + כתובת" לא.</li>
+  <li>רוב הזוגות מורידים מהפרומפט בשקף 8 את השם המלא, הכתובת והתמונה, ומשאירים את מה שה-AI צריך.</li>
+  <li>תלמידים משתמשים בעצמם בביטויים "משכנע ≠ נכון", "לא בטוחים? לא מעבירים", "כלל לוח המודעות".</li>
+  <li>הכיתה ניסחה לפחות 3 כללים משלה, ורוב התלמידים הרימו יד בהתחייבות.</li>
+  <li>כל תלמיד יודע לנקוב בשם של מבוגר אחד שהוא יכול לפנות אליו (בלב, לא בקול).</li>
+</ul></section>
+
+<footer>© Tech It Easy · מסמך פנימי למדריכים</footer>
+</div>
+</body>
+</html>

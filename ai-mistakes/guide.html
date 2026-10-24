@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מערך למדריך · בלשי AI: מתי ה-AI טועה? | Tech It Easy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Heebo:wght@400;500;700&display=swap">
+<style>
+/* ===== TIE instructor guide kit v1 — light, readable, prints well. Internal: for the instructor only. ===== */
+:root{--paper:#f6f8fb;--sheet:#ffffff;--ink:#14213a;--muted:#55657f;--line:#dbe3ee;--brand:#0b2545;--cyan:#0fb5d6;--cyan-soft:#e3f7fb;
+ --violet:#6e56cf;--yellow-soft:#fff6dc;--yellow:#a46a00;--green:#0f8a5f;--green-soft:#e2f5ec;--red:#b42318;--red-soft:#fdecea;
+ --display:"Rubik",Arial,sans-serif;--body:"Heebo",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:900px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-left)) 60px}
+a{color:#0a7ea4}
+header.top{background:linear-gradient(135deg,#07101f,#0f2547);color:#fff;border-radius:22px;padding:26px 28px;display:grid;gap:12px}
+.badge{display:inline-flex;width:max-content;gap:8px;align-items:center;padding:5px 12px;border-radius:999px;background:rgba(49,232,255,.14);color:#7cefff;font-weight:700;font-size:14px}
+header.top h1{font-family:var(--display);font-size:clamp(28px,4vw,40px);margin:0;line-height:1.15}
+header.top p{margin:0;color:#b9c8df}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.fact{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px}
+.fact span{display:block;font-size:13px;color:#9fb3cf}.fact b{font-size:16px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.links a{color:#06111e;background:#31e8ff;text-decoration:none;font-weight:700;padding:8px 14px;border-radius:11px;font-size:15px}
+.links a.alt{background:rgba(255,255,255,.12);color:#fff}
+nav.toc{margin:22px 0 4px;display:flex;flex-wrap:wrap;gap:8px}
+nav.toc a{font-size:14px;font-weight:700;text-decoration:none;padding:6px 12px;border-radius:999px;background:var(--sheet);border:1px solid var(--line);color:var(--brand)}
+section{background:var(--sheet);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:16px}
+h2{font-family:var(--display);font-size:24px;margin:0 0 12px;color:var(--brand)}
+h3{font-family:var(--display);font-size:19px;margin:18px 0 6px;color:var(--brand)}
+p{margin:0 0 10px}
+ul,ol{margin:0 0 10px;padding-inline-start:22px}
+li{margin-bottom:4px}
+.goals li::marker{color:var(--cyan)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{font-family:var(--display);font-size:14px;color:var(--muted);background:#f1f5fa}
+td.min{white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+.phase{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}
+.phase:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:6px}
+.phase-head h3{margin:0}
+.time{font-weight:700;font-size:14px;color:#0a7ea4;background:var(--cyan-soft);padding:2px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+.slides{font-size:14px;color:var(--muted)}
+.say{background:var(--cyan-soft);border-inline-start:4px solid var(--cyan);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.say::before{content:"🗣️ מה אומרים: ";font-weight:700;color:#0a7ea4}
+.tip{background:var(--yellow-soft);border-inline-start:4px solid #e0a800;border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.tip::before{content:"💡 דגש: ";font-weight:700;color:var(--yellow)}
+.warn{background:var(--red-soft);border-inline-start:4px solid var(--red);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.warn::before{content:"⚠️ שימו לב: ";font-weight:700;color:var(--red)}
+.answer{background:var(--green-soft);border-inline-start:4px solid var(--green);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.answer::before{content:"✅ תשובה: ";font-weight:700;color:var(--green)}
+.checklist{list-style:none;padding:0}
+.checklist li::before{content:"☐ ";color:var(--muted)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.tool{border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.tool b{display:block;font-family:var(--display)}
+.tool small{color:var(--muted);display:block}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 9px;margin-inline-start:4px}
+.pill.ok{background:var(--green-soft);color:var(--green)}.pill.mid{background:var(--yellow-soft);color:var(--yellow)}.pill.no{background:var(--red-soft);color:var(--red)}
+footer{color:var(--muted);font-size:14px;text-align:center;margin-top:24px}
+@media print{body{background:#fff;font-size:13pt}.wrap{max-width:none;padding:0}nav.toc,.links{display:none}
+ header.top{background:#0b2545!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}section{break-inside:avoid-page;border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="badge">🧑‍🏫 מערך / הנחיות למדריך · פנימי</span>
+  <h1>בלשי AI: מתי ה-AI טועה?</h1>
+  <p>התלמידים מבינים למה מודל שפה ממציא ("הזיה"), מתרגלים זיהוי טעויות, לומדים ארגז כלים לבדיקה, ומשפרים תשובות דרך ניסוח טוב יותר של השאלה.</p>
+  <div class="facts">
+    <div class="fact"><span>משך</span><b>45 דקות</b></div>
+    <div class="fact"><span>גילאים</span><b>ה׳–ט׳</b></div>
+    <div class="fact"><span>שקפים</span><b>24</b></div>
+    <div class="fact"><span>כלים</span><b>חינמיים, בלי מנוי</b></div>
+  </div>
+  <div class="links"><a href="presentation.html">⟵ מצגת מורה</a><a class="alt" href="./">תפריט הפעילות</a></div>
+</header>
+
+<nav class="toc"><a href="#goals">מטרות</a><a href="#prep">הכנה</a><a href="#flow">מהלך בקצרה</a><a href="#steps">מהלך מפורט</a><a href="#trap">שאלות מלכודת</a><a href="#tools">כלים ומדיניות</a><a href="#trouble">אם משהו לא עובד</a><a href="#success">מדדי הצלחה</a></nav>
+
+<section id="goals"><h2>מטרות השיעור</h2><ul class="goals">
+  <li>התלמידים יבינו ש-AI יכול לטעות ולהמציא ("הזיות"), ולמה זה קורה: המודל מנחש המשך סביר של טקסט ונשמע בטוח גם כשהוא טועה.</li>
+  <li>התלמידים יזהו ארבעה סוגי טעויות נפוצים: המצאת עובדות, שפה גבוהה מדי, תשובה מעורפלת בגלל בקשה מעורפלת, הקשר חסר.</li>
+  <li>התלמידים יכירו כלים פשוטים לבדיקת עובדות: לפתוח מקורות, להצליב שני מקורות, לשאול "אתה בטוח?", להשוות כלים, שכל ישר.</li>
+  <li>התלמידים ישפרו תשובה של AI על ידי חידוד השאלה: למי, מה בדיוק, באיזו צורה, עם מקורות.</li>
+</ul></section>
+
+<section id="prep"><h2>הכנה לפני השיעור</h2><ul class="checklist">
+  <li>לפתוח את המצגת ולבדוק מסך מלא (מקש F). חצים / רווח מתקדמים, וכל "הבא" חושף פריט אחד.</li>
+  <li>לפתוח בלשונית נפרדת כלי AI חינמי להדגמה על המקרן (Gemini או ChatGPT; Claude רק בחשבון של המדריך). לוודא שאתם מחוברים.</li>
+  <li><b>חזרה גנרלית למלכודת (שקף 21):</b> לנסות מראש 2–3 שאלות מלכודת מהרשימה למטה בכלי שתציגו, ולשמור צילום מסך של הזיה אחת שהצליחה. הכלים משתנים מהר, וזה הגיבוי שלכם.</li>
+  <li>לברר עם בית הספר: האם לתלמידים יש מכשירים, והאם מותר להם להיכנס ל-Gemini (חשבון בית-ספרי) או ל-ChatGPT (13+ באישור). אם לא, האתגר בשקף 20 נעשה על דף, והמדריך בודק על המקרן.</li>
+  <li>דפים ועטים לקבוצות (לאתגר הפרומפטים) ולוח לרישום נקודות בציד השגיאות.</li>
+  <li>לשונית פתוחה של ויקיפדיה העברית ושל קטלוג הספרייה הלאומית (nli.org.il), כדי להדגים בדיקה מהירה.</li>
+</ul></section>
+
+<section id="flow"><h2>מהלך בקצרה</h2><div class="tw"><table><thead><tr><th>זמן</th><th>שלב</th><th>שקפים</th><th>מה קורה</th></tr></thead><tbody>
+<tr><td class="min">5 דק׳</td><td>פתיחה</td><td>1–3</td><td>הצבעה: אפשר תמיד לסמוך על AI? ואחריה "עדות חשודה" (נפוליאון).</td></tr>
+<tr><td class="min">7 דק׳</td><td>למה ה-AI ממציא?</td><td>4–7</td><td>ניחוש המילה הבאה, מה קורה כשאין לו מושג, מה זו הזיה, ושאלת בזק.</td></tr>
+<tr><td class="min">8 דק׳</td><td>ציד שגיאות</td><td>8–10</td><td>3 סבבים של "אמת או המצאה" (12 משפטים), בקבוצות עם נקודות.</td></tr>
+<tr><td class="min">5 דק׳</td><td>סוגי טעויות</td><td>11–15</td><td>4 סוגי טעויות, ואחריהם 4 חידונים: "איזו טעות זו?"</td></tr>
+<tr><td class="min">3 דק׳</td><td>ארגז הכלים</td><td>16–17</td><td>5 דרכים לבדוק, ושאלת בזק על קישורים.</td></tr>
+<tr><td class="min">10 דק׳</td><td>משפרים את השאלה</td><td>18–20</td><td>לפני / אחרי, משפטי קסם, אתגר "הצילו את הפרומפט" בקבוצות (טיימר 8 דק׳).</td></tr>
+<tr><td class="min">4 דק׳</td><td>מלכודת חיה</td><td>21–22</td><td>הכיתה נותנת שאלה, המדריך מקליד על המקרן, ומצביעים מראש מה יקרה.</td></tr>
+<tr><td class="min">3 דק׳</td><td>סיכום וטיזר</td><td>23–24</td><td>כללי הבלש, חזרה לשאלת הפתיחה, והצצה לשיעור הבא.</td></tr>
+</tbody></table></div></section>
+
+<section id="steps"><h2>מהלך מפורט</h2>
+
+  <div class="phase">
+    <div class="phase-head"><h3>1. פתיחה: בלשי AI</h3><span class="time">5 דק׳</span><span class="slides">שקפים 1–3</span></div>
+    <p><b>שקף 1:</b> מציגים את הנושא ואת התפקיד: היום כולם בלשים.</p>
+    <div class="say">"היום אתם לא תלמידים. אתם יחידת בלשים. החשוד שלנו מדבר יפה מאוד, נשמע חכם מאוד, ולפעמים ממציא דברים. המשימה: לתפוס אותו."</div>
+    <p><b>שקף 2:</b> הצבעה ביד, והמדריך מעדכן את המונים בכפתורי + / −. לא מתווכחים עכשיו. אומרים שנחזור לשאלה בסוף.</p>
+    <p><b>שקף 3:</b> קוראים בקול את השאלה ואת תשובת ה-AI. שואלים: "נשמע אמין?" ונותנים לכמה תלמידים לענות. רק אז לוחצים "הבא" שלוש פעמים לחשיפת הטעויות.</p>
+    <div class="answer">נפוליאון נולד ב-1769 באז׳קסיו שבקורסיקה (האי עבר לצרפת שנה לפני כן). ב-1821 הוא מת, באי סנט הלנה. בתשובה יש שתי טעויות, והיא נשמעת בטוחה לגמרי.</div>
+    <div class="tip">המסר של השקף: הבעיה היא לא רק שה-AI טעה, אלא שהוא נשמע בדיוק אותו דבר כשהוא טועה וכשהוא צודק.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>2. למה ה-AI ממציא?</h3><span class="time">7 דק׳</span><span class="slides">שקפים 4–7</span></div>
+    <p><b>שקף 4:</b> לפני החשיפה שואלים את הכיתה: "איזו מילה באה אחרי 'בירת צרפת היא'?" ואז חושפים את העמודות.</p>
+    <div class="say">"צ׳אטבוט כמו ChatGPT או Gemini לא מחפש תשובה במגירה. הוא קרא כמות עצומה של טקסטים ולמד איזו מילה בדרך כלל באה אחרי איזו. כשהוא כותב, הוא בוחר כל פעם את המילה הבאה הכי סבירה. על פריז הוא ראה מיליוני דוגמאות, אז הניחוש כמעט תמיד נכון."</div>
+    <p><b>שקף 5:</b> אותו מנגנון, עם ספר שלא קיים. העמודות נמוכות ודומות: אין לו ניחוש ברור. אבל הוא בנוי להמשיך לכתוב, אז הוא בוחר שם שנשמע טוב, ואחריו שנה, ואחריה פרס.</p>
+    <div class="say">"שימו לב: הוא לא משקר בכוונה. אין לו כוונות בכלל. הוא ממשיך טקסט כך שיישמע נכון, ו'נשמע נכון' ו'נכון' זה לא אותו דבר."</div>
+    <div class="tip">המספרים בשקפים הם להמחשה בלבד, וכתוב את זה על השקף. אם תלמיד שואל: מודלים אמיתיים מחשבים הסתברות לכל מילה (בעצם לכל חלק של מילה) מתוך עשרות אלפי אפשרויות.</div>
+    <p><b>שקף 6:</b> המילה "הזיה" (Hallucination). חושפים 4 תכונות. בכרטיס האחרון מדגישים: כלים שמחפשים באינטרנט (ל-ChatGPT ול-Gemini יש חיפוש) טועים פחות בעובדות, אבל עדיין טועים. למשל, הם מסכמים לא נכון מה שמצאו או "ממציאים" מה כתוב בקישור.</p>
+    <p><b>שקף 7:</b> חידון. לוחצים על התשובה שהכיתה בחרה (או מקשים 1–4).</p>
+    <div class="answer">ב — הוא בחר מילים שנשמעות סבירות גם בלי לדעת.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>3. ציד שגיאות</h3><span class="time">8 דק׳</span><span class="slides">שקפים 8–10</span></div>
+    <p>מחלקים את הכיתה ל-3–4 קבוצות (לפי שורות). בכל משפט: 5 שניות חשיבה, הקבוצות מצביעות "נכון" או "המצאה", המדריך לוחץ על תשובת הרוב (או של קבוצה בתורה), וההסבר נפתח. נקודה לכל קבוצה שצדקה, ונקודת בונוס למי שמסביר <b>איך היה בודק</b>. ההוראות לתלמידים נמצאות גם בכפתור ה-? בשקף.</p>
+    <div class="say">"כל המשפטים האלה נכתבו בסגנון של AI. חלקם נכונים לגמרי, וחלקם המצאות. אל תסמכו על התחושה, תחשבו כמו בלשים."</div>
+    <div class="answer"><b>סבב 1 (שקף 8):</b> מגילת העצמאות 14.5.1948 ✓ · הירדן זורם מים המלח לכנרת ✗ (הפוך: מהכנרת דרומה לים המלח) · אור השמש כ-8 דקות ✓ (כ-8 דק׳ ו-20 שנ׳) · "הארי פוטר והמפתח הירוק" ✗ (אין ספר כזה).</div>
+    <div class="answer"><b>סבב 2 (שקף 9):</b> 120 חברי כנסת ✓ · החומה הסינית נראית מהירח ✗ (מיתוס) · אילן רמון, 2003 ✓ (מעבורת קולומביה, ינואר 2003) · ¾ מ-32 = 26 ✗ (התשובה: 24).</div>
+    <div class="answer"><b>סבב 3 (שקף 10):</b> "מחקר של מכון ויצמן" על זיכרון של 3 שניות לדגי זהב ✗ (מיתוס עם מקור מומצא; דגי זהב זוכרים חודשים) · 206 עצמות באדם בוגר ✓ · ציטוט "ילד בן שש" של איינשטיין ✗ (אין שום תיעוד שאמר אותו, והוא מיוחס גם לאחרים) · תל אביב נוסדה ב-1909 ✓ (אחוזת בית).</div>
+    <div class="tip">אחרי כל סבב שואלים: "מה בלבל אתכם?" התובנות שכדאי להגיע אליהן: מספרים ותאריכים מדויקים נשמעים אמינים · שם של מוסד מפורסם ("מכון ויצמן") לא הופך משהו לנכון · ציטוט מפורסם לא אומר שהוא אמיתי · כדאי לבדוק גם חישובים.</div>
+    <div class="warn">אם תלמיד מתווכח על עובדה, זו הזדמנות מעולה: "איך נבדוק?" ופותחים מקור אמין מול הכיתה. לא נכנסים לוויכוח מהזיכרון.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>4. סוגי טעויות</h3><span class="time">5 דק׳</span><span class="slides">שקפים 11–15</span></div>
+    <p><b>שקף 11:</b> חושפים 4 סוגים. מדגישים ששני הסוגים האחרונים הם לא באשמת ה-AI בלבד: שאלה מעורפלת או בלי הקשר מובילה לתשובה גרועה.</p>
+    <p><b>שקפים 12–15:</b> קוראים את השיחה, הכיתה מצביעה באצבעות (1–4), ולוחצים. ההסבר כולל גם את הדרך לשפר.</p>
+    <div class="answer">12 — 🎓 שפה גבוהה מדי (ב) · 13 — 🌫️ תשובה מעורפלת (ג) · 14 — 🦄 המצאת עובדות (א), הספר והסופרת לא קיימים · 15 — 🧩 הקשר חסר (ד), ה-AI לא ידע על האלרגיה.</div>
+    <div class="tip">בשאלה 14 אפשר לשאול: "ואיך הייתם בודקים שהספר לא קיים?" למשל בקטלוג הספרייה הלאומית או באתר של חנות ספרים.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>5. ארגז הכלים של הבלש</h3><span class="time">3 דק׳</span><span class="slides">שקפים 16–17</span></div>
+    <p><b>שקף 16:</b> חמישה כלים. אם יש זמן, מדגימים כלי אחד על המקרן: שואלים את ה-AI שאלה, ואז כותבים "אתה בטוח? מה בתשובה שלך עלול להיות לא נכון?" ומראים איך הוא מסייג.</p>
+    <div class="say">"שימו לב לכלי הראשון: לבקש מקורות זה לא מספיק. ה-AI יכול להמציא גם קישור או מקור. בלש אמיתי פותח את הקישור ובודק שכתוב שם מה שנטען."</div>
+    <p><b>שקף 17:</b> חידון בזק.</p>
+    <div class="answer">ב — פותחים את הקישור ובודקים שכתוב שם בדיוק את זה.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>6. משפרים את השאלה</h3><span class="time">10 דק׳</span><span class="slides">שקפים 18–20</span></div>
+    <p><b>שקף 18:</b> לפני / אחרי. שואלים: "מה הוספנו?" (למי: כיתה ו׳; מה בדיוק: 5 עובדות על ההיסטוריה; צורה: משפטים קצרים; מקורות). בזוג השני: "צעד אחר צעד" ו"בדוק את עצמך". אם יש זמן, מקלידים את שני הפרומפטים על המקרן ומשווים.</p>
+    <p><b>שקף 19:</b> משפטי קסם. כל "הבא" חושף משפט, ותלמיד מסביר מה הוא עושה.</p>
+    <p><b>שקף 20:</b> אתגר בקבוצות של 3–4. כל קבוצה בוחרת פרומפט גרוע אחד ומשפרת אותו על דף. מפעילים את הטיימר (8 דק׳). ההוראות לתלמידים בכפתור ה-?.</p>
+    <ul>
+      <li><b>יש מכשירים וכלי מאושר</b> (Gemini בחשבון בית-ספרי, או ChatGPT לגילאי 13+ באישור): הקבוצה מריצה את הפרומפט המקורי ואת המשופר ומשווה.</li>
+      <li><b>אין מכשירים:</b> כותבים על דף. ב-2 הדקות האחרונות המדריך מקליד על המקרן את הפרומפט המקורי ואת הגרסה של 2–3 קבוצות, והכיתה מצביעה איזו תשובה הכי טובה.</li>
+    </ul>
+    <div class="say">"תחשבו מה ה-AI לא יודע עליכם: מי אתם, בשביל מה אתם צריכים את זה, ואיך התשובה צריכה להיראות. כל דבר כזה שתוסיפו ישפר את התשובה."</div>
+    <div class="warn">אין לכתוב בפרומפט פרטים אישיים: לא שם מלא, לא שם בית הספר, לא תמונה ולא כתובת. "אני בכיתה ו׳" זה מספיק.</div>
+    <div class="tip">שאלות לעיבוד אחרי האתגר: למה התשובה הראשונה הייתה חלשה? האם הבקשה הייתה ברורה? איזה שינוי קטן עשה את ההבדל הכי גדול?</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>7. מלכודת חיה</h3><span class="time">4 דק׳</span><span class="slides">שקפים 21–22</span></div>
+    <p><b>שקף 21:</b> הכיתה מציעה שאלה שתגרום ל-AI להמציא. המדריך בוחר אחת (מסננים לפי הכללים בכפתור ה-?), והכיתה מצביעה מראש מה יקרה. רק אז מקלידים על המקרן, בכלי של המדריך.</p>
+    <p><b>שקף 22:</b> חושפים לפי מה שקרה בפועל. אין תוצאה "כושלת": גם אם הכלי סירב או תיקן, זה שיעור.</p>
+    <div class="say">"אם הוא הודה שהוא לא יודע, זה מצוין, ככה כלי טוב צריך להתנהג. אבל שימו לב: לא תמיד זה קורה, ובגלל זה אנחנו ממשיכים לבדוק."</div>
+    <p>פירוט על שאלות שעובדות ומה עושים כשהכלי לא נופל בפח נמצא ב<a href="#trap">פרק שאלות המלכודת</a>.</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>8. סיכום וטיזר</h3><span class="time">3 דק׳</span><span class="slides">שקפים 23–24</span></div>
+    <p><b>שקף 23:</b> חוזרים לשאלת הפתיחה: "אז, אפשר תמיד לסמוך?" ושואלים 2–3 תלמידים "מתי נסמוך על AI ומתי נבדוק בעצמנו?" ואז חושפים את כללי הבלש.</p>
+    <div class="tip">תשובה טובה מהכיתה: לרעיונות, לניסוח ולהסבר ראשוני אפשר להיעזר בו בחופשיות. עובדות, מספרים, ציטוטים, דברים לעבודה להגשה, בריאות וחדשות: תמיד בודקים.</div>
+    <p><b>שקף 24:</b> טיזר כללי: "בשיעור הבא נשתמש ב-AI כדי ליצור משהו משלנו."</p>
+  </div>
+</section>
+
+<section id="trap"><h2>שאלות מלכודת לסבב החי (שקף 21)</h2>
+  <p>כלים חינמיים של היום (במיוחד אלה שמחפשים ברשת) נופלים פחות משנה או שנתיים קודם. לכן כדאי לבחור שאלות שמובילות לפרטים שאי אפשר לבדוק ברשת, או שמניחות הנחה שגויה. השאלות הבאות עדיין מפילות כלים רבים, אבל <b>תמיד לנסות מראש</b> בכלי שתציגו.</p>
+  <h3>שאלות שבדרך כלל עובדות</h3>
+  <ul>
+    <li><b>ביטוי שלא קיים:</b> "מה המשמעות של הביטוי 'לרקוד על שני מלפפונים' ומאיפה הוא הגיע?" מודלים נוטים "להסביר" ביטוי מומצא בביטחון מלא.</li>
+    <li><b>פרטים מתוך ספר שלא קיים:</b> "סכם את הפרק השלישי בספר 'הדרקון מרחוב הרצל'" או "מי הדמות הראשית בספר…" בקשה לפרטים פנימיים מפילה יותר מהשאלה "האם הספר קיים".</li>
+    <li><b>ציטוט עם מספר עמוד:</b> "תן 3 ציטוטים מדויקים מתוך 'בילבי בת-גרב' בתרגום העברי, עם מספרי עמודים." הספר קיים, אבל מספרי העמודים (ולעיתים הציטוטים) מומצאים.</li>
+    <li><b>הנחה שגויה:</b> "למה בן-גוריון אסר להכניס טלפונים חכמים לכנסת?" (הוא נפטר ב-1973). כלי טוב יתקן, וכלי חלש ימציא סיבה.</li>
+    <li><b>ספירה בעברית:</b> "כמה פעמים מופיעה האות מ׳ במשפט: 'ממלכת המממים מממנת ממתקים'?" כלים רבים טועים בספירת אותיות, ואפשר לספור יחד על הלוח.</li>
+    <li><b>מקורות עם קישורים:</b> "תן 5 קישורים למאמרים בעברית על ההיסטוריה של הפלאפל." פותחים את הקישורים מול הכיתה, וחלקם שבורים או לא מתאימים.</li>
+  </ul>
+  <h3>אם הכלי סירב, תיקן או ענה נכון</h3>
+  <ul>
+    <li>זו הצלחה של הכלי, וזה המסר: "כלים משתפרים, ויש שאלות שהם יודעים לזהות. אבל ראינו בציד השגיאות שזה לא תמיד קורה."</li>
+    <li>מנסים גרסה קשה יותר: שאלת המשך על פרט ("ומה קרה בסוף הפרק?") או "בכל זאת, תנחש".</li>
+    <li>מנסים את אותה שאלה בכלי שני (למשל Gemini מול ChatGPT) ומשווים. זה בדיוק כלי "השוו שני כלים" מארגז הכלים.</li>
+    <li>מציגים את צילום המסך שהוכן מראש: "ככה זה נראה כשזה כן קורה."</li>
+  </ul>
+  <div class="warn">לא שואלים על אנשים אמיתיים מהכיתה, מבית הספר או מהמשפחה, ולא על ידוענים חיים ("מה עשה X…"), כי המצאה על אדם אמיתי עלולה להזיק לו. לא נוגעים בנושאים רגישים (מלחמה, דת, פוליטיקה) ולא מקלידים פרטים אישיים של אף אחד.</div>
+</section>
+
+<section id="tools"><h2>כלים ומדיניות שימוש</h2>
+  <div class="tools">
+    <div class="tool"><b>Gemini <span class="pill ok">חינמי</span></b><small>דורש חשבון גוגל. לא מיועד למתחת לגיל 13, ולבני נוער יש הגנות מוגברות. בחשבון בית-ספרי (Workspace for Education) זמין רק אם מנהל המערכת של בית הספר הפעיל אותו. בדרך כלל האפשרות הטובה ביותר לעבודה עצמית של תלמידים.</small></div>
+    <div class="tool"><b>ChatGPT <span class="pill mid">13+ באישור</span></b><small>יש תוכנית חינמית, ואפשר להשתמש גם בלי להתחבר. גיל מינימום 13, ומתחת ל-18 נדרש אישור הורה. לתלמידים רק מגיל 13 ובאישור בית הספר. אחרת, הדגמה על המקרן בלבד.</small></div>
+    <div class="tool"><b>Claude <span class="pill no">18+</span></b><small>יש תוכנית חינמית, אבל תנאי השימוש מחייבים גיל 18 ומעלה. רק המדריך מדגים על המקרן, והתלמידים לא מתחברים.</small></div>
+    <div class="tool"><b>Grok <span class="pill mid">אופציונלי</span></b><small>רק בחטיבות ביניים ממלכתיות (לא דתיות), כתוספת להשוואת כלים בסבב המלכודת. לא מופיע במצגת. בבית ספר דתי לא מזכירים אותו.</small></div>
+    <div class="tool"><b>DeepSeek / Qwen <span class="pill no">לא בשימוש</span></b><small>לא משתמשים עם תלמידים, בגלל פרטיות של קטינים.</small></div>
+    <div class="tool"><b>כלי בדיקה <span class="pill ok">חינמי</span></b><small>ויקיפדיה העברית, אתרי ממשלה (gov.il), קטלוג הספרייה הלאומית (לבדוק אם ספר קיים), מחשבון.</small></div>
+  </div>
+  <div class="warn">לעולם לא מבקשים מתלמידים להקליד פרטים אישיים (שם, ת״ז, תמונה, בית ספר) בשום כלי AI. כל הפעילות עובדת גם כשרק למדריך יש מסך עם AI.</div>
+  <p style="margin-top:10px;color:var(--muted);font-size:14px">גילאי השימוש נבדקו באוקטובר 2026. מדיניות הכלים משתנה, ולכן כדאי לבדוק שוב לפני כל מחזור.</p>
+</section>
+
+<section id="trouble"><h2>אם משהו לא עובד</h2><ul>
+  <li><b>אין אינטרנט:</b> המצגת עובדת מקובץ (חוץ מהגופן). כל השקפים חוץ מ-21–22 לא דורשים AI חי. בסבב המלכודת מציגים את צילום המסך שהוכן מראש, ובאתגר הפרומפטים הקבוצות מצביעות על הפרומפט המשופר הכי טוב בלי להריץ אותו.</li>
+  <li><b>כלי ה-AI חסום ברשת של בית הספר:</b> משתמשים בנקודה חמה מהטלפון של המדריך להדגמה בלבד. אם גם זה לא עובד, נוהגים כמו כשאין אינטרנט.</li>
+  <li><b>אין מכשירים לתלמידים או שאין אישור:</b> האתגר בשקף 20 נעשה על דף, והמדריך מריץ את הפרומפטים על המקרן.</li>
+  <li><b>הכיתה מהירה:</b> בשקף 18 מריצים את שני זוגות "לפני / אחרי" על המקרן ומשווים. בסבב המלכודת מנסים 2–3 שאלות ומשווים בין שני כלים. אפשר גם להוסיף סבב שבו קבוצה כותבת "משפט AI" אמיתי או מומצא, והקבוצה האחרת מנחשת.</li>
+  <li><b>הכיתה איטית:</b> בציד השגיאות עושים רק סבבים 1 ו-3. בסוגי הטעויות עושים רק את שקפים 12 ו-15. את המלכודת החיה (21–22) אפשר לקצר לשאלה אחת או לדלג עליה, אבל לא לדלג על הסיכום.</li>
+  <li><b>תלמיד אומר "אז AI זה שקר, לא משתמשים בו":</b> מחזירים לאיזון. הוא כלי מעולה לרעיונות ולהסברים, רק שאת העובדות בודקים.</li>
+</ul></section>
+
+<section id="success"><h2>מדדי הצלחה</h2><ul>
+  <li>תלמידים מסבירים במשפט אחד למה AI ממציא ("הוא מנחש מה נשמע נכון, לא בודק מה נכון").</li>
+  <li>רוב הכיתה מזהה נכון לפחות 8 מתוך 12 משפטים בציד השגיאות, ויודעת להגיד איך הייתה בודקת.</li>
+  <li>תלמידים משייכים דוגמה לסוג הטעות הנכון.</li>
+  <li>כל קבוצה מוסיפה לפרומפט לפחות שלושה דברים: למי, מה בדיוק, באיזו צורה או מקורות.</li>
+  <li>בסיכום, תלמידים נותנים דוגמה אחת למצב שבו חייבים לבדוק את ה-AI.</li>
+</ul></section>
+
+<footer>© Tech It Easy · מסמך פנימי למדריכים</footer>
+
+</div>
+</body>
+</html>

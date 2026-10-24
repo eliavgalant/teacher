@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מערך למדריך · היכרות עם AI | Tech It Easy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Heebo:wght@400;500;700&display=swap">
+<style>
+/* ===== TIE instructor guide kit v1 — light, readable, prints well. Internal: for the instructor only. ===== */
+:root{--paper:#f6f8fb;--sheet:#ffffff;--ink:#14213a;--muted:#55657f;--line:#dbe3ee;--brand:#0b2545;--cyan:#0fb5d6;--cyan-soft:#e3f7fb;
+ --violet:#6e56cf;--yellow-soft:#fff6dc;--yellow:#a46a00;--green:#0f8a5f;--green-soft:#e2f5ec;--red:#b42318;--red-soft:#fdecea;
+ --display:"Rubik",Arial,sans-serif;--body:"Heebo",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:900px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-left)) 60px}
+a{color:#0a7ea4}
+header.top{background:linear-gradient(135deg,#07101f,#0f2547);color:#fff;border-radius:22px;padding:26px 28px;display:grid;gap:12px}
+.badge{display:inline-flex;width:max-content;gap:8px;align-items:center;padding:5px 12px;border-radius:999px;background:rgba(49,232,255,.14);color:#7cefff;font-weight:700;font-size:14px}
+header.top h1{font-family:var(--display);font-size:clamp(28px,4vw,40px);margin:0;line-height:1.15}
+header.top p{margin:0;color:#b9c8df}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.fact{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 12px}
+.fact span{display:block;font-size:13px;color:#9fb3cf}.fact b{font-size:16px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.links a{color:#06111e;background:#31e8ff;text-decoration:none;font-weight:700;padding:8px 14px;border-radius:11px;font-size:15px}
+.links a.alt{background:rgba(255,255,255,.12);color:#fff}
+nav.toc{margin:22px 0 4px;display:flex;flex-wrap:wrap;gap:8px}
+nav.toc a{font-size:14px;font-weight:700;text-decoration:none;padding:6px 12px;border-radius:999px;background:var(--sheet);border:1px solid var(--line);color:var(--brand)}
+section{background:var(--sheet);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:16px}
+h2{font-family:var(--display);font-size:24px;margin:0 0 12px;color:var(--brand)}
+h3{font-family:var(--display);font-size:19px;margin:18px 0 6px;color:var(--brand)}
+p{margin:0 0 10px}
+ul,ol{margin:0 0 10px;padding-inline-start:22px}
+li{margin-bottom:4px}
+.goals li::marker{color:var(--cyan)}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{font-family:var(--display);font-size:14px;color:var(--muted);background:#f1f5fa}
+td.min{white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+.phase{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}
+.phase:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.phase-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:6px}
+.phase-head h3{margin:0}
+.time{font-weight:700;font-size:14px;color:#0a7ea4;background:var(--cyan-soft);padding:2px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+.slides{font-size:14px;color:var(--muted)}
+.say{background:var(--cyan-soft);border-inline-start:4px solid var(--cyan);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.say::before{content:"🗣️ מה אומרים: ";font-weight:700;color:#0a7ea4}
+.tip{background:var(--yellow-soft);border-inline-start:4px solid #e0a800;border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.tip::before{content:"💡 דגש: ";font-weight:700;color:var(--yellow)}
+.warn{background:var(--red-soft);border-inline-start:4px solid var(--red);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.warn::before{content:"⚠️ שימו לב: ";font-weight:700;color:var(--red)}
+.answer{background:var(--green-soft);border-inline-start:4px solid var(--green);border-radius:0 12px 12px 0;padding:10px 14px;margin:8px 0}
+.answer::before{content:"✅ תשובה: ";font-weight:700;color:var(--green)}
+.checklist{list-style:none;padding:0}
+.checklist li::before{content:"☐ ";color:var(--muted)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.tool{border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.tool b{display:block;font-family:var(--display)}
+.tool small{color:var(--muted);display:block}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 9px;margin-inline-start:4px}
+.pill.ok{background:var(--green-soft);color:var(--green)}.pill.mid{background:var(--yellow-soft);color:var(--yellow)}.pill.no{background:var(--red-soft);color:var(--red)}
+footer{color:var(--muted);font-size:14px;text-align:center;margin-top:24px}
+@media print{body{background:#fff;font-size:13pt}.wrap{max-width:none;padding:0}nav.toc,.links{display:none}
+ header.top{background:#0b2545!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}section{break-inside:avoid-page;border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="badge">🧑‍🏫 מערך / הנחיות למדריך · פנימי</span>
+  <h1>היכרות עם AI — האם הוא באמת יודע?</h1>
+  <p>מפגש פתיחת השנה. התלמידים מצטרפים לצוות "חוקרי AI" ובודקים מה AI יודע באמת, למה הוא יכול להישמע משכנע ולטעות, ואיך מתקשרים איתו בצורה ברורה.</p>
+  <div class="facts">
+    <div class="fact"><span>משך</span><b>80–90 דק׳ (או 45)</b></div>
+    <div class="fact"><span>גילאים</span><b>ה׳–ט׳</b></div>
+    <div class="fact"><span>מיקום ברצף</span><b>שיעור 1 בשנה</b></div>
+    <div class="fact"><span>כלים</span><b>חינמיים · גם בלי מכשירים</b></div>
+  </div>
+  <div class="links"><a href="presentation.html">⟵ מצגת מורה</a><a class="alt" href="./">תפריט הפעילות</a><a class="alt" href="https://view.genially.com/675eb3fdf7db61703362ecdc" target="_blank" rel="noopener">AI או לא AI · קצר (Genially)</a><a class="alt" href="https://canva.link/2nsykvjrzzzzhvb" target="_blank" rel="noopener">AI או לא AI · ארוך (Canva)</a></div>
+</header>
+
+<nav class="toc"><a href="#goals">מטרות</a><a href="#prep">הכנה</a><a href="#flow">מהלך בקצרה</a><a href="#short">מסלול 45 דק׳</a><a href="#steps">מהלך מפורט</a><a href="#tools">כלים ומדיניות</a><a href="#trouble">אם משהו לא עובד</a><a href="#success">מדדי הצלחה</a></nav>
+
+<section id="goals"><h2>מטרות השיעור</h2><ul class="goals">
+  <li>התלמידים יכירו את AI ככלי טכנולוגי רחב, לא רק כצ׳אטבוט.</li>
+  <li>התלמידים יוכלו להסביר בפשטות מהו מודל סטטיסטי (לומד דפוסים מדוגמאות ומעריך סיכוי), ולמה תשובה משכנעת היא לא בהכרח נכונה.</li>
+  <li>התלמידים יבינו ש-AI מפיק תוצאות מרשימות אבל יכול גם לטעות או להמציא מידע.</li>
+  <li>התלמידים יזהו אסטרטגיות תקשורת שעוזרות להעביר הוראות בצורה ברורה, מדויקת ומדורגת.</li>
+  <li>התלמידים יכירו עקרונות ראשונים לבקשה טובה מ-AI: מטרה, הקשר, פרטים, מגבלות, פורמט, דוגמה, שיפור ובדיקה.</li>
+</ul>
+<p><b>סיפור המסגרת:</b> התלמידים הם צוות "חוקרי AI" שפותח את "תיק חקירה #1". המפגש הבא הוא "תיק חקירה #2" (בטיחות ופרטיות).</p>
+</section>
+
+<section id="prep"><h2>הכנה לפני השיעור</h2><ul class="checklist">
+  <li>לפתוח את המצגת ולבדוק מסך מלא (מקש F). חיצים / רווח מקדמים, וכל לחיצה על "הבא" חושפת את הפריט הבא בשקף.</li>
+  <li>לבחור מראש: סבב תמונות קצר (Genially, 7–10 דק׳), ארוך (Canva, 15–20 דק׳) או רק סבב הטקסטים שבתוך המצגת. לפתוח את הקישור שבחרתם בלשונית ולוודא שהוא נטען ברשת של בית הספר.</li>
+  <li>לוח וטושים. אם לוח המחיקה הוא גם מסך ההקרנה, להשאיר אזור פנוי לציור במשחק ההכוונות.</li>
+  <li>משחק ההכוונות, חלופה א׳: לפנות מסלול קצר ובטוח ולבחור נקודת יעד או חפץ. חלופה ב׳: להחליט איפה המצייר עומד כך שהגב שלו למסך (או להציג את הציור הסודי רק על מסך המחשב).</li>
+  <li>פעילות הגיבוי (צ׳אטבוטים): לבדוק מראש אילו כלים פתוחים ברשת בית הספר, ואילו חשבונות בית ספר מחוברים במכשירים. עובדים רק עם חשבונות שבית הספר אישר.</li>
+  <li>לפתוח Claude בחשבון של המדריך, אם מתכננים להראות אותו על המסך.</li>
+</ul></section>
+
+<section id="flow"><h2>מהלך בקצרה · 90 דקות</h2><div class="tw"><table><thead><tr><th>זמן</th><th>שלב</th><th>שקפים</th><th>מה קורה</th></tr></thead><tbody>
+<tr><td class="min">8 דק׳</td><td>פתיחה ומסגור השנה</td><td>1–3</td><td>היכרות, "טכנולוגיה היא מכחול", 3 שאלות החקירה של היום.</td></tr>
+<tr><td class="min">12 דק׳</td><td>מה אנחנו יודעים?</td><td>4–6</td><td>שאלות פתוחות, סקר כלים, AI או תוכנה רגילה.</td></tr>
+<tr><td class="min">10–20 דק׳</td><td>AI או לא AI</td><td>7–10</td><td>סבב תמונות (קישור חיצוני) ואז 3 סבבי טקסט במצגת: שירים, הודעות, עובדות.</td></tr>
+<tr><td class="min">12 דק׳</td><td>מהו מודל סטטיסטי?</td><td>11–16</td><td>משחק חתול/כלב, חוקים מול דוגמאות, משחק המילה הבאה, "טועה, לא משקר", AI מסביבנו.</td></tr>
+<tr><td class="min">5 דק׳</td><td>השמש</td><td>17</td><td>סיעור מוחות: מה יעזור לקבל תוצאה טובה? רושמים ולא מסכמים.</td></tr>
+<tr><td class="min">13 דק׳</td><td>משחק ההכוונות</td><td>18–19</td><td>זוגות, חלופה א׳ (מסלול) או ב׳ (ציור לפי הוראות).</td></tr>
+<tr><td class="min">8 דק׳</td><td>תחקיר</td><td>20 (+ חזרה ל-17)</td><td>אסטרטגיות שעבדו, ואז השוואה לשמש.</td></tr>
+<tr><td class="min">8 דק׳</td><td>מדברים עם AI</td><td>21–24</td><td>8 עקרונות, כללי מול מדויק (2 דוגמאות), חידון.</td></tr>
+<tr><td class="min">(20–25 דק׳)</td><td>גיבוי / העמקה: שואלים את הצ׳אטבוטים</td><td>25–26</td><td>רק אם נשאר זמן או בקבוצה מהירה.</td></tr>
+<tr><td class="min">5 דק׳</td><td>סיכום וטיזר</td><td>27–28</td><td>AI הוא כלי חזק, לא מקור אמת. בפעם הבאה: בטיחות ופרטיות.</td></tr>
+</tbody></table></div>
+<p style="margin-top:10px"><b>חלוקה לשני מפגשים של 45 דק׳:</b> מפגש א׳ = שקפים 1–16 (כולל סבב התמונות). מפגש ב׳ = חזרה של 3 דק׳ על "סביר ≠ נכון" (שקף 14), ואז שקפים 17–28 כולל פעילות הצ׳אטבוטים.</p>
+</section>
+
+<section id="short"><h2>מסלול מקוצר · 45 דקות</h2><div class="tw"><table><thead><tr><th>זמן</th><th>שלב</th><th>שקפים</th><th>מה מדלגים</th></tr></thead><tbody>
+<tr><td class="min">3 דק׳</td><td>פתיחה</td><td>1–3</td><td>היכרות שמית קצרה בלבד.</td></tr>
+<tr><td class="min">4 דק׳</td><td>מה יודעים</td><td>4–5</td><td>3 שאלות מתוך 6. מדלגים על שקף 6.</td></tr>
+<tr><td class="min">6 דק׳</td><td>AI או לא AI</td><td>7–10</td><td>בלי סבב התמונות החיצוני, רק 3 סבבי הטקסט.</td></tr>
+<tr><td class="min">9 דק׳</td><td>מודל סטטיסטי</td><td>11–15</td><td>מדלגים על שקף 16 (או מזכירים אותו במשפט).</td></tr>
+<tr><td class="min">3 דק׳</td><td>השמש</td><td>17</td><td>4–5 רעיונות בלבד.</td></tr>
+<tr><td class="min">8 דק׳</td><td>משחק ההכוונות</td><td>18–19</td><td>רק חלופה ב׳ (ציור), 3 זוגות מול הכיתה.</td></tr>
+<tr><td class="min">4 דק׳</td><td>תחקיר</td><td>20 → 17</td><td>—</td></tr>
+<tr><td class="min">5 דק׳</td><td>עקרונות</td><td>21–22</td><td>מדלגים על 23–26.</td></tr>
+<tr><td class="min">3 דק׳</td><td>סיכום וטיזר</td><td>27–28</td><td>—</td></tr>
+</tbody></table></div>
+<p style="margin-top:10px">ברשימת הנושאים מימין במצגת אפשר ללחוץ על נושא או שקף כדי לקפוץ אליו ישירות.</p>
+</section>
+
+<section id="steps"><h2>מהלך מפורט</h2>
+
+  <div class="phase">
+    <div class="phase-head"><h3>1. פתיחה ומסגור השנה</h3><span class="time">8 דק׳</span><span class="slides">שקפים 1–3</span></div>
+    <p>מפגש ראשון: צריך להיות חווייתי ומסקרן, לא הרצאת מבוא. סבב שמות קצר (שם ומשהו אחד שהייתם רוצים לבנות או ליצור השנה). שקף 2: ארבעה כרטיסים נחשפים בלחיצה. שקף 3: שלוש שאלות החקירה, שנחזור אליהן בסיכום.</p>
+    <div class="say">"אנחנו לא באים רק ללמוד על איזה כפתור ללחוץ. נבדוק מה הטכנולוגיה יודעת לעשות, איפה היא טועה, ואיך אנחנו משתמשים בה כדי להפוך רעיון למשהו אמיתי. טכנולוגיה היא כמו מכחול: מה שחשוב זה מה שאתם מציירים איתו."</div>
+    <div class="tip">"שמירת גרסאות" (כרטיס 4) היא רעיון שיחזור כל השנה. מספיק עכשיו משפט אחד: כל פעם משפרים ושומרים את הגרסה הקודמת.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>2. מה אנחנו יודעים על AI?</h3><span class="time">12 דק׳</span><span class="slides">שקפים 4–6</span></div>
+    <p><b>שקף 4:</b> כל לחיצה חושפת שאלה. המטרה היא להוציא ידע מהכיתה לפני שמלמדים. לא חייבים לתקן כל טעות, רק לאסוף. אפשר לרשום על הלוח שמות של כלים שעולים.</p>
+    <p><b>שקף 5:</b> סקר בהרמת ידיים. המדריך לוחץ + לפי מספר הידיים. הכלי המוביל מקבל מסגרת צהובה.</p>
+    <p><b>שקף 6:</b> לכל שורה הכיתה מצביעה, והמדריך לוחץ על התשובה שבחרו. מסגרת ירוקה פירושה שצדקו, אדומה שטעו, ומתחת מופיע הסבר קצר.</p>
+    <div class="answer">מחשבון ושעון מעורר הם תוכנה רגילה. המלצות יוטיוב, זיהוי פנים והשלמת מילים במקלדת הם AI. ההבדל: בתוכנה רגילה מישהו כתב חוקים, וב-AI המערכת למדה מדוגמאות.</div>
+    <div class="tip">השלמת המילים במקלדת מכינה את משחק המילה הבאה (שקף 13). כדאי לומר "נחזור לזה".</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>3. AI או לא AI</h3><span class="time">10–20 דק׳</span><span class="slides">שקפים 7–10</span></div>
+    <p><b>שקף 7:</b> מסבירים את החוקים (מסתכלים, מצביעים, מנמקים). כפתורי "סבב תמונות" פותחים את הפעילות החיצונית בלשונית חדשה: <a href="https://view.genially.com/675eb3fdf7db61703362ecdc" target="_blank" rel="noopener">גרסה קצרה ב-Genially</a> (7–10 דק׳) או <a href="https://canva.link/2nsykvjrzzzzhvb" target="_blank" rel="noopener">גרסה ארוכה ב-Canva</a> (15–20 דק׳). מציגים תמונה, מצביעים, שואלים 1–2 תלמידים למה, וחוזרים למצגת.</p>
+    <p><b>שקפים 8–10: סבבי טקסט בתוך המצגת</b> (לא צריך תמונות או אינטרנט). מקריאים, הכיתה מצביעה, לוחצים על הכפתור שהרוב בחר, ואז "הבא" חושף את המסקנה.</p>
+    <div class="answer">שקף 8: הקטע הראשון הוא של המשוררת רחל (מתוך "ואולי"). הקטע השני נכתב ב-AI בחיקוי הסגנון שלה.<br>שקף 9: <b>שתי ההודעות נכתבו ב-AI</b>. ההודעה עם הסלנג נכתבה כשביקשו "כמו ילד בן 12". זה הטריק של הסבב.<br>שקף 10: האמנון ("דג פטרוס") והכנרת כאגם המים המתוקים הנמוך בעולם הם אמת. "הסלמנדרה הכחולה" היא המצאה.</div>
+    <div class="say">"מה בתמונה או בטקסט גרם לכם לחשוד? ואם רובנו טעינו, מה זה אומר על היכולת שלנו לזהות AI רק לפי איך שהוא נראה?"</div>
+    <div class="tip">המטרה היא לא "לתפוס" את התלמידים, אלא שיחפשו סימנים, ינמקו ויבינו שתוצר מלאכותי יכול להיראות אמין מאוד. שקף 10 מוביל ישר לשאלה "למה AI ממציא?".</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>4. מהו מודל סטטיסטי?</h3><span class="time">12 דק׳</span><span class="slides">שקפים 11–16</span></div>
+    <p><b>שקף 11, משחק הדפוסים:</b> לפני כל לחיצה שואלים: "חתול או כלב? כמה אתם בטוחים?" כל לחיצה חושפת רמז ואת ההערכה המעודכנת של המודל. כדאי לעצור על הרמז הראשון: "ארבע רגליים וזנב" לא משנה כלום, כי זה פרט שלא עוזר להבדיל. בסוף: "למה לא 100%?"</p>
+    <div class="answer">כי המודל לא "יודע", הוא מעריך סיכוי. יכול להיות כלב קטן עם שפם שמגרגר כמו חתול (בצחוק). תמיד יש מקום לטעות.</div>
+    <p><b>שקף 12:</b> חוקים מול דוגמאות. משאירים את התיבה הימנית ושואלים מה הבעיה בחוק "אם יש שפם אז חתול". רק אחר כך חושפים את המודל הסטטיסטי.</p>
+    <p><b>שקף 13, משחק המילה הבאה:</b> הכיתה צועקת ניחושים לפני החשיפה, ואז חושפים את המילים מהסבירה ביותר והלאה. המסר: צ׳אטבוט מייצר תשובה מילה אחרי מילה לפי ההמשך הסביר.</p>
+    <p><b>שקף 14:</b> אותו מנגנון, אבל ההמשך הסביר ביותר שגוי, כי השאלה עצמה מניחה משהו לא נכון. מעבירים כאן את המסר המרכזי של השיעור: סביר ≠ נכון.</p>
+    <div class="warn">האחוזים בשקפים 11, 13 ו-14 הם להמחשה ולא מדידה אמיתית, וכך כתוב גם בשקף. צ׳אטבוטים מודרניים לרוב כן יתקנו שאלה כמו "מי נחת על מאדים". הדוגמה מראה את המנגנון הבסיסי, לא את מה שכל כלי יענה היום.</div>
+    <p><b>שקף 15:</b> "טועה, לא משקר".</p>
+    <div class="tip">עדיף לומר "AI יכול לטעות או להמציא" ולא "AI משקר". אין לו כוונה כמו לאדם. הבעיה היא שהתוצאה נשמעת בטוחה גם כשהיא לא נכונה.</div>
+    <p><b>שקף 16:</b> AI שאינו צ׳אטבוט: נהיגה אוטונומית, רפואה, מוקדי חירום, זיהוי פנים, סוכנים. שואלים: "באיזה מהם הכי חשוב שלא יטעה? למה?"</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>5. השמש: לפני המשחק</h3><span class="time">5 דק׳</span><span class="slides">שקף 17</span></div>
+    <p>שואלים: "מה לדעתכם יעזור לנו לקבל מ-AI את התוצאה שאנחנו רוצים?" לוחצים על קרן ריקה וכותבים בה את הרעיון של התלמיד (8 קרניים). אפשר גם לצייר שמש על הלוח במקביל.</p>
+    <div class="tip">לא מסכמים עדיין "כללים נכונים" ולא מתקנים. רק אוספים. הטקסט נשמר כל עוד לא מרעננים את הדף: חוזרים לשקף 17 אחרי התחקיר (מהרשימה מימין, "השמש").</div>
+    <div class="warn">רענון הדף מוחק את מה שנכתב בשמש. אם צריך, לצלם את המסך בטלפון או להעתיק ללוח.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>6. משחק ההכוונות</h3><span class="time">13 דק׳</span><span class="slides">שקפים 18–19</span></div>
+    <p>כפתור <b>?</b> פותח את הוראות המשחק לכיתה. טיימר של 2 דקות לכל זוג.</p>
+    <p><b>חלופה א׳, מסלול:</b> תלמיד אחד מכוון ותלמיד שני מבצע: מגיע לנקודה בכיתה, מניח חפץ במקום מסוים או מגיע ללוח ומצייר סימן. עצימת עיניים רק אם המסלול נקי ובטוח, בלי ריצה ובהשגחה צמודה.</p>
+    <p><b>חלופה ב׳, ציור (שקף 19):</b> המצייר עומד ליד הלוח עם הגב למסך. כל "הבא" חושף ציור סודי אחד (בית, רובוט, טיל), מהקל לקשה. המתאר משתמש בצורות, כיוון, גודל ומיקום, בלי ידיים. בסוף משווים את הציור למקור. אפשר לתת לשני זוגות לתאר את אותו ציור ולהשוות.</p>
+    <div class="tip">בקבוצה גדולה מספיקים 4–5 זוגות מול הכיתה. בקבוצה קטנה כל הזוגות משתתפים. לא אומרים עכשיו "ככה כותבים פרומפט". המשחק עומד בפני עצמו.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>7. תחקיר: מה עבד?</h3><span class="time">8 דק׳</span><span class="slides">שקף 20 ← חזרה לשקף 17</span></div>
+    <p>מתמקדים באסטרטגיות ולא רק ב"מה היה קשה". קודם שואלים, ורק אחרי שהתלמידים עצמם העלו רעיון חושפים את הכרטיס שמתאים לו.</p>
+    <ul>
+      <li>איזו הוראה הייתה הכי ברורה ועזרה מיד?</li>
+      <li>מי התחיל בהגדרת המטרה לפני שנתן הוראות?</li>
+      <li>מי חילק את המשימה לשלבים קטנים?</li>
+      <li>מי השתמש בצורות מוכרות ובכיוונים? האם עזר לציין גודל, מיקום או סדר?</li>
+      <li>איך ידעתם שהצד השני הבין? מה הייתם משנים בסיבוב נוסף?</li>
+    </ul>
+    <p>אחר כך חוזרים לשמש (שקף 17): מה כבר היה שם? מה חדש? אילו רעיונות התחזקו? מוסיפים קרניים אם יש מקום.</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>8. מדברים עם AI: עקרונות ודוגמאות</h3><span class="time">8 דק׳</span><span class="slides">שקפים 21–24</span></div>
+    <div class="say">"המשחק לא היה תרגול של AI. הוא היה תרגול של תקשורת ברורה. בואו נראה אילו מהאסטרטגיות שגילינו עוזרות גם כשמבקשים משהו מ-AI."</div>
+    <p><b>שקף 21:</b> 8 עקרונות, כל לחיצה חושפת אחד. כדאי לקשר כל עיקרון לרעיון מהשמש או מהמשחק (למשל: מטרה קודם במשחק = מטרה ברורה בבקשה).</p>
+    <p><b>שקפים 22–23:</b> שואלים מה חסר בבקשה הכללית, ורק אז חושפים את הבקשה המדויקת ואת התגיות של מה שהוספנו. אם יש זמן, מקלידים את שתי הבקשות לכלי על המקרן ומשווים.</p>
+    <p><b>שקף 24:</b> חידון. לוחצים על התשובה שהכיתה בחרה (או מקשים 1–4).</p>
+    <div class="answer">ג׳: יש בה הקשר, מטרה, מגבלה ופורמט.</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>9. גיבוי / העמקה: שואלים את הצ׳אטבוטים</h3><span class="time">20–25 דק׳</span><span class="slides">שקפים 25–26</span></div>
+    <p>למפגש ארוך, לקבוצה שמתקדמת מהר או לפתיחת המפגש השני. זוגות או שלשות, וכל קבוצה עובדת עם כלי אחר. מספיקים 3–4 כלים (ראו מדיניות למטה). כפתור <b>?</b> פותח את ההוראות לכיתה.</p>
+    <ol>
+      <li><b>סבב 1:</b> כולם שואלים את השאלה מהשקף בדיוק כמו שהיא.</li>
+      <li><b>סבב 2:</b> התלמידים משפרים את הבקשה בעצמם (הקשר, פירוט, פורמט). הדוגמה בשקף היא רק השראה.</li>
+      <li><b>שקף 26:</b> ממלאים יחד את טבלת ההשוואה (לוחצים על תא וכותבים): מה חזר אצל כולם? מה מפתיע? איזו תשובה הכי שימושית?</li>
+    </ol>
+    <p><b>דוגמת חלוקה:</b> שתי קבוצות עם Gemini (חשבון בית הספר), קבוצה עם ChatGPT (רק בגילאי 13+ ובאישור בית הספר), קבוצה עם Copilot, ו-Claude מוצג על המקרן על ידי המדריך.</p>
+    <div class="tip">המטרה היא לא להכריז על "הצ׳אטבוט הכי טוב", אלא לראות שכלים שונים עונים אחרת, ושאיכות השאלה והבדיקה חשובות מאוד.</div>
+    <div class="warn">התלמידים לא מקלידים שם, שם בית ספר, תמונה או כל פרט אישי. לא משתפים חשבונות או סיסמאות בין תלמידים, ולא מחברים חשבון אישי של המדריך למכשיר של תלמיד.</div>
+    <p><b>בלי מכשירים לתלמידים:</b> המדריך שואל את אותה שאלה ב-2–3 כלים על המקרן, הכיתה מצביעה איזו תשובה שימושית יותר, ואז מנסחת יחד את סבב 2.</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h3>10. סיכום וטיזר</h3><span class="time">5 דק׳</span><span class="slides">שקפים 27–28</span></div>
+    <p>חוזרים לשלוש שאלות החקירה משקף 3, וחושפים את ארבע התובנות אחת אחת. אפשר לבקש מתלמיד לנסח כל תובנה במילים שלו לפני החשיפה.</p>
+    <div class="say">"AI הוא כלי חזק, לא מקור אמת. תשובה שוטפת היא לא הוכחה. האחריות שלנו היא להגדיר מטרה, לתת הקשר, לדייק, לבדוק ולשפר. בפעם הבאה, בתיק חקירה #2: מה לא משתפים עם AI, איך בודקים מידע, ומתי לא כדאי לסמוך על כלי אוטומטי."</div>
+    <div class="tip">לא מעמיסים עכשיו את כל נושא הבטיחות. משאירים סקרנות למפגש הבא (פעילות <code>ai-safety</code>).</div>
+  </div>
+</section>
+
+<section id="tools"><h2>כלים ומדיניות שימוש</h2>
+  <p>השיעור עובד במלואו גם כשרק למדריך יש מחשב ומקרן. רק פעילות הגיבוי (שקפים 25–26) צריכה כלי AI, וגם היא אפשרית כהדגמה על המקרן. עד דצמבר עובדים בכלים חינמיים בלבד.</p>
+  <div class="tools">
+    <div class="tool"><b>Gemini <span class="pill ok">חינמי · מומלץ לתלמידים</span></b><small>דורש חשבון גוגל. בחשבון בית ספר (Workspace for Education) רק אם מנהל המערכת הפעיל אותו. מתחת לגיל 13 רק דרך Family Link של ההורים, ולא בכל מדינה.</small></div>
+    <div class="tool"><b>ChatGPT <span class="pill mid">13+ באישור</span></b><small>יש תוכנית חינמית. גיל מינימום 13, ומתחת ל-18 נדרש אישור הורה. רק לתלמידי 13+ ובאישור בית הספר, אחרת הדגמה על המקרן.</small></div>
+    <div class="tool"><b>Microsoft Copilot <span class="pill mid">13+</span></b><small>חינמי. גיל מינימום 13 לפי Microsoft. מתאים לחט״ב כשבית הספר מאשר.</small></div>
+    <div class="tool"><b>Perplexity <span class="pill mid">לבדוק</span></b><small>יש גרסה חינמית. לבדוק את תנאי הגיל ואת אישור בית הספר לפני שימוש עם תלמידים.</small></div>
+    <div class="tool"><b>Claude <span class="pill no">18+ · הדגמה בלבד</span></b><small>יש תוכנית חינמית, אבל תנאי השימוש דורשים גיל 18+. תלמידים לא נכנסים. המדריך מדגים על המקרן מהחשבון שלו.</small></div>
+    <div class="tool"><b>Grok · DeepSeek · Qwen <span class="pill no">לא בשיעור הזה</span></b><small>DeepSeek ו-Qwen לא משמשים עם תלמידים (פרטיות של קטינים). Grok לא נדרש כאן: הוא אפשרי רק בחט״ב ממלכתית, ולעולם לא בבית ספר דתי.</small></div>
+  </div>
+  <p style="margin-top:12px"><b>כלל ברזל:</b> לא מכניסים לשום כלי AI פרטים אישיים (שם, ת״ז, תמונה, בית ספר).</p>
+</section>
+
+<section id="trouble"><h2>אם משהו לא עובד</h2><ul>
+  <li><b>אין אינטרנט:</b> המצגת עובדת בלי רשת (רק הגופנים עלולים להיראות אחרת). מדלגים על סבב התמונות החיצוני ומשתמשים בסבבי הטקסט (שקפים 8–10). את פעילות הצ׳אטבוטים מחליפים בעוד סבב של משחק ההכוונות או בתרגיל "שפרו את הבקשה" על הלוח, בלי כלי.</li>
+  <li><b>Genially או Canva חסומים:</b> מדלגים ישר לשקף 8. סבבי הטקסט מעבירים את אותו מסר.</li>
+  <li><b>כלי AI חסום בבית הספר:</b> פעילות הצ׳אטבוטים עוברת להדגמה של המדריך על המקרן, עם כלי שכן פתוח.</li>
+  <li><b>אין מקום בטוח למשחק בתנועה:</b> משחקים רק בחלופה ב׳ (ציור).</li>
+  <li><b>הכיתה מהירה:</b> מוסיפים את פעילות הצ׳אטבוטים, או סבב שני במשחק ההכוונות שבו הזוג מנסה ליישם אסטרטגיה מהתחקיר.</li>
+  <li><b>הכיתה איטית או הדיון מתארך:</b> מקצרים הסברים (שקפים 6, 12, 16) ושומרים זמן למשחק ולתחקיר, כי שם מתרחשת הלמידה. אפשר לעבור למסלול של 45 דקות.</li>
+  <li><b>המצגת נפתחה באמצע:</b> כפתור "↺ התחלה" מחזיר לשקף 1 ומאפס את החשיפות.</li>
+</ul></section>
+
+<section id="success"><h2>מדדי הצלחה</h2><ul>
+  <li>תלמידים מסבירים במילים שלהם שמודל סטטיסטי לומד דפוסים ומעריך מה הכי סביר, ולא "יודע" את התשובה כמו אדם.</li>
+  <li>תלמידים נותנים לפחות דוגמה אחת למצב שבו AI עלול להפיק תשובה שנשמעת אמינה אבל לא נכונה.</li>
+  <li>תלמידים מזהים לפחות שתי אסטרטגיות תקשורת שעזרו במשחק: פירוק לשלבים, צורות וכיוונים, הגדרת מטרה, גודל או מיקום.</li>
+  <li>לפחות חלק מהתלמידים לוקחים בקשה כללית ומשפרים אותה בעזרת הקשר, פירוט או פורמט.</li>
+</ul>
+<h3>מה לא לעשות</h3><ul>
+  <li>לא להפוך את משחק ההכוונות לשיעור טכני על פרומפטים: קודם חוויה, אחר כך תחקיר, ורק אז החיבור ל-AI.</li>
+  <li>לא להציג את AI כיצור שמחליט לשקר. מדברים על טעות, המצאת מידע ותוצאה סבירה סטטיסטית.</li>
+  <li>לא להעמיס במפגש הראשון את כל נושא הבטיחות. הוא נשאר למפגש 2.</li>
+  <li>לא להישאר בהרצאה ארוכה.</li>
+</ul></section>
+
+<footer>© Tech It Easy · מסמך פנימי למדריכים</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="activity-status" content="active">
+<title>Elections | Tech It Easy</title>
+<style>
+:root{
+  --bg:#07111f;--panel:#0d1930;--panel2:#112442;--line:#29466f;--text:#f6fbff;--muted:#a9bdd8;
+  --cyan:#31e8ff;--violet:#9b7cff;--green:#43e6a6;--yellow:#ffd166;--red:#ff6d83;--shadow:0 22px 70px rgba(0,0,0,.4);
+  --stage-r:49;--stage-g:232;--stage-b:255
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;height:100%;font-family:Arial,"Segoe UI",sans-serif;background:
+ radial-gradient(circle at 15% 5%,rgba(49,232,255,.1),transparent 28%),
+ radial-gradient(circle at 85% 10%,rgba(155,124,255,.12),transparent 28%),
+ linear-gradient(145deg,#040a13,#081829 52%,#07111f);color:var(--text)}
+button,input{font:inherit}button{cursor:pointer}
+.app{width:min(1500px,96vw);height:100dvh;margin:auto;padding:8px 0;display:grid;grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:auto minmax(0,1fr) 46px;grid-template-areas:"head rail" "deck rail" "nav rail";gap:8px 22px;overflow:hidden;direction:ltr}
+.app>.topbar,.app>.deck,.app>.nav,.app>.topicRail{direction:rtl}
+.topbar{grid-area:head;position:relative;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;
+  border:1px solid var(--line);border-radius:18px;background:rgba(7,17,31,.88);backdrop-filter:blur(12px);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:10px}.mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgb(var(--stage-r),var(--stage-g),var(--stage-b)),rgba(var(--stage-r),var(--stage-g),var(--stage-b),.68));color:#06111e;font-weight:1000;
+  box-shadow:0 0 22px rgba(var(--stage-r),var(--stage-g),var(--stage-b),.28);transition:background .35s ease,box-shadow .35s ease}
+.brand b{font-size:20px}.brand small{display:block;color:var(--muted);margin-top:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn,.ghost,.tiny{border:1px solid var(--line);border-radius:12px;padding:10px 13px;font-weight:900}
+.btn{border:0;background:linear-gradient(135deg,var(--cyan),#b0f6ff);color:#06111e}
+#nextBtn{background:linear-gradient(135deg,rgb(var(--stage-r),var(--stage-g),var(--stage-b)),rgba(var(--stage-r),var(--stage-g),var(--stage-b),.68));box-shadow:0 0 18px rgba(var(--stage-r),var(--stage-g),var(--stage-b),.24);transition:background .35s ease,box-shadow .35s ease}
+.ghost,.tiny{background:rgba(255,255,255,.045);color:var(--text)}.tiny{padding:8px 10px}
+.deck{grid-area:deck;min-height:0;padding-top:0}.slide{display:none;height:100%;min-height:0;padding:clamp(18px,3.2vw,48px);border:1px solid var(--line);
+ border-radius:28px;background:linear-gradient(135deg,rgba(49,232,255,.05),transparent 28%),linear-gradient(315deg,rgba(155,124,255,.08),transparent 32%),rgba(10,24,40,.93);
+ box-shadow:var(--shadow);position:relative;overflow:hidden}.slide.active{display:flex;flex-direction:column;justify-content:center}
+.kicker{display:inline-flex;width:max-content;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(49,232,255,.28);
+ background:rgba(49,232,255,.07);color:var(--cyan);font-weight:900}
+h1,h2,h3,p{margin-top:0}h2{font-size:clamp(38px,5.4vw,78px);line-height:1.04;letter-spacing:-1.2px;margin:15px 0 14px}
+.lead{font-size:clamp(18px,2vw,27px);line-height:1.55;color:var(--muted);max-width:1100px}
+.big{font-size:clamp(27px,3.6vw,50px);font-weight:1000;line-height:1.3}.cyan{color:var(--cyan)}.yellow{color:var(--yellow)}.green{color:var(--green)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.card{border:1px solid var(--line);border-radius:20px;padding:20px;background:rgba(255,255,255,.035)}
+.card strong{display:block;font-size:22px;margin:7px 0}.card p{color:var(--muted);line-height:1.45;margin-bottom:0}.emoji{font-size:38px}
+.topicRail{grid-area:rail;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:10px 4px;overflow:hidden;pointer-events:auto}
+.topicRailGroup{display:grid;gap:5px}
+.topicRailItem{padding:6px 4px;font-size:19px;line-height:1.18;font-weight:1000;cursor:pointer;user-select:none;color:#d8e5f5;filter:blur(4px);opacity:.24;transform:translateX(0);transition:.28s ease}
+.topicRailGroup.revealed .topicRailItem{filter:none;opacity:.68;color:rgb(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86))}
+.topicRailGroup.active .topicRailItem{filter:none;opacity:1;color:rgb(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86));transform:translateX(-3px);text-shadow:0 0 14px rgba(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86),.34)}
+.topicRailGroup:hover .topicRailItem{filter:none;opacity:1;color:rgb(var(--group-status-r,222),var(--group-status-g,72),var(--group-status-b,86))}
+.topicSubList{display:none;margin-right:20px;padding-right:12px;border-right:1px solid color-mix(in srgb,var(--topic-color) 30%,transparent);gap:5px}
+.topicRailGroup.active .topicSubList{display:grid}
+.topicSubItem{position:relative;padding:3px 7px;font-size:16px;line-height:1.2;font-weight:1000;cursor:pointer;user-select:none;color:rgb(var(--status-r,222),var(--status-g,72),var(--status-b,86));opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .28s ease,opacity .28s ease,text-shadow .28s ease}
+.topicSubItem::before{content:"•";margin-left:7px;opacity:.8}
+.topicSubItem.active{opacity:1;text-shadow:0 0 14px rgba(var(--status-r,222),var(--status-g,72),var(--status-b,86),.34)}
+.topicSubItem.active::before{content:"●"}
+.slide{padding-right:clamp(18px,3.2vw,48px)}
+.nav{grid-area:nav;height:46px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0;z-index:60;background:rgba(7,17,31,.9);border:1px solid var(--line);border-radius:16px;padding:6px 10px;backdrop-filter:blur(12px);box-shadow:0 12px 35px rgba(0,0,0,.28)}.navSide{display:flex;gap:8px}.counter{color:var(--muted);font-weight:900}
+.helpBtn{position:absolute;left:22px;top:22px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,209,102,.35);background:rgba(255,209,102,.1);color:var(--yellow);font-weight:1000;font-size:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:100;padding:20px}.modal.show{display:grid}
+.modalBox{width:min(620px,96vw);border:1px solid var(--line);border-radius:22px;background:#0b1729;padding:24px;box-shadow:var(--shadow)}
+.modalBox h3{font-size:28px;margin-bottom:12px}.modalBox ol{line-height:1.7;color:#dfeafb}.modalClose{float:left}
+.commandBox{font-size:clamp(28px,4vw,54px);font-weight:1000;padding:25px;border:1px solid var(--line);border-radius:20px;background:#071523;margin-top:20px;text-align:center}
+#odedSlide{align-items:center;text-align:center}
+.odedTitle{margin:0;max-width:none;font-size:clamp(64px,9vw,128px);transition:.35s ease}
+.odedQuestion{display:none;margin:0;max-width:1100px;text-align:center}
+#odedSlide.revealed{align-items:stretch;text-align:right}
+#odedSlide.revealed .odedTitle{align-self:flex-start;font-size:clamp(24px,2.4vw,36px);margin:0 0 34px;color:var(--muted);letter-spacing:0}
+#odedSlide.revealed .odedQuestion{display:block;align-self:center;font-size:clamp(34px,4.6vw,64px)}
+
+.choiceBuilder{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;max-width:800px;margin-top:22px}
+.choiceBuilder input{border:2px solid rgba(255,255,255,.14);background:white;color:#07111f;border-radius:15px;padding:16px 17px;font-size:22px;outline:none}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.chip{position:relative;padding:12px 44px 12px 16px;border-radius:999px;background:rgba(49,232,255,.08);border:1px solid rgba(49,232,255,.25);font-weight:900}
+.trash{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:transparent;transition:.18s}
+.chip:hover .trash,.trash:focus{background:rgba(255,109,131,.13);color:var(--red)}
+.foods{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}.food{padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.04);text-align:center;font-weight:900;font-size:18px}
+.food span{display:block;font-size:40px;margin-bottom:8px}.food strong{display:block;margin-bottom:12px}.foodVote{width:100%;max-width:105px;background:white;color:#07111f;border:0;border-radius:12px;padding:10px;text-align:center;font-size:20px;font-weight:1000}
+.aiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.aiCard{position:relative;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.04);padding:16px;text-align:center;min-height:185px}
+.aiLogo{width:76px;height:76px;object-fit:contain;margin:0 auto 14px;display:block;filter:drop-shadow(0 8px 20px rgba(0,0,0,.3))}
+.aiLogo[src*="openai.svg"]{filter:invert(1) drop-shadow(0 8px 20px rgba(0,0,0,.3))}
+.aiFallback{display:none;width:76px;height:76px;border-radius:22px;margin:0 auto 14px;place-items:center;background:white;color:#07111f;font-size:27px;font-weight:1000}
+.aiName{opacity:0;transform:translateY(7px);transition:.22s}.aiName.show{opacity:1;transform:none}.aiName strong{display:block;font-size:24px}.company{color:var(--muted);font-weight:900;margin:6px 0 13px}
+.openTool{display:inline-block;color:#07111f;background:var(--cyan);border-radius:12px;padding:9px 12px;text-decoration:none;font-weight:1000}
+.reveal{opacity:0;transform:translateY(10px);max-height:0;overflow:hidden;transition:.28s}.reveal.show{opacity:1;transform:none;max-height:400px}
+.revealList{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:22px}.revealCard{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035);padding:18px;font-size:20px;line-height:1.45;font-weight:900}
+.clickHint{position:absolute;left:24px;bottom:24px;color:rgba(255,255,255,.38);font-size:13px}
+.voteGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:20px}.voteRow{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:18px;padding:14px 16px;background:rgba(255,255,255,.035)}
+.voteRow strong{font-size:19px}.voteRow input{width:95px;background:white;color:#07111f;border:0;border-radius:12px;padding:11px;text-align:center;font-size:21px;font-weight:1000}
+.pieWrap{display:grid;grid-template-columns:minmax(240px,390px) 1fr;gap:24px;align-items:center;margin-top:12px}.pie{width:min(45vh,360px);aspect-ratio:1;border-radius:50%;margin:auto;box-shadow:0 20px 70px rgba(0,0,0,.35);border:7px solid rgba(255,255,255,.06)}
+.legend{display:grid;gap:10px}.legendRow{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+.dotColor{width:16px;height:16px;border-radius:50%}.winner{margin-top:18px;padding:17px;border:1px solid rgba(67,230,166,.3);border-radius:16px;background:rgba(67,230,166,.07);font-size:23px;font-weight:1000}
+.routeBtns{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}.bonus{background:linear-gradient(135deg,var(--violet),#d7ccff);color:#100d21;border:0;border-radius:16px;padding:14px 18px;font-weight:1000;font-size:19px}
+.summaryBtn{background:linear-gradient(135deg,var(--cyan),#b0f6ff);color:#07111f;border:0;border-radius:16px;padding:14px 18px;font-weight:1000;font-size:19px}
+.prompt{border:1px solid rgba(49,232,255,.3);background:#071523;border-radius:18px;padding:19px 21px;font-size:clamp(22px,2.5vw,34px);font-weight:1000;margin-top:20px}
+.comparePies{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}.miniPanel{border:1px solid var(--line);border-radius:22px;padding:20px;background:rgba(255,255,255,.03);text-align:center}.miniPie{width:min(34vw,300px);aspect-ratio:1;border-radius:50%;margin:16px auto;border:6px solid rgba(255,255,255,.06)}
+.finalPoints{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.finalPoint{border:1px solid var(--line);border-radius:18px;padding:20px;background:rgba(255,255,255,.035);font-size:20px;line-height:1.5;font-weight:900}
+@media(max-width:980px){.cards,.aiGrid,.voteGrid{grid-template-columns:1fr 1fr}.foods{grid-template-columns:repeat(3,1fr)}.pieWrap{grid-template-columns:1fr}.comparePies{grid-template-columns:1fr}}
+@media(max-height:850px){
+  .app{padding:6px 0;gap:6px 14px;grid-template-rows:auto minmax(0,1fr) 42px}
+  .topbar{padding:7px 11px}.mark{width:36px;height:36px}.brand b{font-size:18px}
+  .slide{padding:16px 24px}.kicker{padding:5px 9px;font-size:13px}
+  h2{font-size:clamp(30px,4.2vw,56px);margin:8px 0 8px}.lead{font-size:clamp(15px,1.6vw,21px);line-height:1.35}
+  .cards{margin-top:12px;gap:9px}.card{padding:12px}.card strong{font-size:18px}.card p{font-size:14px}
+  .aiGrid,.foods,.revealList{margin-top:10px;gap:8px}.aiCard{min-height:150px;padding:12px}
+  .aiLogo,.aiFallback{width:58px;height:58px}.aiName strong{font-size:19px}
+  .revealCard{padding:12px;font-size:16px}.routeBtns{margin-top:12px}.winner{margin-top:10px;padding:10px;font-size:18px}
+  .pie{width:min(38vh,300px)}.legend{gap:6px}.legendRow{padding:7px 9px}
+  .nav{height:42px}.btn,.ghost,.tiny{padding:8px 11px}
+}
+@media(max-width:650px){.app{grid-template-columns:1fr;grid-template-areas:"head" "deck" "nav";gap:6px}.topbar{position:static}.brand small{display:none}.topicRail{display:none}.slide{min-height:unset;padding-right:16px}.cards,.aiGrid,.voteGrid,.foods,.revealList,.finalPoints{grid-template-columns:1fr}.choiceBuilder{grid-template-columns:1fr}.comparePies{grid-template-columns:1fr}.nav{align-items:center}.helpBtn{left:14px;top:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="mark">AI</div><div><b>Elections</b><small>בחירה, הוגנות ובדיקת כלי AI</small></div></div>
+  <div class="actions"><button class="ghost" id="homeBtn">↺ התחלה</button><button class="ghost" id="fullBtn">⛶ מסך מלא</button></div>
+</header>
+
+<aside class="topicRail" id="topicRail" aria-label="תוכן עניינים">
+  <div class="topicRailGroup" data-topic="0" style="--topic-color:#ffd166">
+    <div class="topicRailItem">פתיחה · חוסר צדק</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="0">חוסר צדק</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="1" style="--topic-color:#ff6d83">
+    <div class="topicRailItem">עודד אמר</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="1">עודד אמר</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="2" style="--topic-color:#31e8ff">
+    <div class="topicRailItem">הספורט הלאומי</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="2">בחירת הספורט</div>
+      <div class="topicSubItem" data-slide="3">הצבעה ותוצאה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="3" style="--topic-color:#ff9f6e">
+    <div class="topicRailItem">הרוב בוחר</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="4">בחירת מאכל</div>
+      <div class="topicSubItem" data-slide="5">תוצאות ההצבעה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="4" style="--topic-color:#9b7cff">
+    <div class="topicRailItem">בדיקת כלי AI</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="6">כלי ה־AI</div>
+      <div class="topicSubItem" data-slide="7">שאלות הבדיקה</div>
+      <div class="topicSubItem" data-slide="8">קריטריונים</div>
+      <div class="topicSubItem" data-slide="9">הצבעה</div>
+      <div class="topicSubItem" data-slide="10">בחירת הכיתה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="5" style="--topic-color:#e58cff">
+    <div class="topicRailItem">בונוס · תמונות</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="11">משימת התמונה</div>
+      <div class="topicSubItem" data-slide="12">קריטריונים לתמונה</div>
+      <div class="topicSubItem" data-slide="13">הצבעה</div>
+      <div class="topicSubItem" data-slide="14">השוואה</div>
+    </div>
+  </div>
+  <div class="topicRailGroup" data-topic="6" style="--topic-color:#43e6a6">
+    <div class="topicRailItem">סיכום</div>
+    <div class="topicSubList">
+      <div class="topicSubItem" data-slide="15">מה למדנו היום?</div>
+    </div>
+  </div>
+</aside>
+
+<main class="deck" id="deck">
+
+<section class="slide active">
+  <span class="kicker">⚖️ פתיחה</span>
+  <h2>מהו <span class="yellow">חוסר צדק</span>?</h2>
+  <p class="lead">חשבו רגע: מתי משהו מרגיש לכם לא הוגן, ומתי הרגשתם שלא הקשיבו לקול שלכם?</p>
+  <div class="cards">
+    <div class="card"><div class="emoji">🙋</div><strong>מי מחליט?</strong><p>האם אדם אחד מחליט בשביל כולם?</p></div>
+    <div class="card"><div class="emoji">🗣️</div><strong>מי נשמע?</strong><p>האם לכל אחד הייתה אפשרות להביע דעה?</p></div>
+    <div class="card"><div class="emoji">🤝</div><strong>מה הוגן?</strong><p>איך אפשר לכבד דעות שונות גם כשלא מסכימים?</p></div>
+  </div>
+</section>
+
+<section class="slide" id="odedSlide">
+  <button class="helpBtn" data-help="oded" aria-label="הוראות למשחק">?</button>
+  <h2 class="odedTitle">עודד אמר</h2>
+  <p class="big odedQuestion">איך זה מרגיש כש<span class="yellow">מישהו אחד מחליט לכולם</span>?</p>
+</section>
+
+<section class="slide">
+  <button class="helpBtn" data-help="sport" aria-label="הוראות המשחק">?</button>
+  <span class="kicker">🏆 פעילות 2</span>
+  <h2>בוחרים את <span class="cyan">הספורט הלאומי של הכיתה</span></h2>
+  <div class="choiceBuilder">
+    <input id="sportInput" autocomplete="off" placeholder="כתבו תחום ספורט...">
+    <button class="btn" id="addSport">הוסף +</button>
+  </div>
+  <div class="chips" id="sportChips"></div>
+</section>
+
+<section class="slide" id="sportVoteSlide">
+  <span class="kicker">📊 פעילות 2 · תוצאה</span>
+  <h2>הספורט הלאומי של הכיתה</h2>
+  <div id="sportVoteView">
+    <div class="voteGrid" id="sportVoteGrid"></div>
+    <div class="routeBtns"><button class="btn" id="calcSportVotes">חשב</button></div>
+  </div>
+  <div id="sportResultView" style="display:none">
+    <div class="pieWrap">
+      <div class="pie" id="sportPie"></div>
+      <div>
+        <div class="legend" id="sportLegend"></div>
+        <div class="winner" id="sportWinner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="foodVoteSlide">
+  <button class="helpBtn" data-help="food" aria-label="הוראות המשחק">?</button>
+  <span class="kicker">🍕 פעילות 3</span>
+  <h2>הרוב בחר — האם הוא יכול <span class="yellow">לקבוע לכולם?</span></h2>
+  <p class="lead">בחרו מאכל אחד</p>
+  <div class="foods">
+    <div class="food"><span>🍕</span><strong>פיצה</strong><input class="foodVote" data-food="פיצה" type="number" min="0" step="1" value="0" aria-label="קולות לפיצה"></div>
+    <div class="food"><span>🍔</span><strong>המבורגר</strong><input class="foodVote" data-food="המבורגר" type="number" min="0" step="1" value="0" aria-label="קולות להמבורגר"></div>
+    <div class="food"><span>🍣</span><strong>סושי</strong><input class="foodVote" data-food="סושי" type="number" min="0" step="1" value="0" aria-label="קולות לסושי"></div>
+    <div class="food"><span>🍝</span><strong>פסטה</strong><input class="foodVote" data-food="פסטה" type="number" min="0" step="1" value="0" aria-label="קולות לפסטה"></div>
+    <div class="food"><span>🥙</span><strong>פלאפל</strong><input class="foodVote" data-food="פלאפל" type="number" min="0" step="1" value="0" aria-label="קולות לפלאפל"></div>
+  </div>
+</section>
+
+<section class="slide" id="foodResultSlide">
+  <span class="kicker">📊 פעילות 3 · סיכום</span>
+  <h2>תוצאות ההצבעה</h2>
+  <div class="pieWrap">
+    <div class="pie" id="foodPie"></div>
+    <div>
+      <div class="legend" id="foodLegend"></div>
+      <div class="winner" id="foodWinner"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide progressive" id="aiToolsSlide">
+  <span class="kicker">🤖 פעילות AI · 1/5</span>
+  <h2>מי הם מנועי ה־AI?</h2>
+  <p class="lead">נסו לזהות את כלי ה־AI לפי הלוגו בלבד. אילו כלים אתם כבר מכירים, ומה אתם יודעים עליהם?</p>
+  <div class="aiGrid" id="aiGrid"></div>
+  <div class="clickHint">איזה כלי אתם מזהים לפי הלוגו?</div>
+</section>
+
+<section class="slide progressive">
+  <span class="kicker">❓ פעילות AI · 2/5</span>
+  <h2>מה שואלים כדי <span class="cyan">לבדוק את הכלי</span>?</h2>
+  <p class="lead">לפני שנחשוף את ההמלצות, חשבו: אילו שאלות יעזרו לנו להבין אם ה־AI באמת טוב עבורנו?</p>
+  <div class="revealList">
+    <div class="reveal revealCard">🧠 <b>שאלת ידע:</b> מהי בירת אוסטרליה? ענה במשפט אחד והסבר איך אתה יודע.</div>
+    <div class="reveal revealCard">🎯 <b>שאלת הוראות:</b> הסבר לילד בכיתה ה׳ למה השמיים כחולים, בדיוק ב־3 משפטים.</div>
+    <div class="reveal revealCard">🪤 <b>שאלת מלכודת:</b> מי המציא את האינטרנט בשנת 1875?</div>
+  </div>
+  <div class="clickHint">כל קליק חושף שאלה נוספת</div>
+</section>
+
+<section class="slide progressive">
+  <span class="kicker">🔎 פעילות AI · 3/5</span>
+  <h2>איך נדע אם הוא <span class="green">טוב לנו</span>?</h2>
+  <p class="lead">אחרי שבדקתם את הכלים בפועל, נחשוף בהדרגה את הקריטריונים להשוואה.</p>
+  <div class="revealList">
+    <div class="reveal revealCard">🔐 האם הייתי צריך להתחבר או לפתוח חשבון?</div>
+    <div class="reveal revealCard">🧭 האם הממשק היה נעים וברור?</div>
+    <div class="reveal revealCard">✅ האם התשובות היו נכונות ורלוונטיות?</div>
+    <div class="reveal revealCard">🙂 האם הוא דיבר אליי בצורה מכבדת וברורה?</div>
+    <div class="reveal revealCard">🌀 האם הוא המציא דברים שלא קשורים?</div>
+    <div class="reveal revealCard">✍️ האם הייתי צריך לפרט הרבה כדי לקבל תשובה טובה?</div>
+    <div class="reveal revealCard">🎯 האם הוא הבין את ההוראות שלי?</div>
+    <div class="reveal revealCard">⭐ האם הייתי בוחר להשתמש בו שוב?</div>
+  </div>
+  <div class="clickHint">כל קליק חושף קריטריון נוסף</div>
+</section>
+
+<section class="slide" id="textVoteSlide">
+  <span class="kicker">🗳️ פעילות AI · 4/5</span>
+  <h2>מצביעים: איזה AI היה <span class="cyan">הכי טוב עבורנו</span>?</h2>
+  <p class="lead">הצביעו בהרמת יד. את מספר הקולות נזין ליד כל כלי.</p>
+  <div class="voteGrid" id="textVoteGrid"></div>
+  <div class="routeBtns"><button class="ghost" id="resetTextVotes">איפוס הצבעה</button></div>
+</section>
+
+<section class="slide" id="textResultSlide">
+  <span class="kicker">📊 פעילות AI · 5/5</span>
+  <h2>בחירת הכיתה</h2>
+  <div class="pieWrap">
+    <div class="pie" id="textPie"></div>
+    <div><div class="legend" id="textLegend"></div><div class="winner" id="textWinner"></div></div>
+  </div>
+  <div class="routeBtns">
+    <button class="summaryBtn" id="goSummary">לעבור לסיכום</button>
+    <button class="bonus" id="goBonus">✨ פעילות בונוס: יצירת תמונות</button>
+  </div>
+</section>
+
+<section class="slide" id="bonusStart">
+  <span class="kicker">✨ מסלול בונוס · תמונות</span>
+  <h2>אותו ניסוי — <span class="cyan">משימה אחרת</span></h2>
+  <p class="lead">הפעם נותנים לכל כלי בדיוק את אותה בקשת תמונה. אם כלי מסוים לא מאפשר יצירת תמונות — גם זו תוצאה חשובה.</p>
+  <div class="prompt">צור לי תמונה של לוויתן שוחה בג׳ונגל.</div>
+  <div class="aiGrid" id="bonusTools"></div>
+</section>
+
+<section class="slide progressive">
+  <span class="kicker">🖼️ מסלול בונוס</span>
+  <h2>מה חווינו <span class="cyan">ביצירת תמונה</span>?</h2>
+  <p class="lead">אחרי שתנסו בפועל, נחשוף את הקריטריונים להשוואה.</p>
+  <div class="revealList">
+    <div class="reveal revealCard">🎨 האם הכלי בכלל הצליח ליצור תמונה?</div>
+    <div class="reveal revealCard">🐋 האם הוא הבין שצריך לוויתן וג׳ונגל?</div>
+    <div class="reveal revealCard">✨ האם התוצאה נראתה טובה ומעניינת?</div>
+    <div class="reveal revealCard">⏱️ כמה זמן או ניסיונות נדרשו?</div>
+    <div class="reveal revealCard">✍️ האם הייתי צריך לשנות או לפרט את הפרומפט?</div>
+  </div>
+  <div class="clickHint">כל קליק חושף קריטריון נוסף</div>
+</section>
+
+<section class="slide" id="imageVoteSlide">
+  <span class="kicker">🗳️ מסלול בונוס</span>
+  <h2>מצביעים שוב: מי היה <span class="cyan">הכי טוב בתמונה</span>?</h2>
+  <p class="lead">הצביעו בהרמת יד. את מספר הקולות נזין ליד כל כלי.</p>
+  <div class="voteGrid" id="imageVoteGrid"></div>
+  <div class="routeBtns"><button class="ghost" id="resetImageVotes">איפוס הצבעה</button></div>
+</section>
+
+<section class="slide" id="compareSlide">
+  <span class="kicker">⚖️ השוואה</span>
+  <h2>האם אותו AI ניצח <span class="yellow">בשתי המשימות</span>?</h2>
+  <div class="comparePies">
+    <div class="miniPanel"><h3>💬 טקסט ושיחה</h3><div class="miniPie" id="compareTextPie"></div><div id="compareTextWinner"></div></div>
+    <div class="miniPanel"><h3>🖼️ יצירת תמונה</h3><div class="miniPie" id="compareImagePie"></div><div id="compareImageWinner"></div></div>
+  </div>
+  <p class="big" style="margin-top:22px">אולי אין כלי אחד שהוא “הכי טוב” — אולי צריך לבחור <span class="cyan">כלי שמתאים למשימה</span>.</p>
+</section>
+
+<section class="slide" id="summarySlide">
+  <span class="kicker">🏁 סיכום</span>
+  <h2>מה למדנו היום?</h2>
+  <div class="finalPoints">
+    <div class="finalPoint">⚖️ כשאדם אחד מחליט לכולם — אין לאחרים באמת קול.</div>
+    <div class="finalPoint">🗳️ הצבעה נותנת דרך לבחור, אבל רוב לא יכול לקבוע כל דבר אישי עבור כולם.</div>
+    <div class="finalPoint">🤖 גם כלי AI צריך לבדוק — לא רק לפי השם שלו, אלא לפי החוויה והתוצאה.</div>
+    <div class="finalPoint">🎯 כלי שיותר טוב במשימה אחת לא בהכרח יהיה הכי טוב במשימה אחרת.</div>
+  </div>
+  <p class="big" style="margin-top:26px">בחירה טובה מתחילה בזה שאנחנו <span class="cyan">בודקים, משווים וחושבים</span>.</p>
+</section>
+
+</main>
+
+<div class="nav">
+  <div class="navSide"><button class="ghost" id="prevBtn">→ הקודם</button><button class="btn" id="nextBtn">הבא ←</button></div>
+  <div class="counter"><span id="slideNo">1</span> / <span id="slideCount"></span></div>
+  <div></div>
+</div>
+</div>
+
+<div class="modal" id="helpModal" aria-hidden="true">
+  <div class="modalBox">
+    <button class="tiny modalClose" id="closeHelp">✕</button>
+    <h3 id="helpTitle"></h3>
+    <div id="helpBody"></div>
+  </div>
+</div>
+
+<script>
+const toolsData=[
+ {id:"chatgpt",name:"ChatGPT",company:"OpenAI",url:"https://chatgpt.com/",logo:"https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@1.71.0/icons/openai.svg",fallback:"GPT"},
+ {id:"gemini",name:"Gemini",company:"Google",url:"https://gemini.google.com/",logo:"https://cdn.simpleicons.org/googlegemini/8E75B2",fallback:"G"},
+ {id:"claude",name:"Claude",company:"Anthropic",url:"https://claude.ai/",logo:"https://cdn.simpleicons.org/claude/D97757",fallback:"C"},
+ {id:"perplexity",name:"Perplexity",company:"Perplexity AI",url:"https://www.perplexity.ai/",logo:"https://cdn.simpleicons.org/perplexity/20B8CD",fallback:"P"},
+ {id:"meta",name:"Meta AI",company:"Meta",url:"https://www.meta.ai/",logo:"https://cdn.simpleicons.org/meta/0866FF",fallback:"M"},
+ {id:"copilot",name:"Copilot",company:"Microsoft",url:"https://copilot.microsoft.com/",logo:"https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@1.71.0/icons/copilot-color.svg",fallback:"Co"}
+];
+const pieColors=["#31e8ff","#9b7cff","#43e6a6","#ffd166","#ff6d83","#6fa8ff"];
+const slides=[...document.querySelectorAll(".slide")];
+let current=0;
+
+function mixRgb(a,b,t){
+  return a.map((v,i)=>Math.round(v+(b[i]-v)*Math.max(0,Math.min(1,t))));
+}
+function applyStageTone(rgb){
+  document.documentElement.style.setProperty("--stage-r",rgb[0]);
+  document.documentElement.style.setProperty("--stage-g",rgb[1]);
+  document.documentElement.style.setProperty("--stage-b",rgb[2]);
+}
+function updateClickTone(slide){
+  const neutral=[49,232,255], red=[222,72,86], orange=[245,145,53], green=[67,230,166];
+  if(!slide){applyStageTone(neutral);return}
+  let total=0,remaining=0;
+  if(slide.id==="odedSlide"){
+    total=1;remaining=slide.classList.contains("revealed")?0:1;
+  }else if(slide.classList.contains("progressive")){
+    if(slide.id==="aiToolsSlide"){
+      total=slide.querySelectorAll(".aiName").length;
+      remaining=slide.querySelectorAll(".aiName:not(.show)").length;
+    }else{
+      total=slide.querySelectorAll(".reveal").length;
+      remaining=slide.querySelectorAll(".reveal:not(.show)").length;
+    }
+  }else{
+    applyStageTone(neutral);return;
+  }
+  if(total<=0){applyStageTone(neutral);return}
+  if(remaining===0){applyStageTone(green);return}
+  const completed=total-remaining;
+  const t=total>1?completed/(total-1):0;
+  applyStageTone(mixRgb(red,orange,t));
+}
+
+function resetClickReveals(slide){
+  if(!slide)return;
+  if(slide.id==="odedSlide") slide.classList.remove("revealed");
+  slide.querySelectorAll(".aiName.show,.reveal.show").forEach(el=>el.classList.remove("show"));
+}
+const slideProgress=Array.from({length:slides.length},()=>({done:0,total:0,visited:false}));
+function revealCounts(slide){
+  if(!slide)return {done:0,total:0};
+  if(slide.id==="odedSlide"){
+    return {done:slide.classList.contains("revealed")?1:0,total:1};
+  }
+  if(slide.classList.contains("progressive")){
+    if(slide.id==="aiToolsSlide"){
+      return {done:slide.querySelectorAll(".aiName.show").length,total:slide.querySelectorAll(".aiName").length};
+    }
+    return {done:slide.querySelectorAll(".reveal.show").length,total:slide.querySelectorAll(".reveal").length};
+  }
+  return {done:0,total:0};
+}
+function recordSlideProgress(slide){
+  const idx=slides.indexOf(slide);
+  if(idx<0)return;
+  const counts=revealCounts(slide);
+  const state=slideProgress[idx];
+  state.visited=true;
+  state.total=Math.max(state.total,counts.total);
+  state.done=Math.max(state.done,counts.done);
+  updateTopicRail(slides[current]);
+}
+function slideStatusRgb(index){
+  const red=[222,72,86], orange=[245,145,53], green=[67,230,166];
+  const state=slideProgress[index];
+  if(!state)return red;
+  if(state.total===0) return state.visited?green:red;
+  if(state.done>=state.total) return green;
+  if(state.done<=0) return red;
+  const t=state.total>1?state.done/(state.total-1):0;
+  return mixRgb(red,orange,Math.max(0,Math.min(1,t)));
+}
+
+const revealedTopics=new Set([0]);
+function topicForSlide(slide){
+  if(!slide)return 0;
+  const idx=slides.indexOf(slide);
+  if(idx===0)return 0;
+  if(idx===1)return 1;
+  if(idx>=2&&idx<=3)return 2;
+  if(idx>=4&&idx<=5)return 3;
+  if(idx>=6&&idx<=10)return 4;
+  if(idx>=11&&idx<=14)return 5;
+  if(idx===15)return 6;
+  return 0;
+}
+function slideProgressRatio(index){
+  const state=slideProgress[index];
+  if(!state)return 0;
+  if(state.total===0)return state.visited?1:0;
+  return Math.max(0,Math.min(1,state.done/state.total));
+}
+function groupStatusRgb(indexes){
+  const red=[222,72,86], orange=[245,145,53], green=[67,230,166];
+  if(!indexes.length)return red;
+  const avg=indexes.reduce((sum,i)=>sum+slideProgressRatio(i),0)/indexes.length;
+  if(avg<=0.5)return mixRgb(red,orange,avg/0.5);
+  return mixRgb(orange,green,(avg-0.5)/0.5);
+}
+
+function updateTopicRail(slide){
+  const topic=topicForSlide(slide);
+  const slideIndex=slides.indexOf(slide);
+  revealedTopics.add(topic);
+  if(slideIndex>=0) slideProgress[slideIndex].visited=true;
+  document.querySelectorAll(".topicRailGroup").forEach(group=>{
+    const n=Number(group.dataset.topic);
+    const indexes=[...group.querySelectorAll(".topicSubItem")].map(item=>Number(item.dataset.slide));
+    const rgb=groupStatusRgb(indexes);
+    group.style.setProperty("--group-status-r",rgb[0]);
+    group.style.setProperty("--group-status-g",rgb[1]);
+    group.style.setProperty("--group-status-b",rgb[2]);
+    group.classList.toggle("revealed",revealedTopics.has(n));
+    group.classList.toggle("active",n===topic);
+  });
+  document.querySelectorAll(".topicSubItem").forEach(item=>{
+    const idx=Number(item.dataset.slide);
+    const rgb=slideStatusRgb(idx);
+    item.style.setProperty("--status-r",rgb[0]);
+    item.style.setProperty("--status-g",rgb[1]);
+    item.style.setProperty("--status-b",rgb[2]);
+    item.classList.toggle("active",idx===slideIndex);
+  });
+}
+
+function showSlide(i){
+  const nextIndex=Math.max(0,Math.min(slides.length-1,i));
+  const previous=slides[current];
+  const nextSlide=slides[nextIndex];
+  if(previous && previous!==nextSlide){recordSlideProgress(previous);resetClickReveals(previous);}
+  current=nextIndex;
+  slides.forEach((s,n)=>s.classList.toggle("active",n===current));
+  document.querySelector("#slideNo").textContent=current+1;
+  document.querySelector("#slideCount").textContent=slides.length;
+updateTopicRail(slides[current]);
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(slides[current].id==="sportVoteSlide") renderSportVote();
+  if(slides[current].id==="foodResultSlide") renderFoodResult();
+  if(slides[current].id==="textResultSlide") renderResult("text");
+  if(slides[current].id==="compareSlide") renderComparison();
+  updateClickTone(slides[current]);
+  recordSlideProgress(slides[current]);
+  updateTopicRail(slides[current]);
+}
+let routeMode="main";
+function next(){
+  const active=slides[current];
+  if(revealNext(active))return;
+  if(active && active.id==="textResultSlide"){
+    routeMode="main";
+    showSlide(slides.indexOf(document.querySelector("#summarySlide")));
+    return;
+  }
+  showSlide(current+1);
+}
+function prev(){
+  const active=slides[current];
+  if(revealPrev(active))return;
+  if(active && active.id==="summarySlide"){
+    if(routeMode==="bonus"){
+      showSlide(slides.indexOf(document.querySelector("#compareSlide")));
+    }else{
+      showSlide(slides.indexOf(document.querySelector("#textResultSlide")));
+    }
+    return;
+  }
+  showSlide(current-1);
+}
+function wireTopicRailNavigation(){
+  document.querySelectorAll(".topicRailGroup").forEach(group=>{
+    const title=group.querySelector(".topicRailItem");
+    const first=group.querySelector(".topicSubItem");
+    if(title && first){
+      title.setAttribute("role","button");
+      title.setAttribute("tabindex","0");
+      const jump=()=>{
+        const target=Number(first.dataset.slide);
+        if(Number.isFinite(target)) showSlide(target);
+      };
+      title.addEventListener("click",jump);
+      title.addEventListener("keydown",e=>{
+        if(e.key==="Enter" || e.key===" "){e.preventDefault();jump();}
+      });
+    }
+    group.querySelectorAll(".topicSubItem").forEach(item=>{
+      item.setAttribute("role","button");
+      item.setAttribute("tabindex","0");
+      const jump=()=>{
+        const target=Number(item.dataset.slide);
+        if(Number.isFinite(target)) showSlide(target);
+      };
+      item.addEventListener("click",e=>{e.stopPropagation();jump();});
+      item.addEventListener("keydown",e=>{
+        if(e.key==="Enter" || e.key===" "){e.preventDefault();e.stopPropagation();jump();}
+      });
+    });
+  });
+}
+wireTopicRailNavigation();
+
+document.querySelector("#nextBtn").onclick=next;document.querySelector("#prevBtn").onclick=prev;
+document.querySelector("#homeBtn").onclick=()=>{routeMode="main";revealedTopics.clear();revealedTopics.add(0);showSlide(0)};
+document.querySelector("#fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")next();if(e.key==="ArrowRight")prev()});
+showSlide(0);
+
+const help={
+ oded:{title:"איך משחקים — עודד אמר",body:"<ol><li>הקשיבו לפקודות: עמדו, שבו, ידיים למעלה, הסתובבו.</li><li>כשנשמעת פקודה — מבצעים מיד.</li><li>מי שטועה יוצא מהסבב.</li><li>ממשיכים עד שנשאר משתתף אחד.</li><li>בסיום חשבו: איך הרגיש מצב שבו אדם אחד בלבד קובע לכולם?</li></ol>"},
+ sport:{title:"איך משחקים — בחירת ספורט",body:"<ol><li>הציעו סוגי ספורט והוסיפו אותם לרשימה.</li><li>אפשר להשתמש בהצעה שמופיעה או לכתוב רעיון אחר.</li><li>אחרי שסיימנו להציע — עוברים להצבעה.</li><li>מצביעים בהרמת יד, מזינים את מספר הקולות ולוחצים על חשב.</li></ol>"},
+ food:{title:"איך משחקים — רוב מול בחירה אישית",body:"<ol><li>בחרו את המאכל שאתם הכי אוהבים מתוך חמש האפשרויות.</li><li>מצביעים בהרמת יד ומזינים את מספר הקולות לכל מאכל.</li><li>עוברים לשקף הבא ורואים את תוצאות ההצבעה.</li><li>אחרי התוצאה חשבו: האם לרוב מותר לקבוע לכולם מה הם חייבים לאהוב?</li></ol>"}
+};
+const modal=document.querySelector("#helpModal");
+document.querySelectorAll("[data-help]").forEach(b=>b.onclick=()=>{const x=help[b.dataset.help];document.querySelector("#helpTitle").textContent=x.title;document.querySelector("#helpBody").innerHTML=x.body;modal.classList.add("show")});
+document.querySelector("#closeHelp").onclick=()=>modal.classList.remove("show");
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove("show")};
+
+function toolCard(t,showName=false){
+ return '<div class="aiCard">'+
+ '<img class="aiLogo" src="'+t.logo+'" alt="לוגו '+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'">'+
+ '<div class="aiFallback">'+t.fallback+'</div>'+
+ '<div class="aiName'+(showName?" show":"")+'"><strong>'+t.name+'</strong><div class="company">'+t.company+'</div>'+
+ '<a class="openTool" href="'+t.url+'" target="_blank" rel="noopener noreferrer">פתח את הכלי ↗</a></div></div>';
+}
+document.querySelector("#aiGrid").innerHTML=toolsData.map(t=>toolCard(t,false)).join("");
+document.querySelector("#bonusTools").innerHTML=toolsData.map(t=>toolCard(t,true)).join("");
+
+function revealNext(slide){
+  if(!slide)return false;
+  if(slide.id==="odedSlide" && !slide.classList.contains("revealed")){
+    slide.classList.add("revealed");
+    updateClickTone(slide);
+    recordSlideProgress(slide);
+    return true;
+  }
+  if(slide.classList.contains("progressive")){
+    const nextHidden=slide.id==="aiToolsSlide"
+      ? slide.querySelector(".aiName:not(.show)")
+      : slide.querySelector(".reveal:not(.show)");
+    if(nextHidden){
+      nextHidden.classList.add("show");
+      updateClickTone(slide);
+      recordSlideProgress(slide);
+      return true;
+    }
+  }
+  return false;
+}
+function revealPrev(slide){
+  if(!slide)return false;
+  if(slide.id==="odedSlide" && slide.classList.contains("revealed")){
+    slide.classList.remove("revealed");
+    updateClickTone(slide);
+    recordSlideProgress(slide);
+    return true;
+  }
+  if(slide.classList.contains("progressive")){
+    const shown=[...(slide.id==="aiToolsSlide"
+      ? slide.querySelectorAll(".aiName.show")
+      : slide.querySelectorAll(".reveal.show"))];
+    const last=shown.at(-1);
+    if(last){
+      last.classList.remove("show");
+      updateClickTone(slide);
+      recordSlideProgress(slide);
+      return true;
+    }
+  }
+  return false;
+}
+
+document.querySelectorAll(".progressive").forEach(slide=>{
+  slide.addEventListener("click",e=>{
+    if(e.target.closest("a,button,input"))return;
+    revealNext(slide);
+  });
+});
+
+const odedSlide=document.querySelector("#odedSlide");
+odedSlide.addEventListener("click",e=>{
+  if(e.target.closest("button"))return;
+  revealNext(odedSlide);
+});
+
+const suggestions=["כדורגל","כדורסל","טניס","שחייה","שחמט","ריקוד","התעמלות קרקע"];
+const sportInput=document.querySelector("#sportInput"),chips=document.querySelector("#sportChips");
+let suggestTimer=null,dirty=false;
+function usedSports(){return [...chips.querySelectorAll(".chipText")].map(x=>x.textContent.trim())}
+function nextSuggestion(){return suggestions.find(x=>!usedSports().includes(x))||""}
+function armSuggestion(ms){
+ clearTimeout(suggestTimer);
+ if(sportInput.value.trim())return;
+ suggestTimer=setTimeout(()=>{if(!sportInput.value.trim()){const s=nextSuggestion();if(s)sportInput.value=s}},ms);
+}
+sportInput.addEventListener("input",()=>{
+ clearTimeout(suggestTimer);
+ if(sportInput.value.trim()){dirty=true;return}
+ armSuggestion(dirty?10000:5000);
+});
+sportInput.addEventListener("focus",()=>{if(!sportInput.value.trim())armSuggestion(dirty?10000:5000)});
+function addSport(){
+ const v=sportInput.value.trim();if(!v)return;
+ const chip=document.createElement("div");chip.className="chip";
+ chip.innerHTML='<span class="chipText"></span><button class="trash" title="מחיקה">🗑</button>';
+ chip.querySelector(".chipText").textContent=v;
+ chip.querySelector(".trash").onclick=()=>{chip.remove();delete sportVotes[v];if(!sportInput.value.trim())armSuggestion(10000)};
+ chips.appendChild(chip);sportInput.value="";dirty=false;armSuggestion(5000);sportInput.focus();
+}
+document.querySelector("#addSport").onclick=addSport;sportInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addSport()}});
+armSuggestion(5000);
+
+const sportVotes={};
+function renderSportVote(){
+ const names=usedSports();
+ const grid=document.querySelector("#sportVoteGrid");
+ const voteView=document.querySelector("#sportVoteView");
+ const resultView=document.querySelector("#sportResultView");
+ if(!grid)return;
+ voteView.style.display="block";
+ resultView.style.display="none";
+ grid.innerHTML="";
+ names.forEach(name=>{
+   if(!(name in sportVotes)) sportVotes[name]=0;
+   const row=document.createElement("div");row.className="voteRow";
+   row.innerHTML="<strong>"+name+"</strong><input type='number' min='0' step='1' value='"+(sportVotes[name]||0)+"' aria-label='קולות עבור "+name+"'>";
+   row.querySelector("input").oninput=e=>sportVotes[name]=Math.max(0,Number(e.target.value)||0);
+   grid.appendChild(row);
+ });
+ if(!names.length){
+   grid.innerHTML='<div class="card"><strong>עדיין לא נוספו אפשרויות ספורט</strong></div>';
+ }
+}
+function renderSportResult(){
+ const names=usedSports();
+ const values=names.map(n=>Number(sportVotes[n])||0);
+ const total=values.reduce((a,b)=>a+b,0);
+ const palette=["#31e8ff","#9b7cff","#43e6a6","#ffd166","#ff6d83","#6fa8ff","#ff9f6e","#8ee38e","#e58cff","#76d7c4"];
+ let bg="conic-gradient(#22344d 0 100%)";
+ if(total>0){
+   let acc=0,parts=[];
+   values.forEach((v,i)=>{if(v<=0)return;const a=acc/total*100;acc+=v;const b=acc/total*100;parts.push(palette[i%palette.length]+" "+a+"% "+b+"%")});
+   bg="conic-gradient("+parts.join(",")+")";
+ }
+ document.querySelector("#sportPie").style.background=bg;
+ document.querySelector("#sportLegend").innerHTML=names.map((n,i)=>'<div class="legendRow"><span class="dotColor" style="background:'+palette[i%palette.length]+'"></span><span>'+n+'</span><b>'+(sportVotes[n]||0)+'</b></div>').join("");
+ const max=values.length?Math.max(...values):0;
+ const winners=max>0?names.filter((n,i)=>values[i]===max):[];
+ document.querySelector("#sportWinner").textContent=winners.length?"🏆 "+winners.join(" + ")+" — "+max+" קולות":"עדיין לא הוזנו קולות";
+ document.querySelector("#sportVoteView").style.display="none";
+ document.querySelector("#sportResultView").style.display="block";
+}
+document.querySelector("#calcSportVotes").onclick=renderSportResult;
+
+const foodNames=["פיצה","המבורגר","סושי","פסטה","פלאפל"];
+const foodVotes=Object.fromEntries(foodNames.map(n=>[n,0]));
+document.querySelectorAll(".foodVote").forEach(inp=>{
+  inp.addEventListener("input",()=>{foodVotes[inp.dataset.food]=Math.max(0,Number(inp.value)||0)});
+});
+function renderFoodResult(){
+  const values=foodNames.map(n=>Number(foodVotes[n])||0);
+  const total=values.reduce((a,b)=>a+b,0);
+  const palette=["#31e8ff","#9b7cff","#43e6a6","#ffd166","#ff6d83"];
+  let bg="conic-gradient(#22344d 0 100%)";
+  if(total>0){
+    let acc=0,parts=[];
+    values.forEach((v,i)=>{if(v<=0)return;const a=acc/total*100;acc+=v;const b=acc/total*100;parts.push(palette[i]+" "+a+"% "+b+"%")});
+    bg="conic-gradient("+parts.join(",")+")";
+  }
+  document.querySelector("#foodPie").style.background=bg;
+  document.querySelector("#foodLegend").innerHTML=foodNames.map((n,i)=>'<div class="legendRow"><span class="dotColor" style="background:'+palette[i]+'"></span><span>'+n+'</span><b>'+(foodVotes[n]||0)+'</b></div>').join("");
+  const max=values.length?Math.max(...values):0;
+  const winners=max>0?foodNames.filter((n,i)=>values[i]===max):[];
+  document.querySelector("#foodWinner").textContent=winners.length?"🏆 "+winners.join(" + ")+" — "+max+" קולות":"עדיין לא הוזנו קולות";
+}
+
+const textVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
+const imageVotes=Object.fromEntries(toolsData.map(t=>[t.id,0]));
+function renderVoteGrid(hostId,state){
+ const host=document.querySelector(hostId);host.innerHTML="";
+ toolsData.forEach(t=>{
+  const row=document.createElement("div");row.className="voteRow";
+  row.innerHTML="<strong>"+t.name+"</strong><input type='number' min='0' step='1' value='"+(state[t.id]||0)+"' aria-label='קולות "+t.name+"'>";
+  const inp=row.querySelector("input");inp.oninput=()=>state[t.id]=Math.max(0,Number(inp.value)||0);
+  host.appendChild(row);
+ });
+}
+renderVoteGrid("#textVoteGrid",textVotes);renderVoteGrid("#imageVoteGrid",imageVotes);
+function resetVotes(state,host){toolsData.forEach(t=>state[t.id]=0);renderVoteGrid(host,state)}
+document.querySelector("#resetTextVotes").onclick=()=>resetVotes(textVotes,"#textVoteGrid");
+document.querySelector("#resetImageVotes").onclick=()=>resetVotes(imageVotes,"#imageVoteGrid");
+
+function pieGradient(state){
+ const vals=toolsData.map(t=>Number(state[t.id])||0),total=vals.reduce((a,b)=>a+b,0);
+ if(!total)return "conic-gradient(#22344d 0 100%)";
+ let acc=0,parts=[];
+ vals.forEach((v,i)=>{if(v<=0)return;const a=acc/total*100;acc+=v;const b=acc/total*100;parts.push(pieColors[i]+" "+a+"% "+b+"%")});
+ return "conic-gradient("+parts.join(",")+")";
+}
+function winner(state){
+ const vals=toolsData.map(t=>Number(state[t.id])||0),max=Math.max(...vals);if(max<=0)return null;
+ const winners=toolsData.filter((t,i)=>vals[i]===max);return {names:winners.map(x=>x.name).join(" + "),votes:max};
+}
+function renderResult(kind){
+ const state=kind==="text"?textVotes:imageVotes;
+ const pie=document.querySelector(kind==="text"?"#textPie":"#imagePie");if(pie)pie.style.background=pieGradient(state);
+ const legend=document.querySelector(kind==="text"?"#textLegend":"#imageLegend");
+ if(legend)legend.innerHTML=toolsData.map((t,i)=>'<div class="legendRow"><span class="dotColor" style="background:'+pieColors[i]+'"></span><span>'+t.name+'</span><b>'+(state[t.id]||0)+'</b></div>').join("");
+ const win=document.querySelector(kind==="text"?"#textWinner":"#imageWinner");
+ if(win){const w=winner(state);win.textContent=w?"🏆 "+w.names+" — "+w.votes+" קולות":"עדיין לא הוזנו קולות";}
+}
+document.querySelector("#goBonus").onclick=()=>{
+  routeMode="bonus";
+  showSlide(slides.indexOf(document.querySelector("#bonusStart")));
+};
+document.querySelector("#goSummary").onclick=()=>{
+  routeMode="main";
+  showSlide(slides.indexOf(document.querySelector("#summarySlide")));
+};
+
+function renderComparison(){
+ document.querySelector("#compareTextPie").style.background=pieGradient(textVotes);
+ document.querySelector("#compareImagePie").style.background=pieGradient(imageVotes);
+ const a=winner(textVotes),b=winner(imageVotes);
+ document.querySelector("#compareTextWinner").textContent=a?"🏆 "+a.names+" · "+a.votes+" קולות":"אין נתונים";
+ document.querySelector("#compareImageWinner").textContent=b?"🏆 "+b.names+" · "+b.votes+" קולות":"אין נתונים";
+}
+</script>
+</body>
+</html>

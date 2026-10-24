@@ -12,10 +12,10 @@
       font-family:Arial,"Segoe UI",sans-serif;
       background:#07101f;color:#fff;padding:24px;
     }
-    .wrap{width:min(760px,100%);text-align:center}
+    .wrap{width:min(1000px,100%);text-align:center}
     h1{margin:0 0 10px;font-size:clamp(32px,5vw,52px)}
     p{margin:0 0 34px;color:#b9c8df;font-size:18px}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
     .card{
       min-height:190px;border:1px solid #2e4d78;border-radius:22px;
       background:#0d1930;color:#fff;text-decoration:none;
@@ -31,7 +31,6 @@
     .icon{font-size:46px}
     .card strong{font-size:24px}
     .card span{color:#aebfda;font-size:15px}
-    @media(max-width:620px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -48,6 +47,11 @@
         <div class="icon">🎮</div>
         <strong>פעילות תלמידים</strong>
         <span>פתיחת גרסת התלמידים</span>
+      </a>
+      <a class="card" href="guide.html">
+        <div class="icon">📋</div>
+        <strong>מערך / הנחיות למדריך</strong>
+        <span>מהלך השיעור, זמנים ודגשים</span>
       </a>
     </div>
   </main>
